@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button 1`] = `
+<div
+  className="button"
+>
+  <div
+    className="button__child--main"
+  >
+    Sick
+  </div>
+  <button>
+    Click Me
+  </button>
+</div>
+`;

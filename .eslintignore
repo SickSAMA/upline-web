@@ -1,0 +1,2 @@
+# prevent vscode eslint lint js files
+**/*.js
