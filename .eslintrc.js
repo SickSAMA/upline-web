@@ -7,27 +7,27 @@ module.exports = {
     es2020: true,
     jest: true,
   },
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    sourceType: "module",
+    sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
     },
   },
-  plugins: ["@typescript-eslint", "react"],
+  plugins: ['@typescript-eslint', 'react'],
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
   ],
   settings: {
     react: {
-      version: "detect", // picks the version installed, default using latest version
+      version: 'detect', // picks the version installed, default using latest version
     },
   },
   rules: {
-    "max-len": [
-      "error",
+    'max-len': [
+      'error',
       {
         code: 150,
         tabWidth: 2,

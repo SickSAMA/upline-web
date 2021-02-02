@@ -1,3 +1,3 @@
-const { log } = require("console");
+const { log } = require('console');
 
 module.exports = {};
