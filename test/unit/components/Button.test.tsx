@@ -6,4 +6,4 @@ test('Button', () => {
   const button = shallow(<Button />);
 
   expect(button).toMatchSnapshot();
-})
+});

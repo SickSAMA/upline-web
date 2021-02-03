@@ -17,6 +17,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react'],
   extends: [
     'eslint:recommended',
+    'google',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
   ],
@@ -26,11 +27,21 @@ module.exports = {
     },
   },
   rules: {
+    'array-bracket-newline': ['error', 'consistent'],
+    'array-element-newline': 'off',
+    'object-curly-spacing': ['error', 'always'],
+    'require-jsdoc': 'off',
+    'new-cap': ['error', { capIsNew: false }],
     'max-len': [
       'error',
+      150,
+      2,
       {
-        code: 150,
-        tabWidth: 2,
+        ignoreUrls: true,
+        ignoreComments: false,
+        ignoreRegExpLiterals: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
       },
     ],
   },

@@ -3,5 +3,6 @@
 *.tsx
 node_modules
 /.next/
+/build/
 /test/coverage/
 /test/__snapshots__/

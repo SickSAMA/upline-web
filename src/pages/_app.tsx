@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/globals.css';
-import type { AppProps /*, AppContext */ } from 'next/app';
+import type { AppProps /* , AppContext */ } from 'next/app';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
@@ -8,4 +8,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   );
 }
 
-export default MyApp
+export default MyApp;

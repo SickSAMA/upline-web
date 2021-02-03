@@ -1,7 +1,7 @@
-import React from "react";
-import Head from "next/head";
-import Button from "@/components/Button";
-import styles from "../styles/Home.module.css";
+import React from 'react';
+import Head from 'next/head';
+import Button from '@/components/Button';
+import styles from '../styles/Home.module.css';
 
 export default function Home(): JSX.Element {
   const a = 1;
@@ -19,7 +19,7 @@ export default function Home(): JSX.Element {
 
         <p className={styles.description}>
           <Button />
-          Get started by editing{" "}
+          Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
 
@@ -60,7 +60,7 @@ export default function Home(): JSX.Element {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{" "}
+          Powered by{' '}
           <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
         </a>
       </footer>

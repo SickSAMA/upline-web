@@ -66,14 +66,12 @@ jobs:
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: SickSAMA/amazon-ecs-render-task-definition@v1.1.2
-        env:
-          PORT: 3000
         with:
           task-definition: task-definition.json
           container-name: upline-web
           image: ${{ steps.build-image.outputs.image }}
           port-mappings: |-
-            ${{ env.PORT }}:${{ env.PORT }}/tcp
+            3000:3000/tcp
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:

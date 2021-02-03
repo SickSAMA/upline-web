@@ -26,9 +26,10 @@ FROM node:14.15.4-alpine
 WORKDIR /usr/src/app
 
 # copy from build image
-COPY --from=build_image /usr/src/app/.next ./.next
+COPY --from=build_image /usr/src/app/build ./build
 COPY --from=build_image /usr/src/app/node_modules ./node_modules
-COPY package.json ./
+COPY --from=build_image /usr/src/app/package.json ./
+COPY --from=build_image /usr/src/app/next.config.js ./
 
 ## Use non-root user node come with node-alpine for security reasons
 USER node
