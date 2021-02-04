@@ -1,15 +1,9 @@
 declare module '*.css' {
-  interface IClassNames {
-    [className: string]: string;
-  }
-  const classNames: IClassNames;
-  export = classNames;
+  const styles: { [className: string]: string };
+  export default styles;
 }
 
 declare module '*.scss' {
-  interface IClassNames {
-    [className: string]: string;
-  }
-  const classNames: IClassNames;
-  export = classNames;
+  const styles: { [className: string]: string };
+  export default styles;
 }
