@@ -14,11 +14,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 ## Config Public Env Variables
 
-Create `.env.local | .env.development.local | .env.production.local` in local directory to override the default envs (all).
+Create `.env.local` in local directory to override the default envs.
 
-To create new public envs (browser accessible), put them into `.env | .env.development | .env.production`
-
-To create new node envs, put them into `.github/workflows/CICD.yml`
+To create new public envs, put them into `.env.local & .env (stag) & .env-production (prod)`
 
 ## Learn More
 

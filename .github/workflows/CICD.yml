@@ -63,15 +63,6 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: SickSAMA/amazon-ecs-render-task-definition@v1.1.2
-        with:
-          task-definition: task-definition.json
-          container-name: upline-web
-          image: ${{ steps.build-image.outputs.image }}
-          port-mappings: |-
-            3000:3000/tcp
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
