@@ -15,13 +15,7 @@
         }
       },
       "entryPoint": null,
-      "portMappings": [
-        {
-          "hostPort": 3000,
-          "containerPort": 3000,
-          "protocol": "tcp"
-        }
-      ],
+      "portMappings": [],
       "command": null,
       "linuxParameters": null,
       "cpu": 0,

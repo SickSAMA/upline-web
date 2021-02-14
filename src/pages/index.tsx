@@ -1,69 +1,58 @@
-import React from 'react';
-import Head from 'next/head';
-import Button from '@/components/Button';
-import styles from '../styles/Home.module.css';
+import React, { FC, useCallback } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
+import { getCurrentUser } from '@/libs/auth';
 
-export default function Home(): JSX.Element {
-  const a = 1;
+const GET_RECIPE = gql`
+  query GetRecipe {
+    recipe(recipeId: 2) {
+      id
+      title
+      description
+      ratings {
+        id
+        value
+        date
+      }
+      author {
+        username
+      }
+    }
+  }
+`;
+
+const Home: FC<null> = () => {
+  const [getRecipe, { loading, error, data }] = useLazyQuery(GET_RECIPE);
+
+  const logout = useCallback(
+      () => {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+          currentUser.signOut();
+          location.reload();
+        }
+      },
+      [],
+  );
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          <Button />
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+    <div>
+      {
+        loading && <div>Loading...</div>
+      }
+      {
+        error && <div>Error! ${error.message}</div>
+      }
+      {
+        data &&
+          <div>
+            <label>Recipe Title: </label>
+            <span>{ data.recipe.title }</span>
+          </div>
+      }
+      <button onClick={() => getRecipe()}>Fetch Recipe</button>
+      <button onClick={logout}>Logout</button>
     </div>
   );
-}
+};
+
+export default Home;

@@ -45,5 +45,8 @@ module.exports = {
         ignoreTemplateLiterals: true,
       },
     ],
+    '@typescript-eslint/no-empty-function': 'off',
+    'valid-jsdoc': 'off',
+    'react/prop-types': 'off', // https://github.com/yannickcr/eslint-plugin-react/issues/2353
   },
 };
