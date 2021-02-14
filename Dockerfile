@@ -13,6 +13,7 @@ RUN npm ci --quiet
 COPY tsconfig.json ./
 COPY next-env.d.ts ./
 COPY next.config.js ./
+COPY .env ./
 COPY src ./src
 COPY public ./public
 RUN npm run build
