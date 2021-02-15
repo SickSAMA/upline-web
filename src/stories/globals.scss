@@ -1,0 +1,141 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.color {
+  &-list {
+    display: grid;
+    row-gap: $spacer;
+  }
+
+  &-brick {
+    height: 50px;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-sm;
+  }
+
+  &-blue {
+    background-color: $blue;
+  }
+
+  &-red {
+    background-color: $red;
+  }
+
+  &-orange {
+    background-color: $orange;
+  }
+
+  &-blue-dark {
+    background-color: $blue-dark;
+  }
+
+  &-black {
+    background-color: $black;
+  }
+
+  &-white {
+    background-color: $white;
+  }
+
+  &-grey {
+    background-color: $grey;
+  }
+
+  &-grey-light {
+    background-color: $grey-light;
+  }
+
+  &-grey-dark {
+    background-color: $grey-dark;
+  }
+}
+
+.typo {
+  &-weight-list {
+    display: grid;
+  }
+
+  &-weight {
+    border-bottom: 1px solid $grey-light;
+    font-family: $font-family-sans-serif;
+    padding: $spacer 0;
+
+    & > span {
+      font-size: $font-family-base !important;
+    }
+
+    & > div {
+      font-size: $h2-font-size !important;
+    }
+
+    &-300 {
+      font-weight: 300;
+    }
+
+    &-400 {
+      font-weight: 400;
+    }
+
+    &-500 {
+      font-weight: 500;
+    }
+
+    &-700 {
+      font-weight: 700;
+    }
+  }
+
+  &-size-list {
+    margin-top: 2 * $spacer !important;
+    display: grid;
+
+    & > p {
+      margin-top: 0;
+      margin-bottom: $paragraph-margin-bottom;
+      font-family: $font-family-sans-serif;
+      color: $black;
+      font-weight: 400;
+    }
+
+    & > h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: $font-family-sans-serif;
+      margin-top: 0; // 1
+      margin-bottom: $headings-margin-bottom;
+      font-style: $headings-font-style;
+      font-weight: $headings-font-weight;
+      line-height: $headings-line-height;
+      color: $black;
+    }
+
+    & > h1 {
+      @include font-size($h1-font-size);
+    }
+
+    & > h2 {
+      padding-bottom: 0;
+      border-bottom: none;
+      @include font-size($h2-font-size);
+    }
+
+    & > h3 {
+      @include font-size($h3-font-size);
+    }
+
+    & > h4 {
+      @include font-size($h4-font-size);
+    }
+
+    & > h5 {
+      @include font-size($h5-font-size);
+    }
+
+    & > h6 {
+      @include font-size($h6-font-size);
+    }
+  }
+}
