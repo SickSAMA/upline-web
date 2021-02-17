@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import { getCurrentUser } from '@/libs/auth';
+import IconStar from '@/components/SVG/star.svg';
 
 import { Skeleton, SkeletonRow, SkeletonCol } from '@/components/Skeleton';
 
@@ -52,6 +53,7 @@ const Home: FC<null> = () => {
           </SkeletonRow>
         </SkeletonCol>
       </Skeleton>
+      <IconStar style={{ width: '1rem' }} />
       {
         loading && <div>Loading...</div>
       }
