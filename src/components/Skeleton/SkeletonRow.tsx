@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
 import classNames from 'classnames';
+import React, { ReactNode } from 'react';
+
 import style from './style.module.scss';
 
 interface SkeletonRowProps {

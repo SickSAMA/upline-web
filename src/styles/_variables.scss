@@ -3,18 +3,57 @@
 @import 'bootstrap/scss/variables';
 
 $blue: #372fff;
+$blue-dark: #0903b0;
+// $blue-black: #0c2551;
 $red: #fa4b6a;
 $orange: #ffb8a9;
-$blue-dark: #0903b0;
 $black: #000000;
 $white: #ffffff;
 $grey: #c2c4d2;
-$grey-light: #d8dae4;
-$grey-dark: #9396a6;
+$grey-100: tint-color($grey, 80%);
+$grey-200: tint-color($grey, 60%);
+$grey-300: tint-color($grey, 40%);
+$grey-400: tint-color($grey, 20%);
+$grey-500: $grey;
+$grey-600: shade-color($grey, 20%);
+$grey-700: shade-color($grey, 40%);
+$grey-800: shade-color($grey, 60%);
+$grey-900: shade-color($grey, 80%);
+
+$body-bg: $white;
+$body-color: $black;
+$body-text-align: null;
+
+$component-active-bg: $blue;
+
+$variable-prefix: bs-;
 
 $spacer: 1rem;
+$grid-gutter-width: 1.5rem;
+$grid-columns: 12;
 
-$box-radius: 0.25rem;
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+);
+
+// Buttons + Forms
+$input-btn-padding-y: 0.375rem;
+$input-btn-padding-x: 0.75rem;
+$input-btn-focus-box-shadow: 0 0 0 0.25rem rgba($component-active-bg, 0.25);
+
+$border-radius: 0.25rem;
 $border-radius-sm: 0.2rem;
 $border-radius-lg: 0.3rem;
 
@@ -26,12 +65,23 @@ $box-shadow-inset: inset 0 1px 2px rgba($black, 0.075);
 $font-family-sans-serif: 'Inter', sans-serif;
 $font-family-base: var(--#{$variable-prefix}font-sans-serif);
 $font-size-base: 1rem;
+$font-size-sm: $font-size-base * 0.875;
+$font-size-lg: $font-size-base * 1.25;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$font-weight-base: $font-weight-normal;
+$line-height-base: 1.5;
+
 $h1-font-size: $font-size-base * 2.5;
 $h2-font-size: $font-size-base * 2;
 $h3-font-size: $font-size-base * 1.75;
 $h4-font-size: $font-size-base * 1.5;
 $h5-font-size: $font-size-base * 1.25;
 $h6-font-size: $font-size-base;
-$headings-font-weight: 500;
+$headings-font-weight: $font-weight-medium;
 $headings-margin-bottom: $spacer / 2;
 $headings-line-height: 1.2;
+
+$gradient: linear-gradient(180deg, rgba($white, 0.15), rgba($white, 0));

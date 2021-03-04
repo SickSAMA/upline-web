@@ -33,6 +33,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.1",
+    "react-modal": "^3.12.1",
     "swr": "^0.3.11"
   },
   "devDependencies": {
@@ -61,6 +62,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "husky": "^4.3.8",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",

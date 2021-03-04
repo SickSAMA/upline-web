@@ -1,0 +1,28 @@
+@import 'variables';
+@import 'mixins';
+
+.container {
+  display: flex;
+}
+
+.preview {
+  flex: 1 1 auto;
+  background-color: tint-color(#adb5bd, 20%);
+}
+
+.editor {
+  flex: 0 0 auto;
+  width: 40%;
+}
+
+.rowWrapper {
+  @include container-fluid();
+}
+
+.row {
+  @include row();
+}
+
+.col-6 {
+  @include make-col(6);
+}

@@ -1,0 +1,201 @@
+@import 'variables';
+@import 'mixins';
+
+$input-padding-y: $input-btn-padding-y;
+$input-padding-x: $input-btn-padding-x;
+$input-color: $black;
+$input-bg: $grey-100;
+$input-border-width: 1px;
+$input-border-color: $grey-200;
+$input-border-radius: $border-radius;
+$input-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+$input-line-height: $line-height-base;
+$input-placeholder-color: $grey-600;
+$input-plaintext-color: $body-color;
+$input-height-border: $input-border-width * 2;
+$input-height: add(
+  $input-line-height * 1em,
+  add($input-padding-y * 2, $input-height-border, false)
+);
+
+$input-focus-color: $input-color;
+$input-focus-bg: $input-bg;
+
+$input-disabled-color: $grey-700;
+$input-disabled-bg: $grey-200;
+$input-disabled-border-color: null;
+
+$input-error-border-color: $red;
+
+$form-file-button-color: $input-color;
+$form-file-button-bg: $input-border-color;
+$form-file-button-hover-bg: shade-color($form-file-button-bg, 5%);
+$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+.wrapper > label {
+  color: $black;
+  margin-bottom: 0.5rem;
+  @include font-size($font-size-sm);
+}
+
+.wrapper > input,
+.wrapper > textarea {
+  display: block;
+  width: 100%;
+  padding: $input-padding-y $input-padding-x;
+  color: $input-color;
+  background-color: $input-bg;
+  background-clip: padding-box;
+  border: $input-border-width solid $input-border-color;
+  appearance: none; // Fix appearance for date inputs in Safari
+  // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
+  border-radius: $input-border-radius;
+  @include transition($input-transition);
+
+  &[type='file'] {
+    overflow: hidden; // prevent pseudo element button overlap
+
+    &:not(:disabled):not([readonly]) {
+      cursor: pointer;
+    }
+  }
+
+  // Customize the `:focus` state to imitate native WebKit styles.
+  &:focus {
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    outline: 0;
+    box-shadow: $input-btn-focus-box-shadow;
+  }
+
+  // Add some height to date inputs on iOS
+  // https://github.com/twbs/bootstrap/issues/23307
+  // TODO: we can remove this workaround once https://bugs.webkit.org/show_bug.cgi?id=198959 is resolved
+  &::-webkit-date-and-time-value {
+    // Multiply line-height by 1em if it has no unit
+    height: if(
+      unit($input-line-height) == '',
+      $input-line-height * 1em,
+      $input-line-height
+    );
+  }
+
+  &::placeholder {
+    color: $input-placeholder-color;
+    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+    opacity: 1;
+  }
+
+  // Disabled and read-only inputs
+  //
+  // HTML5 says that controls under a fieldset > legend:first-child won't be
+  // disabled if the fieldset is disabled. Due to implementation difficulty, we
+  // don't honor that edge case; we style them as disabled anyway.
+  &:disabled,
+  &[readonly] {
+    color: $input-disabled-color;
+    background-color: $input-disabled-bg;
+    border-color: $input-disabled-border-color;
+    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+    opacity: 1;
+    cursor: not-allowed;
+  }
+
+  // File input buttons theming
+  // stylelint-disable-next-line selector-pseudo-element-no-unknown
+  &::file-selector-button {
+    padding: $input-padding-y $input-padding-x;
+    margin: (-$input-padding-y) (-$input-padding-x);
+    margin-inline-end: $input-padding-x;
+    color: $form-file-button-color;
+    @include gradient-bg($form-file-button-bg);
+    pointer-events: none;
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    border-inline-end-width: $input-border-width;
+    border-radius: 0; // stylelint-disable-line property-disallowed-list
+    @include transition($btn-transition);
+  }
+
+  // stylelint-disable-next-line selector-pseudo-element-no-unknown
+  &:hover:not(:disabled):not([readonly])::file-selector-button {
+    background-color: $form-file-button-hover-bg;
+  }
+
+  &::-webkit-file-upload-button {
+    padding: $input-padding-y $input-padding-x;
+    margin: (-$input-padding-y) (-$input-padding-x);
+    margin-inline-end: $input-padding-x;
+    color: $form-file-button-color;
+    @include gradient-bg($form-file-button-bg);
+    pointer-events: none;
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    border-inline-end-width: $input-border-width;
+    border-radius: 0; // stylelint-disable-line property-disallowed-list
+    @include transition($btn-transition);
+  }
+
+  &:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
+    background-color: $form-file-button-hover-bg;
+  }
+}
+
+// Readonly controls as plain text
+//
+// Apply class to a readonly input to make it appear like regular plain
+// text (without any border, background color, focus indicator)
+
+.readonly > input {
+  display: block;
+  width: 100%;
+  padding: $input-padding-y 0;
+  margin-bottom: 0; // match inputs if this class comes on inputs with default margins
+  line-height: $input-line-height;
+  color: $input-plaintext-color;
+  background-color: transparent;
+  border: solid transparent;
+  border-width: $input-border-width 0;
+}
+
+.error > input,
+.error > textarea {
+  border-color: $input-error-border-color;
+}
+
+// Make sure textareas don't shrink too much when resized
+// https://github.com/twbs/bootstrap/pull/29124
+.wrapper > textarea {
+  min-height: $input-height;
+}
+
+.wrapper > input[type='color'] {
+  max-width: 3rem;
+  height: auto; // Override fixed browser height
+  padding: $input-padding-y;
+
+  &:not(:disabled):not([readonly]) {
+    cursor: pointer;
+  }
+
+  &::-moz-color-swatch {
+    height: if(
+      unit($input-line-height) == '',
+      $input-line-height * 1em,
+      $input-line-height
+    );
+    border-radius: $input-border-radius;
+  }
+
+  &::-webkit-color-swatch {
+    height: if(
+      unit($input-line-height) == '',
+      $input-line-height * 1em,
+      $input-line-height
+    );
+    border-radius: $input-border-radius;
+  }
+}

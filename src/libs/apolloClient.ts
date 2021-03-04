@@ -1,6 +1,7 @@
-import { ApolloClient, InMemoryCache, NormalizedCacheObject, createHttpLink } from '@apollo/client';
-import { getCurrentUser } from '@/libs/auth';
+import { ApolloClient, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
+
+import { getCurrentUser } from '@/libs/auth';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 

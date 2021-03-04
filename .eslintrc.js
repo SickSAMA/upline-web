@@ -14,7 +14,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'simple-import-sort'],
   extends: [
     'eslint:recommended',
     'google',
@@ -48,5 +48,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'valid-jsdoc': 'off',
     'react/prop-types': 'off', // https://github.com/yannickcr/eslint-plugin-react/issues/2353
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
   },
 };

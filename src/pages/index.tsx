@@ -1,9 +1,8 @@
-import React, { FC, useCallback } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
-import { getCurrentUser } from '@/libs/auth';
-import IconStar from '@/components/SVG/star.svg';
+import React, { FC, useCallback } from 'react';
 
-import { Skeleton, SkeletonRow, SkeletonCol } from '@/components/Skeleton';
+import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
+import { getCurrentUser } from '@/libs/auth';
 
 const GET_RECIPE = gql`
   query GetRecipe {
@@ -53,7 +52,6 @@ const Home: FC<null> = () => {
           </SkeletonRow>
         </SkeletonCol>
       </Skeleton>
-      <IconStar style={{ width: '1rem' }} />
       {
         loading && <div>Loading...</div>
       }

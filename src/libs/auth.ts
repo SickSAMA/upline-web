@@ -1,5 +1,6 @@
-import { CognitoUserPool, CognitoUserAttribute, NodeCallback, ISignUpResult, AuthenticationDetails, CognitoUser, IAuthenticationCallback } from 'amazon-cognito-identity-js';
-import { COGNITO_USER_POOL_ID, COGNITO_USER_POOL_APP_CLIENT_ID } from '@/configs/env';
+import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, IAuthenticationCallback, ISignUpResult, NodeCallback } from 'amazon-cognito-identity-js';
+
+import { COGNITO_USER_POOL_APP_CLIENT_ID, COGNITO_USER_POOL_ID } from '@/configs/env';
 
 const userPool = new CognitoUserPool({
   UserPoolId: COGNITO_USER_POOL_ID,

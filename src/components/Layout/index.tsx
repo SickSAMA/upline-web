@@ -1,15 +1,19 @@
 import React, { ReactNode } from 'react';
 
+import Footer from './Footer';
+import Header from './Header';
 import style from './style.module.scss';
 
-interface SkeletonProps {
+interface LayoutProps {
   children?: ReactNode
 }
 
-export default function Skeleton({ children }: SkeletonProps): JSX.Element {
+export default function Layout({ children }: LayoutProps): JSX.Element {
   return (
     <div className={style.container}>
+      <Header />
       { children }
+      <Footer />
     </div>
   );
 }

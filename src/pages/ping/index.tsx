@@ -1,5 +1,5 @@
-import React from 'react';
 import { GetServerSideProps } from 'next';
+import React from 'react';
 
 const Ping: React.FC = () => null;
 

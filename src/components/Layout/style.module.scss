@@ -1,0 +1,27 @@
+@import 'variables';
+@import 'mixins';
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    flex: 1 0 auto;
+  }
+}
+
+div.header {
+  @include container;
+  height: 60px;
+  background-color: $blue;
+  color: $white;
+  flex: 0 0 auto;
+}
+
+div.footer {
+  height: 100px;
+  background-color: $blue;
+  color: $white;
+  flex: 0 0 auto;
+}

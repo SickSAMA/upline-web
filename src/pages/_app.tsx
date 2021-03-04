@@ -1,7 +1,9 @@
-import React from 'react';
 import '@/styles/globals.scss';
-import type { AppProps /* , AppContext */ } from 'next/app';
+
 import { ApolloProvider } from '@apollo/client';
+import type { AppProps /* , AppContext */ } from 'next/app';
+import React from 'react';
+
 import { initializeApollo } from '@/libs/apolloClient';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {

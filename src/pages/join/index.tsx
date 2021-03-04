@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { signUp } from '@/libs/auth';
 
 interface FormData {
@@ -8,7 +9,7 @@ interface FormData {
   name: string
 }
 
-const SignUp = (): JSX.Element => {
+const Join = (): JSX.Element => {
   const { register, handleSubmit, errors } = useForm();
   const [errorMsg, setErrorMsg] = useState('');
   const onSubmit = (data: FormData): void => {
@@ -65,4 +66,4 @@ const SignUp = (): JSX.Element => {
   );
 };
 
-export default SignUp;
+export default Join;
