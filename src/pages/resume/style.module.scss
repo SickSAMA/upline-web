@@ -2,17 +2,17 @@
 @import 'mixins';
 
 .container {
-  display: flex;
+  @include container();
 }
 
 .preview {
-  flex: 1 1 auto;
-  background-color: tint-color(#adb5bd, 20%);
+  // flex: 1 1 auto;
+  // background-color: tint-color(#adb5bd, 20%);
 }
 
 .editor {
-  flex: 0 0 auto;
-  width: 40%;
+  // flex: 0 0 auto;
+  // width: 40%;
 }
 
 .rowWrapper {
@@ -23,6 +23,14 @@
   @include row();
 }
 
+.col-3 {
+  @include make-col(3);
+}
+
 .col-6 {
   @include make-col(6);
+}
+
+.col-12 {
+  @include make-col(12);
 }

@@ -28,7 +28,7 @@ $input-disabled-border-color: null;
 $input-error-border-color: $red;
 
 $form-file-button-color: $input-color;
-$form-file-button-bg: $input-border-color;
+$form-file-button-bg: $grey-200;
 $form-file-button-hover-bg: shade-color($form-file-button-bg, 5%);
 $btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;

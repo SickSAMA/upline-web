@@ -2,7 +2,7 @@ import { gql, useLazyQuery } from '@apollo/client';
 import React, { FC, useCallback } from 'react';
 
 import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
-import { getCurrentUser } from '@/libs/auth';
+import { getCurrentUser } from '@/utils/auth';
 
 const GET_RECIPE = gql`
   query GetRecipe {

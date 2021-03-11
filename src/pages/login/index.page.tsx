@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { login } from '@/libs/auth';
+import { login } from '@/utils/auth';
 
 interface FormData {
   email: string
@@ -9,10 +9,10 @@ interface FormData {
 }
 
 const Login = (): JSX.Element => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [errorMsg, setErrorMsg] = useState('');
 
-  const onSubmit = (data: FormData): void => {
+  const onSubmit = handleSubmit((data): void => {
     const email = data.email.trim();
     const password = data.password.trim();
     login({
@@ -26,16 +26,16 @@ const Login = (): JSX.Element => {
         setErrorMsg(error.message);
       },
     });
-  };
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <div>
         <div>
           <label>Email:</label>
         </div>
         <div>
-          <input name="email" ref={register({ required: true })} />
+          <input {...register('email', { required: true })} />
         </div>
       </div>
       <div>
@@ -43,7 +43,7 @@ const Login = (): JSX.Element => {
           <label>Password</label>
         </div>
         <div>
-          <input name="password" ref={register({ required: true })} />
+          <input {...register('password', { required: true })} />
         </div>
       </div>
       <div>

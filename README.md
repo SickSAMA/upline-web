@@ -18,17 +18,12 @@ Create `.env.local` in local directory to override the default envs.
 
 To create new public envs, put them into `.env.local & .env (stag) & .env-production (prod)`
 
-## Learn More
+## Download & Generate Graphql Schema Types
 
-To learn more about Next.js, take a look at the following resources:
+Only download schema if the schema on server side changes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`npm run schema:download`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Use codegen once a new graphql query is added
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`npm run schema:codegen`

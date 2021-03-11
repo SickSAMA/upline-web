@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { signUp } from '@/libs/auth';
+import { signUp } from '@/utils/auth';
 
 interface FormData {
   email: string
@@ -10,9 +10,9 @@ interface FormData {
 }
 
 const Join = (): JSX.Element => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [errorMsg, setErrorMsg] = useState('');
-  const onSubmit = (data: FormData): void => {
+  const onSubmit = handleSubmit((data): void => {
     const email = data.email.trim();
     const password = data.password.trim();
     const name = data.name.trim();
@@ -27,16 +27,16 @@ const Join = (): JSX.Element => {
         console.log('call result: ' + JSON.stringify(result, null, 2));
       }
     });
-  };
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <div>
         <div>
           <label>Display Name:</label>
         </div>
         <div>
-          <input name="name" ref={register({ required: true })} />
+          <input {...register('name', { required: true })} />
         </div>
       </div>
       <div>
@@ -44,7 +44,7 @@ const Join = (): JSX.Element => {
           <label>Email:</label>
         </div>
         <div>
-          <input name="email" ref={register({ required: true })} />
+          <input {...register('email', { required: true })} />
         </div>
       </div>
       <div>
@@ -52,7 +52,7 @@ const Join = (): JSX.Element => {
           <label>Password</label>
         </div>
         <div>
-          <input name="password" ref={register({ required: true })} />
+          <input {...register('password', { required: true })} />
         </div>
       </div>
       <div>

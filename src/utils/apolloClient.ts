@@ -1,9 +1,22 @@
 import { ApolloClient, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
 
-import { getCurrentUser } from '@/libs/auth';
+import { getCurrentUser } from '@/utils/auth';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
+
+// promisify getSession method
+function getSession(currentUser: CognitoUser): Promise<CognitoUserSession> {
+  return new Promise((resolve, reject) => {
+    currentUser.getSession((error: Error | null, session: CognitoUserSession | null) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(session as CognitoUserSession);
+    });
+  });
+}
 
 /**
  * Create customFetch function for handling re-authentication.
@@ -14,21 +27,17 @@ const customFetch = async (uri: RequestInfo, options?: RequestInit):Promise<Resp
   const _options: RequestInit = options || {};
 
   if (currentUser) {
-    currentUser.getSession((error: Error | null, session: CognitoUserSession | null) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      const jwtToken = (session as CognitoUserSession).getIdToken().getJwtToken();
-
+    try {
+      const session = await getSession(currentUser);
+      const jwtToken = session.getIdToken().getJwtToken();
       if (!_options.headers) {
         _options.headers = {};
       }
       _options.headers['authorization'] = `Bearer ${jwtToken}`;
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
-
   return fetch(uri, _options);
 };
 

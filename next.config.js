@@ -6,6 +6,7 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'src', 'styles')],
   },
+  pageExtensions: ['page.tsx'],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
