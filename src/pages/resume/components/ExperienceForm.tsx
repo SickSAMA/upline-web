@@ -3,8 +3,9 @@ import React from 'react';
 import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import { Field } from '@/components/Form';
-import { ExperienceInput, ResumeInput } from '@/graphql/types/graphql-global-types';
+import { ExperienceInput } from '@/graphql/types/graphql-global-types';
 
+import { ResumeFormData } from '../edit.page';
 import style from '../style.module.scss';
 
 interface ExperienceFeildNameMapping {
@@ -14,8 +15,8 @@ interface ExperienceFeildNameMapping {
 }
 
 interface ExperienceFormProps {
-  control: Control<ResumeInput>;
-  register: UseFormRegister<ResumeInput>;
+  control: Control<ResumeFormData>;
+  register: UseFormRegister<ResumeFormData>;
   type: 'education' | 'leadership_experience' | 'professional_experience'; // used to data access key
   fieldNameMapping: ExperienceFeildNameMapping;
 }

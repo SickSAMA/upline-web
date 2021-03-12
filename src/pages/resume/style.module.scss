@@ -8,6 +8,14 @@
 .preview {
   // flex: 1 1 auto;
   // background-color: tint-color(#adb5bd, 20%);
+  // display: none;
+  height: 500px;
+  background-color: $blue;
+}
+
+.previewWrapper {
+  overflow: hidden;
+  height: 0;
 }
 
 .editor {

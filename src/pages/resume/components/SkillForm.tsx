@@ -3,13 +3,14 @@ import React from 'react';
 import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import { Field } from '@/components/Form';
-import { ResumeInput, SkillInput } from '@/graphql/types/graphql-global-types';
+import { SkillInput } from '@/graphql/types/graphql-global-types';
 
+import { ResumeFormData } from '../edit.page';
 import style from '../style.module.scss';
 
 interface SkillFormProps {
-  control: Control<ResumeInput>;
-  register: UseFormRegister<ResumeInput>;
+  control: Control<ResumeFormData>;
+  register: UseFormRegister<ResumeFormData>;
 }
 
 const defaultSkill: SkillInput = {

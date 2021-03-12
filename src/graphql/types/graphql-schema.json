@@ -1282,16 +1282,12 @@
             "name": "education",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ExperienceInput",
-                  "ofType": null
-                }
+                "kind": "INPUT_OBJECT",
+                "name": "ExperienceInput",
+                "ofType": null
               }
             },
             "defaultValue": null,
@@ -1302,16 +1298,12 @@
             "name": "professional_experience",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ExperienceInput",
-                  "ofType": null
-                }
+                "kind": "INPUT_OBJECT",
+                "name": "ExperienceInput",
+                "ofType": null
               }
             },
             "defaultValue": null,
@@ -1322,16 +1314,12 @@
             "name": "leadership_experience",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ExperienceInput",
-                  "ofType": null
-                }
+                "kind": "INPUT_OBJECT",
+                "name": "ExperienceInput",
+                "ofType": null
               }
             },
             "defaultValue": null,
@@ -1342,16 +1330,12 @@
             "name": "others",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "SkillInput",
-                  "ofType": null
-                }
+                "kind": "INPUT_OBJECT",
+                "name": "SkillInput",
+                "ofType": null
               }
             },
             "defaultValue": null,

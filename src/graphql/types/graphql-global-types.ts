@@ -25,10 +25,10 @@ export interface ResumeInput {
   phone?: string | null;
   email?: string | null;
   address?: string | null;
-  education: (ExperienceInput | null)[];
-  professional_experience: (ExperienceInput | null)[];
-  leadership_experience: (ExperienceInput | null)[];
-  others: (SkillInput | null)[];
+  education?: (ExperienceInput | null)[] | null;
+  professional_experience?: (ExperienceInput | null)[] | null;
+  leadership_experience?: (ExperienceInput | null)[] | null;
+  others?: (SkillInput | null)[] | null;
 }
 
 export interface SkillInput {
