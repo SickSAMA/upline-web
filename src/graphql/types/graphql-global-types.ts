@@ -14,7 +14,7 @@ export interface ExperienceInput {
   summary: string;
   start_date: string;
   end_date: string;
-  details: (string | null)[];
+  details: string[];
 }
 
 export interface ResumeInput {
@@ -25,10 +25,10 @@ export interface ResumeInput {
   phone?: string | null;
   email?: string | null;
   address?: string | null;
-  education?: (ExperienceInput | null)[] | null;
-  professional_experience?: (ExperienceInput | null)[] | null;
-  leadership_experience?: (ExperienceInput | null)[] | null;
-  others?: (SkillInput | null)[] | null;
+  education?: ExperienceInput[] | null;
+  professional_experience?: ExperienceInput[] | null;
+  leadership_experience?: ExperienceInput[] | null;
+  others?: SkillInput[] | null;
 }
 
 export interface SkillInput {

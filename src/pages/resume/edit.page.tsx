@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 import { useLazyQuery, useMutation } from '@apollo/client';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -12,21 +10,28 @@ import SAVE_RESUME from '@/graphql/saveResume';
 import { GetResume } from '@/graphql/types/GetResume';
 import { ExperienceInput, ResumeInput, SkillInput } from '@/graphql/types/graphql-global-types';
 import { SaveResume, SaveResumeVariables } from '@/graphql/types/SaveResume';
+import { generateResumePDF } from '@/utils/generatePDF';
 
 import ExperienceForm from './components/ExperienceForm';
 import SkillForm from './components/SkillForm';
 import style from './style.module.scss';
 
+// set default values for all fields to align with returned resume data from serverj
 export interface ResumeFormData extends ResumeInput {
-  education: (ExperienceInput | null)[];
-  professional_experience: (ExperienceInput | null)[];
-  leadership_experience: (ExperienceInput | null)[];
-  others: (SkillInput | null)[];
+  name: string;
+  english_name: string;
+  phone: string;
+  email: string;
+  address: string;
+  education: ExperienceInput[];
+  professional_experience: ExperienceInput[];
+  leadership_experience: ExperienceInput[];
+  others: SkillInput[];
 }
 
 export default function ResumeEditor(): JSX.Element {
   // todo
-  const { register, handleSubmit, reset, control } = useForm<ResumeFormData>();
+  const { register, getValues, handleSubmit, reset, control } = useForm<ResumeFormData>();
   const [getResume, { data: getResumeResult }]= useLazyQuery<GetResume>(GET_RESUME);
   const [saveResume] = useMutation<SaveResume, SaveResumeVariables>(SAVE_RESUME);
 
@@ -45,31 +50,25 @@ export default function ResumeEditor(): JSX.Element {
   }, [reset, getResumeResult]);
 
   const onSubmit = handleSubmit((data): void => {
+    // TODO trim and details list clear
     console.log(data);
     saveResume({ variables: { resumeInput: data } });
   });
 
-  const downloadPDF = (): void => {
-    const el = document.getElementById('sick');
-    if (el) {
-      html2canvas(el).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm'); // eslint-disable-line
-        pdf.addImage(imgData, 'PNG', 0, 0, 500, 500);
-        pdf.save('sample-file.pdf');
-      });
-    }
+  const generatePDF = (): void => {
+    const resume = getValues();
+    generateResumePDF(resume);
   };
 
   return (
     <Layout>
       <div className={style.container}>
-        <button type="button" onClick={downloadPDF}>Download PDF</button>
+        <button type="button" onClick={generatePDF}>Generate PDF</button>
         <div className={style.previewWrapper}>
           <div id="sick" className={style.preview}></div>
         </div>
         <div className={style.editor}>
-          <form className={style.rowWrapper} onSubmit={onSubmit}>
+          <form className={style['container-fluid']} onSubmit={onSubmit}>
             <h2>Basic Info</h2>
             <div className={style.row}>
               <Field className={style['col-6']} label="Name">

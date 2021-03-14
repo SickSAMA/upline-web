@@ -5,6 +5,10 @@
   @include container();
 }
 
+.container-fluid {
+  @include container-fluid();
+}
+
 .preview {
   // flex: 1 1 auto;
   // background-color: tint-color(#adb5bd, 20%);
@@ -23,22 +27,25 @@
   // width: 40%;
 }
 
-.rowWrapper {
-  @include container-fluid();
-}
-
 .row {
   @include row();
 }
 
-.col-3 {
-  @include make-col(3);
+.col {
+  &-3 {
+    @include make-col(3);
+  }
+
+  &-6 {
+    @include make-col(6);
+  }
+
+  &-12 {
+    @include make-col(12);
+  }
 }
 
-.col-6 {
-  @include make-col(6);
-}
-
-.col-12 {
-  @include make-col(12);
+.resume {
+  padding: 30px 50px;
+  background-color: $grey-100;
 }

@@ -15,7 +15,7 @@ export interface GetResume_resume_education {
   summary: string;
   start_date: string;
   end_date: string;
-  details: (string | null)[];
+  details: string[];
 }
 
 export interface GetResume_resume_professional_experience {
@@ -26,7 +26,7 @@ export interface GetResume_resume_professional_experience {
   summary: string;
   start_date: string;
   end_date: string;
-  details: (string | null)[];
+  details: string[];
 }
 
 export interface GetResume_resume_leadership_experience {
@@ -37,7 +37,7 @@ export interface GetResume_resume_leadership_experience {
   summary: string;
   start_date: string;
   end_date: string;
-  details: (string | null)[];
+  details: string[];
 }
 
 export interface GetResume_resume_others {
@@ -55,10 +55,10 @@ export interface GetResume_resume {
   phone: string;
   email: string;
   address: string;
-  education: (GetResume_resume_education | null)[];
-  professional_experience: (GetResume_resume_professional_experience | null)[];
-  leadership_experience: (GetResume_resume_leadership_experience | null)[];
-  others: (GetResume_resume_others | null)[];
+  education: GetResume_resume_education[];
+  professional_experience: GetResume_resume_professional_experience[];
+  leadership_experience: GetResume_resume_leadership_experience[];
+  others: GetResume_resume_others[];
   updated_at: any;
   created_at: any;
 }
