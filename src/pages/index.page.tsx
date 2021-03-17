@@ -1,6 +1,7 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import React, { FC, useCallback } from 'react';
 
+import Layout from '@/components/Layout';
 import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
 import { getCurrentUser } from '@/utils/auth';
 
@@ -37,37 +38,39 @@ const Home: FC<null> = () => {
   );
 
   return (
-    <div>
-      <Skeleton>
-        <SkeletonCol col={12}>
-          <SkeletonRow>
-            <SkeletonCol col={6} big />
-            <SkeletonCol col={4} empty big />
-            <SkeletonCol col={2} big />
-            <SkeletonCol col={4} />
-            <SkeletonCol col={8} empty />
-            <SkeletonCol col={6} />
-            <SkeletonCol col={6} empty />
-            <SkeletonCol col={12} />
-          </SkeletonRow>
-        </SkeletonCol>
-      </Skeleton>
-      {
-        loading && <div>Loading...</div>
-      }
-      {
-        error && <div>Error! ${error.message}</div>
-      }
-      {
-        data &&
-          <div>
-            <label>Recipe Title: </label>
-            <span>{ data.recipe.title }</span>
-          </div>
-      }
-      <button onClick={() => getRecipe()}>Fetch Recipe</button>
-      <button onClick={logout}>Logout</button>
-    </div>
+    <Layout>
+      <div>
+        <Skeleton>
+          <SkeletonCol col={12}>
+            <SkeletonRow>
+              <SkeletonCol col={6} big />
+              <SkeletonCol col={4} empty big />
+              <SkeletonCol col={2} big />
+              <SkeletonCol col={4} />
+              <SkeletonCol col={8} empty />
+              <SkeletonCol col={6} />
+              <SkeletonCol col={6} empty />
+              <SkeletonCol col={12} />
+            </SkeletonRow>
+          </SkeletonCol>
+        </Skeleton>
+        {
+          loading && <div>Loading...</div>
+        }
+        {
+          error && <div>Error! ${error.message}</div>
+        }
+        {
+          data &&
+            <div>
+              <label>Recipe Title: </label>
+              <span>{ data.recipe.title }</span>
+            </div>
+        }
+        <button onClick={() => getRecipe()}>Fetch Recipe</button>
+        <button onClick={logout}>Logout</button>
+      </div>
+    </Layout>
   );
 };
 

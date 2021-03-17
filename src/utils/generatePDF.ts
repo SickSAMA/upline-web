@@ -153,7 +153,6 @@ export function generateResumePDF(resume: ResumeFormData, options: Options = def
   content.push(...generateResumeExperienceContent('PROFESSIONAL EXPERIENCE', resume.professional_experience));
   content.push(...generateResumeExperienceContent('LEADERSHIP & EXTRACURRICULAR ACTIVITIES', resume.leadership_experience));
 
-
   if (resume.others.length > 0) {
     content.push('\n');
     content.push({

@@ -2,6 +2,14 @@
 @import './variables';
 @import 'bootstrap/scss/mixins';
 
+$btn-line-height: $line-height-base;
+$btn-padding-y: 0.875rem;
+$btn-padding-x: 1.5rem;
+$btn-font-size: $font-size-base;
+$btn-focus-width: $input-btn-focus-width;
+$btn-focus-box-shadow: $input-btn-focus-box-shadow;
+$btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125);
+
 @mixin container {
   @include make-container($grid-gutter-width / 2);
 
@@ -25,5 +33,118 @@
 
   & > * {
     @include make-col-ready();
+  }
+}
+
+@mixin button() {
+  display: inline-block;
+  font-weight: $font-weight-normal;
+  line-height: $btn-line-height;
+  color: $body-color;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: $btn-padding-y $btn-padding-x;
+  @include font-size($btn-font-size);
+  border-radius: 999px;
+  @include transition(
+    color $transition-duration ease-in-out,
+    background-color $transition-duration ease-in-out,
+    border-color $transition-duration ease-in-out,
+    box-shadow $transition-duration ease-in-out
+  );
+
+  &:hover {
+    color: $body-color;
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: $btn-focus-box-shadow;
+  }
+
+  &:active,
+  &.active {
+    box-shadow: $btn-active-box-shadow;
+
+    &:focus {
+      box-shadow: $btn-focus-box-shadow, $btn-active-box-shadow;
+    }
+  }
+
+  &:disabled,
+  &.disabled,
+  fieldset:disabled & {
+    pointer-events: none;
+    opacity: $btn-disabled-opacity;
+    box-shadow: none;
+  }
+}
+
+@mixin button-variant($style: 'blue') {
+  $background: $blue;
+  $border: $blue;
+  $color: color-contrast($background);
+
+  $hover-background: $blue-dark;
+  $hover-border: $blue-dark;
+  $hover-color: color-contrast($hover-background);
+
+  $active-background: $blue-dark;
+  $active-border: $blue-dark;
+  $active-color: color-contrast($active-background);
+
+  $disabled-background: $background;
+  $disabled-border: $border;
+  $disabled-color: color-contrast($disabled-background);
+
+  $btn-box-shadow: none;
+
+  @include button();
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+  box-shadow: $btn-box-shadow;
+
+  &:hover,
+  &:focus {
+    color: $hover-color;
+    background-color: $hover-background;
+    border-color: $hover-border;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), 0.5);
+  }
+
+  &:active,
+  &.active {
+    color: $active-color;
+    background-color: $active-background;
+    border-color: $active-border;
+    &:focus {
+      box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), 0.5);
+    }
+  }
+
+  &:disabled,
+  &.disabled {
+    color: $disabled-color;
+    background-color: $disabled-background;
+    border-color: $disabled-border;
+  }
+}
+
+@mixin above() {
+  &:hover,
+  &:focus,
+  &:active {
+    @content;
   }
 }

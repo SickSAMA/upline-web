@@ -10,7 +10,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps): JSX.Element {
   return (
-    <div className={style.container}>
+    <div className={style.wrapper}>
       <Header />
       { children }
       <Footer />

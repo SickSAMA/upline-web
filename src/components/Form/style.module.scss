@@ -8,7 +8,8 @@ $input-bg: $grey-100;
 $input-border-width: 1px;
 $input-border-color: $grey-200;
 $input-border-radius: $border-radius;
-$input-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+$input-transition: border-color $transition-duration ease-in-out,
+  box-shadow $transition-duration ease-in-out;
 $input-line-height: $line-height-base;
 $input-placeholder-color: $grey-600;
 $input-plaintext-color: $body-color;
@@ -20,6 +21,7 @@ $input-height: add(
 
 $input-focus-color: $input-color;
 $input-focus-bg: $input-bg;
+$input-focus-box-shadow: $input-btn-focus-box-shadow;
 
 $input-disabled-color: $grey-700;
 $input-disabled-bg: $grey-200;
@@ -30,8 +32,10 @@ $input-error-border-color: $red;
 $form-file-button-color: $input-color;
 $form-file-button-bg: $grey-200;
 $form-file-button-hover-bg: shade-color($form-file-button-bg, 5%);
-$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+$btn-transition: color $transition-duration ease-in-out,
+  background-color $transition-duration ease-in-out,
+  border-color $transition-duration ease-in-out,
+  box-shadow $transition-duration ease-in-out;
 
 .wrapper > label {
   color: $black;
@@ -66,7 +70,7 @@ $btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     color: $input-focus-color;
     background-color: $input-focus-bg;
     outline: 0;
-    box-shadow: $input-btn-focus-box-shadow;
+    box-shadow: $input-focus-box-shadow;
   }
 
   // Add some height to date inputs on iOS

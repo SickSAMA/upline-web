@@ -1,27 +1,122 @@
 @import 'variables';
 @import 'mixins';
 
-.container {
+$header-padding-y: 1rem;
+$footer-padding-y: 2rem;
+
+.wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 
-  & > div {
+  & > div:not(:first-of-type):not(:last-of-type) {
     flex: 1 0 auto;
   }
 }
 
-div.header {
-  @include container;
-  height: 60px;
-  background-color: $blue;
-  color: $white;
-  flex: 0 0 auto;
+.header {
+  border-bottom: 1px solid $grey-200;
+
+  &__container {
+    @include container();
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding-top: $header-padding-y;
+    padding-bottom: $header-padding-y;
+  }
+
+  &__logo {
+    display: block;
+    flex: 0 0 auto;
+    margin-right: 2rem;
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    text-decoration: none;
+    color: $black;
+
+    @include above() {
+      color: $black;
+    }
+  }
+
+  &Nav {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__left {
+      display: flex;
+      align-items: center;
+
+      & > a {
+        display: block;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        color: $black;
+        font-weight: $font-weight-medium;
+        font-size: 1.125rem;
+
+        @include above() {
+          color: $blue;
+        }
+      }
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+    }
+
+    &__button {
+      display: block;
+      margin-right: 2rem;
+      @include button-variant('blue');
+    }
+
+    &__join {
+      display: block;
+      padding: 0.125rem 0;
+      text-decoration: none;
+      color: $blue;
+      font-weight: $font-weight-medium;
+      transition: border $transition-duration;
+      border-bottom: 2px solid transparent;
+      border-top: 2px solid transparent;
+
+      &:hover,
+      &:active {
+        border-bottom-color: $blue;
+      }
+    }
+  }
 }
 
-div.footer {
-  height: 100px;
-  background-color: $blue;
-  color: $white;
+.footer {
+  background-color: $black;
+  color: $grey-600;
   flex: 0 0 auto;
+
+  &__container {
+    @include container();
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: $footer-padding-y;
+    padding-bottom: $footer-padding-y;
+  }
+
+  &__links {
+    & > a {
+      text-decoration: none;
+      color: inherit;
+      margin-right: 1.5rem;
+      font-weight: $font-weight-medium;
+
+      @include above() {
+        color: $white;
+      }
+    }
+  }
 }
