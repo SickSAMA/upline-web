@@ -4,3 +4,22 @@
 
 @import 'bootstrap/scss/root';
 @import 'bootstrap/scss/reboot';
+
+// for modals, kill the scroll on the body
+.modal-open {
+  overflow: hidden;
+}
+
+svg {
+  @include transition(fill $transition-duration);
+}
+
+a {
+  color: $blue;
+  text-decoration: none;
+
+  @include above {
+    color: $blue;
+    text-decoration: underline;
+  }
+}

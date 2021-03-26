@@ -1,0 +1,80 @@
+@import 'variables';
+@import 'mixins';
+
+$row-gutter: 2rem;
+
+.title {
+  font-size: 2rem;
+  font-weight: $font-weight-medium;
+  margin-bottom: $row-gutter;
+}
+
+.subTitle {
+  margin-bottom: $row-gutter;
+}
+
+.field {
+  margin-bottom: $row-gutter;
+}
+
+.loginOptions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: $row-gutter;
+}
+
+.joinTerm {
+  margin-bottom: $row-gutter;
+}
+
+.submit {
+  margin-bottom: $row-gutter;
+  width: 100%;
+}
+
+.errorMsg {
+  color: $red;
+  margin-bottom: $row-gutter;
+}
+
+.jumpLink {
+  text-align: center;
+}
+
+.authPage {
+  &__wrapper {
+    height: 100vh;
+    display: flex;
+  }
+
+  &__bg {
+    flex: 1 1 auto;
+    height: 100%;
+    background-color: $blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $blue;
+    background-image: url('../../../public/loginModal-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    & > a {
+      display: block;
+      color: $white;
+      font-size: 2.5rem;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  &__content {
+    height: 100%;
+    overflow: auto;
+    flex: 0 0 60%;
+    @include flex-middle(4rem);
+  }
+
+  &__auth {
+    width: 380px;
+  }
+}

@@ -21,6 +21,7 @@ $input-height: add(
 
 $input-focus-color: $input-color;
 $input-focus-bg: $input-bg;
+$input-focus-border-color: tint-color($component-active-bg, 50%);
 $input-focus-box-shadow: $input-btn-focus-box-shadow;
 
 $input-disabled-color: $grey-700;
@@ -37,14 +38,54 @@ $btn-transition: color $transition-duration ease-in-out,
   border-color $transition-duration ease-in-out,
   box-shadow $transition-duration ease-in-out;
 
-.wrapper > label {
+$form-check-input-width: 1em;
+$form-check-min-height: $font-size-base * $line-height-base;
+$form-check-padding-start: $form-check-input-width + 0.5em;
+$form-check-margin-bottom: 0.125rem;
+$form-check-transition: null;
+
+$form-check-input-bg: $white;
+$form-check-input-border: 1px solid rgba(0, 0, 0, 0.25);
+$form-check-input-border-radius: 0.25em;
+$form-check-radio-border-radius: 50%;
+$form-check-input-active-filter: brightness(90%);
+$form-check-input-focus-border: $input-focus-border-color;
+$form-check-input-focus-box-shadow: $input-btn-focus-box-shadow;
+
+$form-check-input-checked-bg-color: $component-active-bg;
+$form-check-input-checked-border-color: $form-check-input-checked-bg-color;
+$form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$form-check-input-checked-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/></svg>");
+$form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#{$form-check-input-checked-color}'/></svg>");
+
+$form-check-input-indeterminate-bg-color: $component-active-bg;
+$form-check-input-indeterminate-border-color: $form-check-input-indeterminate-bg-color;
+$form-check-input-indeterminate-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$form-check-input-indeterminate-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/></svg>");
+
+$form-check-input-disabled-opacity: 0.5;
+$form-check-label-disabled-opacity: $form-check-input-disabled-opacity;
+
+$form-switch-color: rgba(0, 0, 0, 0.25);
+$form-switch-width: 2em;
+$form-switch-padding-start: $form-switch-width + 0.5em;
+$form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color}'/></svg>");
+$form-switch-border-radius: $form-switch-width;
+$form-switch-transition: background-position 0.15s ease-in-out;
+
+$form-switch-focus-color: $input-focus-border-color;
+$form-switch-focus-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-focus-color}'/></svg>");
+
+$form-switch-checked-color: $component-active-color;
+$form-switch-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-checked-color}'/></svg>");
+$form-switch-checked-bg-position: right center;
+
+.field > label {
   color: $black;
   margin-bottom: 0.5rem;
   @include font-size($font-size-sm);
 }
 
-.wrapper > input,
-.wrapper > textarea {
+.field > input,
+.field > textarea {
   display: block;
   width: 100%;
   padding: $input-padding-y $input-padding-x;
@@ -69,6 +110,7 @@ $btn-transition: color $transition-duration ease-in-out,
   &:focus {
     color: $input-focus-color;
     background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
     outline: 0;
     box-shadow: $input-focus-box-shadow;
   }
@@ -87,7 +129,7 @@ $btn-transition: color $transition-duration ease-in-out,
 
   &::placeholder {
     color: $input-placeholder-color;
-    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+    // Override Firefox's unusual opacity; see https://github.com/twbs/bootstrap/pull/11526.
     opacity: 1;
   }
 
@@ -157,7 +199,7 @@ $btn-transition: color $transition-duration ease-in-out,
   display: block;
   width: 100%;
   padding: $input-padding-y 0;
-  margin-bottom: 0; // match inputs if this class comes on inputs with default margins
+  margin-bottom: 0; // match inputs if this class comes on inputs with margins
   line-height: $input-line-height;
   color: $input-plaintext-color;
   background-color: transparent;
@@ -172,11 +214,11 @@ $btn-transition: color $transition-duration ease-in-out,
 
 // Make sure textareas don't shrink too much when resized
 // https://github.com/twbs/bootstrap/pull/29124
-.wrapper > textarea {
+.field > textarea {
   min-height: $input-height;
 }
 
-.wrapper > input[type='color'] {
+.field > input[type='color'] {
   max-width: 3rem;
   height: auto; // Override fixed browser height
   padding: $input-padding-y;
@@ -201,5 +243,157 @@ $btn-transition: color $transition-duration ease-in-out,
       $input-line-height
     );
     border-radius: $input-border-radius;
+  }
+}
+
+.fieldError {
+  margin-top: 0.375rem;
+}
+
+.errorMessage {
+  color: $red;
+  @include font-size($font-size-base);
+
+  & > svg {
+    width: 1em;
+    fill: $red;
+    margin-right: 0.5em;
+    position: relative;
+    top: -0.125em;
+  }
+
+  &--sm {
+    @include font-size($font-size-sm);
+  }
+
+  &--lg {
+    @include font-size($font-size-lg);
+  }
+}
+
+.submit {
+  display: inline-block;
+  position: relative;
+
+  & > input {
+    @include button-variant('blue');
+    display: block;
+    width: 100%;
+    @include transition(
+      background-color $transition-duration ease-in-out,
+      border-color $transition-duration ease-in-out,
+      box-shadow $transition-duration ease-in-out
+    );
+  }
+
+  &.disabled {
+    @include loading($color: $white, $size: sm);
+
+    & > input {
+      color: transparent;
+    }
+  }
+}
+
+.check {
+  display: block;
+  min-height: $form-check-min-height;
+  padding-left: $form-check-padding-start;
+  margin-bottom: $form-check-margin-bottom;
+
+  & > input {
+    float: left;
+    margin-left: $form-check-padding-start * -1;
+    width: $form-check-input-width;
+    height: $form-check-input-width;
+    margin-top: ($line-height-base - $form-check-input-width) / 2;
+    vertical-align: top;
+    background-color: $form-check-input-bg;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: $form-check-input-border;
+    appearance: none;
+    color-adjust: exact; // Keep themed appearance for print
+    @include transition($form-check-transition);
+
+    &[type='checkbox'] {
+      border-radius: $form-check-input-border-radius;
+    }
+
+    &[type='radio'] {
+      border-radius: $form-check-radio-border-radius;
+    }
+
+    &:active {
+      filter: $form-check-input-active-filter;
+    }
+
+    &:focus {
+      border-color: $form-check-input-focus-border;
+      outline: 0;
+      box-shadow: $form-check-input-focus-box-shadow;
+    }
+
+    &:checked {
+      background-color: $form-check-input-checked-bg-color;
+      border-color: $form-check-input-checked-border-color;
+
+      &[type='checkbox'] {
+        background-image: escape-svg($form-check-input-checked-bg-image);
+      }
+
+      &[type='radio'] {
+        background-image: escape-svg($form-check-radio-checked-bg-image);
+      }
+    }
+
+    &[type='checkbox']:indeterminate {
+      background-color: $form-check-input-indeterminate-bg-color;
+      border-color: $form-check-input-indeterminate-border-color;
+      background-image: escape-svg($form-check-input-indeterminate-bg-image);
+    }
+
+    &:disabled {
+      pointer-events: none;
+      filter: none;
+      opacity: $form-check-input-disabled-opacity;
+    }
+
+    // Use disabled attribute in addition of :disabled pseudo-class
+    // See: https://github.com/twbs/bootstrap/issues/28247
+    &[disabled],
+    &:disabled {
+      ~ label {
+        opacity: $form-check-label-disabled-opacity;
+      }
+    }
+  }
+
+  &__error {
+    color: $red;
+    @include font-size($font-size-sm);
+  }
+}
+
+.check.switch {
+  padding-left: $form-switch-padding-start;
+
+  & > input {
+    width: $form-switch-width;
+    margin-left: $form-switch-padding-start * -1;
+    background-image: escape-svg($form-switch-bg-image);
+    background-position: left center;
+    border-radius: $form-switch-border-radius;
+    @include transition($form-switch-transition);
+
+    &:focus {
+      background-image: escape-svg($form-switch-focus-bg-image);
+    }
+
+    &:checked {
+      background-position: $form-switch-checked-bg-position;
+      background-image: escape-svg($form-switch-checked-bg-image);
+    }
   }
 }

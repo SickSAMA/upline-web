@@ -3,12 +3,19 @@
 @import 'bootstrap/scss/mixins';
 
 $btn-line-height: $line-height-base;
-$btn-padding-y: 0.875rem;
-$btn-padding-x: 1.5rem;
+$btn-padding-y: $input-btn-padding-y;
+$btn-padding-x: $input-btn-padding-x;
 $btn-font-size: $font-size-base;
 $btn-focus-width: $input-btn-focus-width;
 $btn-focus-box-shadow: $input-btn-focus-box-shadow;
 $btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125);
+
+$flex-middle-vertical-margin: 2rem;
+
+$modal-box-shadow: $box-shadow-lg;
+$modal-overlay-opacity: 0.3;
+$modal-dialog-margin-y: 2rem;
+$modal-dialog-border-radius: 1.5rem;
 
 @mixin container {
   @include make-container($grid-gutter-width / 2);
@@ -50,8 +57,8 @@ $btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125);
   background-color: transparent;
   border: 1px solid transparent;
   padding: $btn-padding-y $btn-padding-x;
+  border-radius: $border-radius;
   @include font-size($btn-font-size);
-  border-radius: 999px;
   @include transition(
     color $transition-duration ease-in-out,
     background-color $transition-duration ease-in-out,
@@ -111,6 +118,7 @@ $btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125);
   background-color: $background;
   border-color: $border;
   box-shadow: $btn-box-shadow;
+  border-radius: 10rem;
 
   &:hover,
   &:focus {
@@ -146,5 +154,147 @@ $btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125);
   &:focus,
   &:active {
     @content;
+  }
+}
+
+@mixin flex-middle($vertical-margin: $flex-middle-vertical-margin) {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  &::before,
+  &::after {
+    content: '';
+    flex-basis: $vertical-margin;
+    flex-shrink: 0;
+  }
+
+  & > div {
+    flex-shrink: 0;
+  }
+}
+
+@mixin modal($position: center) {
+  @if $position == center {
+    @include flex-middle($modal-dialog-margin-y);
+  }
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $zindex-modal;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  // Prevent Chrome on Windows from adding a focus outline. For details, see
+  // https://github.com/twbs/bootstrap/pull/10951.
+  outline: 0;
+  // https://developer.apple.com/documentation/safari_release_notes/safari_13_release_notes
+  // `-webkit-overflow-scrolling: touch;` is not needed since safari 13.
+  background-color: rgba(0, 0, 0, $modal-overlay-opacity);
+
+  &.fade {
+    opacity: 0;
+    @include transition(opacity 0.15s ease-in-out);
+  }
+
+  &--after-open.fade {
+    opacity: 1;
+  }
+
+  &--before-close.fade {
+    opacity: 0;
+  }
+
+  :global(.modal-open) & {
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+  }
+
+  &__dialog {
+    background-color: $white;
+    position: relative;
+    border-radius: $modal-dialog-border-radius;
+    box-shadow: $modal-box-shadow;
+    overflow: hidden;
+
+    .fade > & {
+      transform: translate(0, -50px);
+      @include transition(transform 0.15s ease-out);
+    }
+
+    .fade > &--after-open {
+      transform: none;
+    }
+
+    .fade > &--before-close {
+      transform: translate(0, -50px);
+    }
+  }
+}
+
+@mixin loading($size: normal, $color: $blue) {
+  $container-size: 2.5rem;
+  $box-size: 0.75rem;
+  @if $size == sm {
+    $container-size: 1.5rem;
+    $box-size: 0.375rem;
+  }
+
+  $transiton-distance: $container-size - $box-size;
+
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    background-color: $color;
+    width: $box-size;
+    height: $box-size;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    animation: cubemove 1.8s infinite ease-in-out;
+  }
+
+  &::after {
+    animation-delay: -0.9s;
+  }
+
+  @keyframes cubemove {
+    0% {
+      transform: translate(-$container-size / 2, -$container-size / 2)
+        rotate(0deg);
+    }
+    25% {
+      transform: translate(
+          $transiton-distance - $container-size / 2,
+          -$container-size / 2
+        )
+        rotate(-90deg) scale(0.5);
+    }
+    50% {
+      transform: translate(
+          $transiton-distance - $container-size / 2,
+          $transiton-distance - $container-size / 2
+        )
+        rotate(-180deg);
+    }
+    75% {
+      transform: translate(
+          -$container-size / 2,
+          $transiton-distance - $container-size / 2
+        )
+        rotate(-270deg) scale(0.5);
+    }
+    100% {
+      transform: translate(-$container-size / 2, -$container-size / 2)
+        rotate(-360deg);
+    }
   }
 }

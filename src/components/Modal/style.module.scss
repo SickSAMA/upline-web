@@ -1,0 +1,44 @@
+@import 'variables';
+@import 'mixins';
+
+.loginModal {
+  @include modal();
+
+  &__content {
+    width: 800px;
+    display: flex;
+    align-items: stretch;
+
+    & > div:first-of-type {
+      flex: 1 1 auto;
+      background-color: $blue;
+      background-image: url('../../../public/loginModal-bg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    & > div:last-of-type {
+      position: relative;
+      flex: 0 0 60%;
+      padding: 3rem;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 0rem;
+    top: 0.25rem;
+    @include button;
+
+    & > svg {
+      width: 1rem;
+      fill: $grey-500;
+    }
+
+    @include above {
+      & > svg {
+        fill: $black;
+      }
+    }
+  }
+}

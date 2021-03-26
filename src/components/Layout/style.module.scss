@@ -89,6 +89,10 @@ $footer-padding-y: 2rem;
       &:active {
         border-bottom-color: $blue;
       }
+
+      @include above() {
+        text-decoration: none;
+      }
     }
   }
 }
