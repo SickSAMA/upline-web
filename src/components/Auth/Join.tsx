@@ -11,6 +11,7 @@ import style from './style.module.scss';
 
 interface JoinProps {
   onLoginClicked?(): void;
+  onSignUpSuccess(username: string, password: string): void;
 }
 
 interface FormData {
@@ -27,7 +28,7 @@ const defaultFormData: FormData = {
   isTermAgreed: false,
 };
 
-export default function Join({ onLoginClicked }: JoinProps): JSX.Element {
+export default function Join({ onLoginClicked, onSignUpSuccess }: JoinProps): JSX.Element {
   const { register, handleSubmit, control, formState: { errors: clientErrors, isSubmitting } } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
@@ -40,7 +41,7 @@ export default function Join({ onLoginClicked }: JoinProps): JSX.Element {
 
     try {
       await signUp({ name, email, password });
-      setErrorMsg('');
+      onSignUpSuccess(email, password);
     } catch (error) {
       setErrorMsg(error.message);
     }

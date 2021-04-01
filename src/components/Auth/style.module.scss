@@ -11,6 +11,10 @@ $row-gutter: 2rem;
 
 .subTitle {
   margin-bottom: $row-gutter;
+
+  & > span {
+    color: $grey-600;
+  }
 }
 
 .field {
@@ -57,7 +61,8 @@ $row-gutter: 2rem;
     background-color: $blue;
     background-image: url('../../../public/loginModal-bg.jpg');
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
 
     & > a {
       display: block;

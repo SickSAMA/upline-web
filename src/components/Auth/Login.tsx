@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import React, { MouseEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Check, ErrorMessage, Field, Submit } from '@/components/Form';
 import { login } from '@/utils/auth';
-import { JOIN, RESET_PASSWORD } from '@/utils/routes';
+import parseError from '@/utils/parseError';
+import { CONFIRM_ACCOUNT, JOIN, RESET_PASSWORD } from '@/utils/routes';
 import { EMAIL_PATTERN } from '@/utils/validationPatterns';
 
 import style from './style.module.scss';
@@ -17,8 +17,9 @@ interface FormData {
 
 interface LoginProps {
   onLoginSuccess?(): void;
-  onJoinClicked?(): void;
-  onResetPasswordClicked?(): void;
+  onJoinClicked(): void;
+  onForgotPassword(): void;
+  onConfirmAccount(): void;
 }
 
 const defaultFormData: FormData = {
@@ -27,47 +28,34 @@ const defaultFormData: FormData = {
   isStaySignedIn: true,
 };
 
-export default function Login({ onLoginSuccess, onJoinClicked, onResetPasswordClicked }: LoginProps): JSX.Element {
+export default function Login({ onLoginSuccess, onJoinClicked, onForgotPassword, onConfirmAccount }: LoginProps): JSX.Element {
   const { register, handleSubmit, control, formState: { errors: clientErrors, isSubmitting } } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
-  const [serverErrors, setErrorMsg] = useState('');
+  const [serverErrors, setErrorMsg] = useState<string | JSX.Element>('');
 
   const onSubmit = handleSubmit(async (data): Promise<void> => {
     const email = data.email.trim();
     const password = data.password.trim();
+    const isStaySignedIn = data.isStaySignedIn;
     try {
-      await login({ username: email, password });
+      await login(email, password, isStaySignedIn);
       if (onLoginSuccess) {
         onLoginSuccess();
       }
       location.reload();
     } catch (error) {
-      setErrorMsg(error.message);
+      if (error.code === 'UserNotConfirmedException') {
+        setErrorMsg((
+          <>
+            User is not confirmed. Please <a href={CONFIRM_ACCOUNT} onClick={onConfirmAccount}>confirm your account</a>
+          </>
+        ));
+      } else {
+        setErrorMsg(parseError(error));
+      }
     }
   });
-
-  let resetPasswordLink: JSX.Element;
-  if (onResetPasswordClicked) {
-    const _onResetPasswordClicked: MouseEventHandler = (e) => {
-      e.preventDefault();
-      onResetPasswordClicked();
-    };
-    resetPasswordLink = <a href={RESET_PASSWORD} onClick={_onResetPasswordClicked}>Forgot your password?</a>;
-  } else {
-    resetPasswordLink = <Link href={RESET_PASSWORD}><a>Forgot your password?</a></Link>;
-  }
-
-  let joinLink: JSX.Element;
-  if (onJoinClicked) {
-    const _onJoinClicked: MouseEventHandler = (e) => {
-      e.preventDefault();
-      onJoinClicked();
-    };
-    joinLink = <a href={JOIN} onClick={_onJoinClicked}>Join now</a>;
-  } else {
-    joinLink = <Link href={JOIN}><a>Join now</a></Link>;
-  }
 
   return (
     <div>
@@ -92,7 +80,7 @@ export default function Login({ onLoginSuccess, onJoinClicked, onResetPasswordCl
           serverErrors && <ErrorMessage className={style.errorMsg} message={serverErrors} />
         }
         <div className={style.loginOptions}>
-          { resetPasswordLink }
+          <a href={RESET_PASSWORD} onClick={onForgotPassword}>Forgot your password?</a>
           <Check
             type="switch"
             id="isStaySignedIn"
@@ -103,7 +91,7 @@ export default function Login({ onLoginSuccess, onJoinClicked, onResetPasswordCl
         </div>
         <Submit isSubmitting={isSubmitting} className={style.submit} value="Continue" />
         <div className={style.jumpLink}>
-          Don&apos;t have an account? { joinLink }.
+          Don&apos;t have an account? <a href={JOIN} onClick={onJoinClicked}>Join now</a>.
         </div>
       </form>
     </div>

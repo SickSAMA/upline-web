@@ -6,7 +6,7 @@ import IconAlert from '@/components/SVG/alert.svg';
 import style from './style.module.scss';
 
 interface ErrorMessageProps {
-  message: string;
+  message: string | JSX.Element;
   className?: string;
   size?: 'sm' | 'normal' | 'lg';
 }

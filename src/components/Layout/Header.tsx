@@ -1,21 +1,52 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 
 import { LoginModal } from '@/components/Modal';
-import { HOME, RESUME_EDIT } from '@/utils/routes';
+import { getSession, logout } from '@/utils/auth';
+import { HOME, JOIN, RESUME_EDIT } from '@/utils/routes';
 
 import style from './style.module.scss';
 
 export default function Header(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>();
 
-  const openModal = () => {
+  const openModal: MouseEventHandler = (e) => {
+    e.preventDefault();
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const _logout: MouseEventHandler = (e) => {
+    e.preventDefault();
+    logout();
+  };
+
+  useEffect(() => {
+    const checkSession = async (): Promise<void> => {
+      try {
+        await getSession();
+        setLoggedIn(true);
+      } catch (_) {
+        setLoggedIn(false);
+      }
+    };
+    checkSession();
+  }, [setLoggedIn]);
+
+  let userLink: JSX.Element | null = null;
+  if (isLoggedIn) {
+    userLink = <a href="#" className={style['headerNav__join']} onClick={_logout}>Log out</a>;
+  } else if (isLoggedIn === false) {
+    userLink = (
+      <Link href={JOIN}>
+        <a className={style['headerNav__join']} onClick={openModal}>Join now</a>
+      </Link>
+    );
+  }
 
   return (
     <div className={style.header}>
@@ -38,9 +69,7 @@ export default function Header(): JSX.Element {
             <Link href={RESUME_EDIT}>
               <a className={style['headerNav__button']}>Create resume</a>
             </Link>
-            <Link href="#">
-              <a className={style['headerNav__join']} onClick={openModal}>Join now</a>
-            </Link>
+            { userLink }
           </div>
         </div>
       </div>

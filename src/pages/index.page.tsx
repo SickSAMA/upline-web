@@ -1,9 +1,8 @@
 import { gql, useLazyQuery } from '@apollo/client';
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 
 import Layout from '@/components/Layout';
 import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
-import { getCurrentUser } from '@/utils/auth';
 
 const GET_RECIPE = gql`
   query GetRecipe {
@@ -25,17 +24,6 @@ const GET_RECIPE = gql`
 
 const Home: FC<null> = () => {
   const [getRecipe, { loading, error, data }] = useLazyQuery(GET_RECIPE);
-
-  const logout = useCallback(
-      () => {
-        const currentUser = getCurrentUser();
-        if (currentUser) {
-          currentUser.signOut();
-          location.reload();
-        }
-      },
-      [],
-  );
 
   return (
     <Layout>
@@ -68,7 +56,6 @@ const Home: FC<null> = () => {
             </div>
         }
         <button onClick={() => getRecipe()}>Fetch Recipe</button>
-        <button onClick={logout}>Logout</button>
       </div>
     </Layout>
   );

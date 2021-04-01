@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, ISignUpResult } from 'amazon-cognito-identity-js';
 
 import { COGNITO_USER_POOL_APP_CLIENT_ID, COGNITO_USER_POOL_ID } from '@/configs/env';
@@ -37,14 +38,8 @@ export function signUp(data: SignUpInput): Promise<ISignUpResult> {
   return signUpPromise;
 }
 
-interface LoginInput {
-  username: string
-  password: string
-}
-
-export function login(data: LoginInput): Promise<CognitoUserSession> {
+export function login(username: string, password: string, isStaySignedIn = true): Promise<CognitoUserSession> {
   const loginPromise = new Promise<CognitoUserSession>((resolve, reject) => {
-    const { username, password } = data;
     const authenticationDetails = new AuthenticationDetails({
       Username: username,
       Password: password,
@@ -55,6 +50,16 @@ export function login(data: LoginInput): Promise<CognitoUserSession> {
     });
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: (session) => {
+        if (!isStaySignedIn) {
+          /**
+           * hard coded solution to not let user stay signed in.
+           * potential issue: key difference, need to check everytime updating amazon-cognito-identity-js package
+           */
+          const storage = localStorage;
+          const keyPrefix = `CognitoIdentityServiceProvider.${COGNITO_USER_POOL_APP_CLIENT_ID}`;
+          const refreshTokenKey = `${keyPrefix}.${username}.refreshToken`;
+          storage.removeItem(refreshTokenKey);
+        }
         resolve(session);
       },
       onFailure: (error) => {
@@ -66,6 +71,115 @@ export function login(data: LoginInput): Promise<CognitoUserSession> {
   return loginPromise;
 }
 
+export function forgotPassword(username: string): Promise<any> {
+  const forgotPasswordPromise = new Promise<any>((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: username,
+      Pool: userPool,
+    });
+
+    cognitoUser.forgotPassword({
+      onSuccess: (data) => {
+        resolve(data);
+      },
+      onFailure: (error) => {
+        reject(error);
+      },
+    });
+  });
+
+  return forgotPasswordPromise;
+}
+
+export function confirmPassword(username: string, code: string, password: string): Promise<void> {
+  const confirmPasswordPromise = new Promise<void>((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: username,
+      Pool: userPool,
+    });
+
+    cognitoUser.confirmPassword(code, password, {
+      onSuccess() {
+        resolve();
+      },
+      onFailure(err) {
+        reject(err);
+      },
+    });
+  });
+  return confirmPasswordPromise;
+}
+
+export function resentConfirmationCode(username: string): Promise<any> {
+  const resendConfirmationCodePromise = new Promise<any>((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: username,
+      Pool: userPool,
+    });
+    cognitoUser.resendConfirmationCode(function(err, result) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(result);
+    });
+  });
+
+  return resendConfirmationCodePromise;
+}
+
+
+export function confirmRegistration(username: string, code: string): Promise<any> {
+  const confirmRegistrationPromise = new Promise<any>((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: username,
+      Pool: userPool,
+    });
+    cognitoUser.confirmRegistration(code, true, function(err, result) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(result);
+    });
+  });
+
+  return confirmRegistrationPromise;
+}
+
+// cache the currentUser, only need to query once per app lifecycle
+let currentUser: CognitoUser | null;
+
 export function getCurrentUser(): CognitoUser | null {
-  return userPool.getCurrentUser();
+  if (currentUser === undefined) {
+    currentUser = userPool.getCurrentUser();
+  }
+  return currentUser;
+}
+
+export function getSession(): Promise<CognitoUserSession> {
+  return new Promise((resolve, reject) => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      currentUser.getSession((error: Error | null, session: CognitoUserSession | null) => {
+        if (error) {
+          console.log(error);
+          reject(error);
+          return;
+        }
+        resolve(session as CognitoUserSession);
+      });
+    } else {
+      console.log('no user');
+      reject(new Error('No current user found.'));
+    }
+  });
+}
+
+export function logout(): void {
+  const currentUser = getCurrentUser();
+  if (currentUser) {
+    currentUser.signOut();
+  }
+  location.reload();
 }
