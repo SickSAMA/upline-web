@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { Check, ErrorMessage, Field, Submit } from '@/components/Form';
 import { signUp } from '@/utils/auth';
-import { LOGIN, PRIVACY_POLICY, TERMS_OF_USE } from '@/utils/routes';
+import { LOGIN, PRIVACY_POLICY, TERMS_CONDITIONS } from '@/utils/routes';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@/utils/validationPatterns';
 
 import style from './style.module.scss';
@@ -95,7 +95,7 @@ export default function Join({ onLoginClicked, onSignUpSuccess }: JoinProps): JS
             label={
               <>
                 By joining, you agree to our&nbsp;
-                <Link href={TERMS_OF_USE}><a rel="noopener" target="_blank">Terms of Use</a></Link>
+                <Link href={TERMS_CONDITIONS}><a rel="noopener" target="_blank">Terms & Conditions</a></Link>
                 &nbsp;and&nbsp;
                 <Link href={PRIVACY_POLICY}><a rel="noopener" target="_blank">Privacy Policy</a></Link>
                 .

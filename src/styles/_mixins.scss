@@ -298,3 +298,30 @@ $modal-dialog-border-radius: 1.5rem;
     }
   }
 }
+
+@mixin content() {
+  @include container();
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+
+  & > h1 {
+    margin-bottom: 2rem;
+  }
+
+  & > h2 {
+    @include font-size(1.5rem);
+    text-transform: capitalize;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  & > h4 {
+    @include font-size(1.125rem);
+    margin-top: 1.5rem;
+    margin-bottom: 1.125rem;
+  }
+
+  strong {
+    font-weight: $font-weight-bold;
+  }
+}
