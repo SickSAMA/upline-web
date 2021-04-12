@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import React, { MouseEventHandler, useCallback, useState } from 'react';
 
 import { CONFIRM_ACCOUNT, JOIN, LOGIN, RESET_PASSWORD } from '@/utils/routes';
 
@@ -22,7 +22,8 @@ export default function Auth({ page, mode = 'multi-page', className }: AuthProps
   const [userData, setUserData] = useState<UserData>();
   const router = useRouter();
 
-  const onLoginClicked = useCallback(() => {
+  const onLoginClicked: MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
     if (mode === 'multi-page') {
       router.push(LOGIN);
     } else {
@@ -30,7 +31,8 @@ export default function Auth({ page, mode = 'multi-page', className }: AuthProps
     }
   }, [setCurrentPage, router, mode]);
 
-  const onJoinClicked = useCallback(() => {
+  const onJoinClicked: MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
     if (mode === 'multi-page') {
       router.push(JOIN);
     } else {
@@ -38,7 +40,8 @@ export default function Auth({ page, mode = 'multi-page', className }: AuthProps
     }
   }, [setCurrentPage, router, mode]);
 
-  const onForgotPassword = useCallback(() => {
+  const onForgotPassword: MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
     if (mode === 'multi-page') {
       router.push(RESET_PASSWORD);
     } else {
@@ -73,11 +76,7 @@ export default function Auth({ page, mode = 'multi-page', className }: AuthProps
   let renderedPage: JSX.Element;
 
   if (currentPage === JOIN) {
-    if (mode === 'multi-page') {
-      renderedPage = <Join onSignUpSuccess={onSignUpSuccess} />;
-    } else {
-      renderedPage = <Join onLoginClicked={onLoginClicked} onSignUpSuccess={onSignUpSuccess} />;
-    }
+    renderedPage = <Join onLoginClicked={onLoginClicked} onSignUpSuccess={onSignUpSuccess} />;
   } else if (currentPage === LOGIN) {
     renderedPage = <Login onJoinClicked={onJoinClicked} onForgotPassword={onForgotPassword} onConfirmAccount={onConfirmAccount} />;
   } else if (currentPage === RESET_PASSWORD) {

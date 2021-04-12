@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
 import { useLazyQuery, useMutation } from '@apollo/client';
-import React, { useEffect } from 'react';
+import classNames from 'classnames';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Collapse, CollapsePanel } from '@/components/Collapse';
 import { Field } from '@/components/Form';
 import Layout from '@/components/Layout';
 import GET_RESUME from '@/graphql/getResume';
@@ -29,11 +31,14 @@ export interface ResumeFormData extends ResumeInput {
   others: SkillInput[];
 }
 
+type Tabs = 'content' | 'style';
+
 export default function ResumeEditor(): JSX.Element {
   // todo
   const { register, getValues, handleSubmit, reset, control } = useForm<ResumeFormData>();
   const [getResume, { data: getResumeResult }]= useLazyQuery<GetResume>(GET_RESUME);
   const [saveResume] = useMutation<SaveResume, SaveResumeVariables>(SAVE_RESUME);
+  const [activeTab, setActiveTab] = useState<Tabs>('content');
 
   // load resume from server
   useEffect(() => {
@@ -61,76 +66,111 @@ export default function ResumeEditor(): JSX.Element {
   };
 
   return (
-    <Layout>
-      <div className={style.container}>
-        <button type="button" onClick={generatePDF}>Generate PDF</button>
-        <div className={style.previewWrapper}>
-          <div id="sick" className={style.preview}></div>
+    <Layout type="editor">
+      <div className={style.editor}>
+        <div className={style['editor__preview']}>
         </div>
-        <div className={style.editor}>
-          <form className={style['container-fluid']} onSubmit={onSubmit}>
-            <h2>Basic Info</h2>
-            <div className={style.row}>
-              <Field className={style['col-6']} label="Name">
-                <input type="text" {...register('name')} />
-              </Field>
-              <Field className={style['col-6']} label="English Name">
-                <input type="text" {...register('english_name')} />
-              </Field>
-            </div>
-            <div className={style.row}>
-              <Field className={style['col-6']} label="Phone">
-                <input type="text" {...register('phone')} />
-              </Field>
-              <Field className={style['col-6']} label="Email">
-                <input type="text" {...register('email')} />
-              </Field>
-            </div>
-            <div className={style.row}>
-              <Field className={style['col-12']} label="Address">
-                <input type="text" {...register('address')} />
-              </Field>
-            </div>
+        <div className={style['editor__edit']}>
+          <div className={style.tabs}>
+            <button disabled={activeTab === 'content'} onClick={() => setActiveTab('content')}>Content</button>
+            <button disabled={activeTab === 'style'} onClick={() => setActiveTab('style')}>Style</button>
+          </div>
+          <div>
+            <form onSubmit={onSubmit}>
+              <Collapse accordion={false} className={style.collapse} defaultActiveKey="0">
+                <CollapsePanel
+                  key="0"
+                  header="Basic Info"
+                  className={style['collapse__item']}
+                  forceRender={true}
+                >
+                  <div>
+                    <div className={style.row}>
+                      <Field className={style['col-6']} label="Name">
+                        <input type="text" {...register('name')} />
+                      </Field>
+                      <Field className={style['col-6']} label="English Name">
+                        <input type="text" {...register('english_name')} />
+                      </Field>
+                    </div>
+                    <div className={style.row}>
+                      <Field className={style['col-6']} label="Phone">
+                        <input type="text" {...register('phone')} />
+                      </Field>
+                      <Field className={style['col-6']} label="Email">
+                        <input type="text" {...register('email')} />
+                      </Field>
+                    </div>
+                    <div className={style.row}>
+                      <Field className={style['col-12']} label="Address">
+                        <input type="text" {...register('address')} />
+                      </Field>
+                    </div>
+                  </div>
+                </CollapsePanel>
+                <CollapsePanel
+                  key="1"
+                  header="Education"
+                  className={style['collapse__item']}
+                  forceRender={true}
+                >
+                  <ExperienceForm
+                    control={control}
+                    register={register}
+                    type="education"
+                    fieldNameMapping={{
+                      entity: 'University',
+                      summary: 'Degree Name',
+                      details: 'Achievements',
+                    }} />
+                </CollapsePanel>
+                <CollapsePanel
+                  key="2"
+                  header="Professional Experience"
+                  className={style['collapse__item']}
+                  forceRender={true}
+                >
+                  <ExperienceForm
+                    control={control}
+                    register={register}
+                    type="professional_experience"
+                    fieldNameMapping={{
+                      entity: 'Company',
+                      summary: 'Division, Position',
+                      details: 'Achievements',
+                    }} />
+                </CollapsePanel>
+                <CollapsePanel
+                  key="3"
+                  header="Leadership Experience"
+                  className={style['collapse__item']}
+                  forceRender={true}
+                >
+                  <ExperienceForm
+                    control={control}
+                    register={register}
+                    type="leadership_experience"
+                    fieldNameMapping={{
+                      entity: 'Organization/Competition Name',
+                      summary: 'Position',
+                      details: 'Achievements',
+                    }} />
+                </CollapsePanel>
+                <CollapsePanel
+                  key="4"
+                  header="Other"
+                  className={style['collapse__item']}
+                  forceRender={true}
+                >
+                  <SkillForm control={control} register={register} />
+                </CollapsePanel>
+              </Collapse>
 
-            <h2>Education</h2>
-            <ExperienceForm
-              control={control}
-              register={register}
-              type="education"
-              fieldNameMapping={{
-                entity: 'University',
-                summary: 'Degree Name',
-                details: 'Achievements',
-              }} />
-
-            <h2>Professional Experience</h2>
-            <ExperienceForm
-              control={control}
-              register={register}
-              type="professional_experience"
-              fieldNameMapping={{
-                entity: 'Company',
-                summary: 'Division, Position',
-                details: 'Achievements',
-              }} />
-
-            <h2>Leadership & Extracurricular Activities</h2>
-            <ExperienceForm
-              control={control}
-              register={register}
-              type="leadership_experience"
-              fieldNameMapping={{
-                entity: 'Organization/Competition Name',
-                summary: 'Position',
-                details: 'Achievements',
-              }} />
-
-            <h2>Others</h2>
-            <SkillForm control={control} register={register} />
-            <div>
-              <input type="submit" />
-            </div>
-          </form>
+              <div>
+                <input type="submit" />
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </Layout>

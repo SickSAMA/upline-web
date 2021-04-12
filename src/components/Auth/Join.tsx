@@ -10,7 +10,7 @@ import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@/utils/validationPatterns';
 import style from './style.module.scss';
 
 interface JoinProps {
-  onLoginClicked?(): void;
+  onLoginClicked: MouseEventHandler;
   onSignUpSuccess(username: string, password: string): void;
 }
 
@@ -46,17 +46,6 @@ export default function Join({ onLoginClicked, onSignUpSuccess }: JoinProps): JS
       setErrorMsg(error.message);
     }
   });
-
-  let jumpLink: JSX.Element;
-  if (onLoginClicked) {
-    const _onLoginClicked: MouseEventHandler = (e) => {
-      e.preventDefault();
-      onLoginClicked();
-    };
-    jumpLink = <a href={LOGIN} onClick={_onLoginClicked}>Sign in</a>;
-  } else {
-    jumpLink = <Link href={LOGIN}><a>Sign in</a></Link>;
-  }
 
   return (
     <div>
@@ -112,7 +101,7 @@ export default function Join({ onLoginClicked, onSignUpSuccess }: JoinProps): JS
         }
         <Submit isSubmitting={isSubmitting} className={style.submit} value="Create account" />
         <div className={style.jumpLink}>
-          Already have an account? { jumpLink }.
+          Already have an account? <a href={LOGIN} onClick={onLoginClicked}>Sign in</a>.
         </div>
       </form>
     </div>

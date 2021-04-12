@@ -9,8 +9,8 @@ import ResetPassword from './ResetPassword';
 type Page = 'PROVIDE_USERNAME' | 'RESET_PASSWORD';
 
 interface ForgotPasswordProps {
-  onLoginClicked(): void;
-  onJoinClicked(): void;
+  onLoginClicked: MouseEventHandler;
+  onJoinClicked: MouseEventHandler;
 }
 
 export default function ForgotPassword({ onLoginClicked, onJoinClicked }: ForgotPasswordProps): JSX.Element {
@@ -26,16 +26,6 @@ export default function ForgotPassword({ onLoginClicked, onJoinClicked }: Forgot
     setPage('PROVIDE_USERNAME');
   }, [setPage]);
 
-  const _onLoginClicked: MouseEventHandler = (e) => {
-    e.preventDefault();
-    onLoginClicked();
-  };
-
-  const _onJoinClicked: MouseEventHandler = (e) => {
-    e.preventDefault();
-    onJoinClicked();
-  };
-
   return (
     <div>
       {
@@ -44,9 +34,9 @@ export default function ForgotPassword({ onLoginClicked, onJoinClicked }: Forgot
           <ResetPassword username={username} onChangeUsername={onChangeUsername} />
       }
       <div className={style.jumpLink}>
-        <a href={LOGIN} onClick={_onLoginClicked}>Return to sign in</a>
+        <a href={LOGIN} onClick={onLoginClicked}>Return to sign in</a>
         &nbsp;or&nbsp;
-        <a href={JOIN} onClick={_onJoinClicked}>join now</a>
+        <a href={JOIN} onClick={onJoinClicked}>join now</a>
       </div>
     </div>
   );

@@ -4,13 +4,28 @@
 $header-padding-y: 1rem;
 $footer-padding-y: 2rem;
 
-.wrapper {
+.default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 
   & > div:not(:first-of-type):not(:last-of-type) {
     flex: 1 0 auto;
+  }
+}
+
+.editor {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  & > div:first-of-type {
+    flex: 0 0 auto;
+  }
+
+  & > div:last-of-type {
+    flex: 1 1 auto;
+    overflow: auto;
   }
 }
 

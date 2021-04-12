@@ -18,8 +18,8 @@ const customFetch = async (uri: RequestInfo, options?: RequestInit):Promise<Resp
       _options.headers = {};
     }
     _options.headers['authorization'] = `Bearer ${jwtToken}`;
-  } catch (error) {
-    console.error(error);
+  } catch (_) {
+    //
   }
 
   return fetch(uri, _options);

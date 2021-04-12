@@ -1,0 +1,67 @@
+@import 'variables';
+@import 'mixins';
+
+$collapse-border: 1px solid $grey-200;
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  svg {
+    width: 1rem;
+    transition: transform 0.2s;
+    margin-left: 1rem;
+  }
+}
+
+.collapse {
+  background-color: $white;
+
+  &:global(-item) {
+    border-top: $collapse-border;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  &:global(-item-active) {
+    .header {
+      color: $blue;
+    }
+    .header--arrow svg {
+      transform: rotateX(180deg);
+    }
+  }
+
+  &:global(-header) {
+    cursor: pointer;
+
+    label {
+      cursor: pointer;
+    }
+  }
+
+  &:global(-item-disabled) > &:global(-header) {
+    cursor: not-allowed;
+    color: #999;
+    background-color: #f3f3f3;
+  }
+
+  &:global(-content) {
+    overflow: hidden;
+    padding: 0 16px;
+    background-color: #fff;
+    border-top: $collapse-border;
+  }
+
+  &:global(-motion) {
+    transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1),
+      opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  &:global(-content-hidden) {
+    display: none;
+  }
+}

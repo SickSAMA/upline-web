@@ -6,14 +6,24 @@ import style from './style.module.scss';
 
 interface LayoutProps {
   children?: ReactNode
+  type?: 'default' | 'editor';
 }
 
-export default function Layout({ children }: LayoutProps): JSX.Element {
-  return (
-    <div className={style.wrapper}>
-      <Header />
-      { children }
-      <Footer />
-    </div>
-  );
+export default function Layout({ children, type = 'default' }: LayoutProps): JSX.Element {
+  if (type === 'default') {
+    return (
+      <div className={style.default}>
+        <Header />
+        { children }
+        <Footer />
+      </div>
+    );
+  } else {
+    return (
+      <div className={style.editor}>
+        <Header />
+        { children }
+      </div>
+    );
+  }
 }

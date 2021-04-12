@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Check, ErrorMessage, Field, Submit } from '@/components/Form';
@@ -17,8 +17,8 @@ interface FormData {
 
 interface LoginProps {
   onLoginSuccess?(): void;
-  onJoinClicked(): void;
-  onForgotPassword(): void;
+  onJoinClicked: MouseEventHandler;
+  onForgotPassword: MouseEventHandler;
   onConfirmAccount(): void;
 }
 

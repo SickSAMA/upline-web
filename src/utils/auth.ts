@@ -163,14 +163,12 @@ export function getSession(): Promise<CognitoUserSession> {
     if (currentUser) {
       currentUser.getSession((error: Error | null, session: CognitoUserSession | null) => {
         if (error) {
-          console.log(error);
           reject(error);
           return;
         }
         resolve(session as CognitoUserSession);
       });
     } else {
-      console.log('no user');
       reject(new Error('No current user found.'));
     }
   });

@@ -1,30 +1,89 @@
 @import 'variables';
 @import 'mixins';
 
-.container {
-  @include container();
+$border-color: $grey-200;
+
+.editor {
+  display: flex;
+
+  &__preview {
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: auto;
+    background-color: #e0e7ff;
+    // background-color: $grey-100;
+  }
+
+  &__edit {
+    flex: 0 0 600px;
+    height: 100%;
+    overflow: auto;
+    border-left: 1px solid $border-color;
+  }
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid $border-color;
+
+  & > button {
+    @include button();
+    border: none;
+    border-radius: 0;
+    width: 50%;
+    text-transform: uppercase;
+    position: relative;
+    font-weight: $font-weight-medium;
+
+    &:focus {
+      box-shadow: inset 0 0 2px rgba($component-active-bg, 1);
+    }
+
+    &:active,
+    &.active {
+      box-shadow: inset 0 2px 4px rgba($black, 0.125);
+
+      &:focus {
+        box-shadow: inset 0 2px 4px rgba($black, 0.125);
+      }
+    }
+
+    &:disabled {
+      color: $blue;
+      opacity: 1;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: $blue;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+    & + button {
+      border-left: 1px solid $border-color;
+    }
+  }
+}
+
+.collapse {
+  &__item {
+    & > div:first-of-type {
+      padding: 1.125rem 1.5rem;
+      font-weight: $font-weight-medium;
+    }
+
+    & > div:last-of-type {
+      padding: 1.5rem;
+    }
+  }
 }
 
 .container-fluid {
   @include container-fluid();
-}
-
-.preview {
-  // flex: 1 1 auto;
-  // background-color: tint-color(#adb5bd, 20%);
-  // display: none;
-  height: 500px;
-  background-color: $blue;
-}
-
-.previewWrapper {
-  overflow: hidden;
-  height: 0;
-}
-
-.editor {
-  // flex: 0 0 auto;
-  // width: 40%;
 }
 
 .row {
