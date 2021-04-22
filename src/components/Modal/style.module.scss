@@ -42,3 +42,132 @@
     }
   }
 }
+
+.errorModal {
+  @include modal();
+
+  &__content {
+    width: 400px;
+    padding: 3.5rem 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & > h2 {
+      @include font-size(1.5rem);
+      margin-bottom: 0;
+      font-weight: $font-weight-medium;
+    }
+
+    & > p {
+      color: $grey-600;
+      margin-bottom: 0;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__icon {
+    margin-bottom: 2.5rem;
+
+    & > svg {
+      display: block;
+      width: 5rem;
+      margin: 0 auto;
+    }
+  }
+
+  &__button {
+    @include button-variant('light');
+    width: 100%;
+    margin-top: 2.5rem;
+  }
+}
+
+.noticeModal {
+  position: fixed;
+  top: 1.5rem;
+  left: 0;
+  width: 100%;
+  z-index: $zindex-modal;
+  display: none;
+  outline: 0;
+  opacity: 0;
+  @include transition(opacity 0.15s ease-in-out);
+
+  &--after-open {
+    opacity: 1;
+  }
+
+  &--before-close {
+    opacity: 0;
+  }
+
+  :global(.noticeModal-open) & {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__dialog {
+    position: relative;
+    border-radius: 1rem;
+    box-shadow: $box-shadow;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(0, -1rem);
+    @include transition(transform 0.15s ease-out);
+
+    &--after-open {
+      transform: none;
+    }
+
+    &--before-close {
+      transform: translate(0, -1rem);
+    }
+
+    &.error {
+      background-color: tint-color($red, 80%);
+      border: 1px solid tint-color($red, 60%);
+    }
+  }
+
+  &__icon {
+    padding: 1.5rem;
+
+    & > svg {
+      display: block;
+      width: 1.5rem;
+    }
+  }
+  .error &__icon > svg {
+    fill: $red;
+  }
+
+  p {
+    flex: 0 0 auto;
+    color: $black;
+    margin-bottom: 0;
+    max-width: 600px;
+    padding: 1.5rem 0;
+  }
+
+  &__close {
+    @include button();
+    margin-left: 2.5rem;
+    margin-right: 1rem;
+    padding: 0.5rem;
+
+    & > svg {
+      display: block;
+      width: 1rem;
+      fill: $grey-700;
+    }
+
+    @include above {
+      & > svg {
+        fill: $black;
+      }
+    }
+  }
+}

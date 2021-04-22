@@ -15,9 +15,10 @@ interface AuthProps {
   page: Page;
   mode?: 'single-page' | 'multi-page'; // 'single-page' means modal mode, 'multi-page' means each page has its own path
   className?: string;
+  onLoginSuccess?(): void;
 }
 
-export default function Auth({ page, mode = 'multi-page', className }: AuthProps): JSX.Element {
+export default function Auth({ page, mode = 'multi-page', className, onLoginSuccess }: AuthProps): JSX.Element {
   const [currentPage, setCurrentPage] = useState(page);
   const [userData, setUserData] = useState<UserData>();
   const router = useRouter();
@@ -78,7 +79,9 @@ export default function Auth({ page, mode = 'multi-page', className }: AuthProps
   if (currentPage === JOIN) {
     renderedPage = <Join onLoginClicked={onLoginClicked} onSignUpSuccess={onSignUpSuccess} />;
   } else if (currentPage === LOGIN) {
-    renderedPage = <Login onJoinClicked={onJoinClicked} onForgotPassword={onForgotPassword} onConfirmAccount={onConfirmAccount} />;
+    renderedPage = (
+      <Login onJoinClicked={onJoinClicked} onForgotPassword={onForgotPassword} onConfirmAccount={onConfirmAccount} onLoginSuccess={onLoginSuccess} />
+    );
   } else if (currentPage === RESET_PASSWORD) {
     renderedPage = <ForgotPassword onJoinClicked={onJoinClicked} onLoginClicked={onLoginClicked} />;
   } else {

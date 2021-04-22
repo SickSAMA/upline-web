@@ -1,15 +1,8 @@
 @import 'variables';
 
 $skeleton-bg: $white;
-$skeleton-color: $grey-300;
-$skeleton-border-radius: $border-radius-sm;
-$skeleton-border-color: $grey;
-
-$skeleton-gutter: $spacer * 2;
-$skeleton-spacer: $spacer;
-
+$skeleton-spacer: 1rem;
 $skeleton-avatar-border-radius: 50%;
-
 $skeleton-animation-duration: 0.8s;
 
 .container {
@@ -24,13 +17,8 @@ $skeleton-animation-duration: 0.8s;
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  padding: $skeleton-gutter ($skeleton-gutter / 2)
-    ($skeleton-gutter - $skeleton-spacer) ($skeleton-gutter / 2);
   overflow: hidden;
-  margin-bottom: $skeleton-gutter;
   background-color: $skeleton-bg;
-  border: 1px solid $skeleton-border-color;
-  border-radius: $skeleton-border-radius;
 
   &::before {
     content: ' ';
@@ -56,28 +44,37 @@ $skeleton-animation-duration: 0.8s;
     flex: 1 1 auto;
     display: flex;
     flex-flow: column;
-    padding-right: ($skeleton-gutter / 2);
-    padding-left: ($skeleton-gutter / 2);
   }
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: ($skeleton-spacer / 2);
 
   & > div {
-    height: 10px;
-    margin-bottom: ($skeleton-spacer / 2);
-    background-color: $skeleton-color;
-  }
-  & > .big,
-  &.big > div {
-    height: 20px;
     margin-bottom: $skeleton-spacer;
+    background-color: $skeleton-color;
   }
   & > .empty {
     background-color: rgba($skeleton-bg, 0);
+  }
+  & > .h1 {
+    height: $h1-font-size * $headings-line-height;
+  }
+  & > .h2 {
+    height: $h2-font-size * $headings-line-height;
+  }
+  & > .h3 {
+    height: $h3-font-size * $headings-line-height;
+  }
+  & > .h4 {
+    height: $h4-font-size * $headings-line-height;
+  }
+  & > .h5 {
+    height: $h5-font-size * $headings-line-height;
+  }
+  & > .p {
+    height: $font-size-base * $line-height-base;
   }
 }
 

@@ -3,7 +3,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import { Content, CustomTableLayout, TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
 
 import { ExperienceInput } from '@/graphql/types/graphql-global-types';
-import { ResumeFormData } from '@/pages/resume/edit.page';
+import { ResumeFormData } from '@/pages/resume/components/ResumeEditor';
 import pdfFonts from '@/styles/fonts/vfs_fonts';
 
 interface Options {

@@ -2,6 +2,7 @@
 @import 'mixins';
 
 $header-padding-y: 1rem;
+$header-border-color: $border-color;
 $footer-padding-y: 2rem;
 
 .default {
@@ -14,23 +15,8 @@ $footer-padding-y: 2rem;
   }
 }
 
-.editor {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-  & > div:first-of-type {
-    flex: 0 0 auto;
-  }
-
-  & > div:last-of-type {
-    flex: 1 1 auto;
-    overflow: auto;
-  }
-}
-
 .header {
-  border-bottom: 1px solid $grey-200;
+  border-bottom: 1px solid $header-border-color;
 
   &__container {
     @include container();

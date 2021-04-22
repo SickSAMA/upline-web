@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 
 import { LoginModal } from '@/components/Modal';
 import { getSession, logout } from '@/utils/auth';
-import { HOME, JOIN, RESUME_EDIT } from '@/utils/routes';
+import { HOME, JOIN, resumeEdit } from '@/utils/routes';
 
 import style from './style.module.scss';
 
@@ -16,9 +16,10 @@ export default function Header(): JSX.Element {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal: MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
     setIsModalOpen(false);
-  };
+  }, [setIsModalOpen]);
 
   const _logout: MouseEventHandler = (e) => {
     e.preventDefault();
@@ -58,7 +59,7 @@ export default function Header(): JSX.Element {
         </Link>
         <div className={style['headerNav']}>
           <div className={style['headerNav__left']}>
-            <Link href={RESUME_EDIT}>
+            <Link href={resumeEdit()}>
               <a>Resume Editor</a>
             </Link>
             <Link href="#">
@@ -66,7 +67,7 @@ export default function Header(): JSX.Element {
             </Link>
           </div>
           <div className={style['headerNav__right']}>
-            <Link href={RESUME_EDIT}>
+            <Link href={resumeEdit()}>
               <a className={style['headerNav__button']}>Create resume</a>
             </Link>
             { userLink }

@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import React, { ComponentType, useEffect, useState } from 'react';
+import React, { ComponentType } from 'react';
 
-import { getSession } from './auth';
-import { HOME, LOGIN } from './routes';
+import { LOGIN } from './routes';
+import useAuth from './useAuth';
 
 /**
  *
@@ -13,39 +13,22 @@ import { HOME, LOGIN } from './routes';
  */
 export default function withAuth(
     WrappedComponent: ComponentType,
-    isLoginRequired = true,
 ): ComponentType {
   function RenderedComponent(props: any): JSX.Element | null { // eslint-disable-line
-    const [shouldRender, setShouldRender] = useState(false);
+    const [isLogin, loading] = useAuth();
     const router = useRouter();
 
-    useEffect(() => {
-      const checkSession = async (): Promise<void> => {
-        try {
-          await getSession();
-          if (!isLoginRequired) {
-            router.push(HOME);
-          } else {
-            setShouldRender(true);
-          }
-        } catch (_) {
-          if (isLoginRequired) {
-            router.push(LOGIN);
-          } else {
-            setShouldRender(true);
-          }
-        }
-      };
-
-      checkSession();
-    }, [router, setShouldRender]);
-
-    if (!shouldRender) {
+    if (loading) {
       return null;
-    } else {
+    }
+
+    if (isLogin) {
       return (
         <WrappedComponent {...props} />
       );
+    } else {
+      router.push(LOGIN);
+      return null;
     }
   }
 

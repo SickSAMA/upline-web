@@ -6,13 +6,11 @@ import React from 'react';
 
 import { initializeApollo } from '@/utils/apolloClient';
 
-const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const apolloClient = initializeApollo(pageProps.initialApolloState);
   return (
     <ApolloProvider client={apolloClient}>
       <Component {...pageProps} />
     </ApolloProvider>
   );
-};
-
-export default MyApp;
+}

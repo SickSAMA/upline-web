@@ -157,6 +157,7 @@ export function getCurrentUser(): CognitoUser | null {
   return currentUser;
 }
 
+// session is retrieved from cache until time out. Then session is refreshed
 export function getSession(): Promise<CognitoUserSession> {
   return new Promise((resolve, reject) => {
     const currentUser = getCurrentUser();

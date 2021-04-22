@@ -5,17 +5,21 @@ import { Auth } from '@/components/Auth';
 import IconClose from '@/components/SVG/close.svg';
 import { HTML_ROOT_ELEMENT_ID } from '@/configs/constants';
 import { LOGIN } from '@/utils/routes';
+import useSetBodyScrollbarPadding from '@/utils/useSetBodyScrollbarPadding';
 
 import style from './style.module.scss';
 
 interface LoginModalProps {
   isOpen: boolean;
   onRequestClose(event?: React.MouseEvent | React.KeyboardEvent): void;
+  onLoginSuccess?(): void;
 }
 
 Modal.setAppElement(HTML_ROOT_ELEMENT_ID);
 
-export default function LoginModal({ isOpen, onRequestClose }: LoginModalProps): JSX.Element {
+export default function LoginModal({ isOpen, onRequestClose, onLoginSuccess }: LoginModalProps): JSX.Element {
+  useSetBodyScrollbarPadding(isOpen, 150);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -37,7 +41,7 @@ export default function LoginModal({ isOpen, onRequestClose }: LoginModalProps):
       <div className={style['loginModal__content']}>
         <div />
         <div>
-          <Auth page={LOGIN} mode="single-page" />
+          <Auth page={LOGIN} mode="single-page" onLoginSuccess={onLoginSuccess} />
           <button className={style['loginModal__close']} onClick={onRequestClose}>
             <IconClose />
           </button>

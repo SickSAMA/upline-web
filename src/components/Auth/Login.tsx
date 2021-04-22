@@ -42,8 +42,9 @@ export default function Login({ onLoginSuccess, onJoinClicked, onForgotPassword,
       await login(email, password, isStaySignedIn);
       if (onLoginSuccess) {
         onLoginSuccess();
+      } else {
+        location.reload();
       }
-      location.reload();
     } catch (error) {
       if (error.code === 'UserNotConfirmedException') {
         setErrorMsg((

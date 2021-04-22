@@ -1,16 +1,27 @@
 /* eslint-disable camelcase */
 import React from 'react';
 
-import {
-  GetResume_resume_education,
-  GetResume_resume_leadership_experience,
-  GetResume_resume_professional_experience,
-} from '@/graphql/types/GetResume';
+import { ExperienceInput } from '@/graphql/types/graphql-global-types';
 
 import style from '../style.module.scss';
 
 interface ExperienceProps {
-  experience: GetResume_resume_education | GetResume_resume_leadership_experience | GetResume_resume_professional_experience;
+  experience: ExperienceInput;
+}
+
+function convertStringToList(str: string): JSX.Element | null {
+  if (!str) {
+    return null;
+  }
+
+  const strList = str.split('\n');
+  return (
+    <ul>
+      {
+        strList.map((detail, index) => <li key={index}>{ detail }</li>)
+      }
+    </ul>
+  );
 }
 
 export default function Experience({ experience }: ExperienceProps): JSX.Element {
@@ -40,12 +51,7 @@ export default function Experience({ experience }: ExperienceProps): JSX.Element
             }
           </p>
       }
-      {
-        experience.details.length > 0 &&
-          <ul>
-            { experience.details.map((detail, index) => <li key={index}>{ detail }</li>) }
-          </ul>
-      }
+      { convertStringToList(experience.details) }
     </div>
   );
 }

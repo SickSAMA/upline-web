@@ -15,7 +15,7 @@ export interface GetResume_resume_education {
   summary: string;
   start_date: string;
   end_date: string;
-  details: string[];
+  details: string;
 }
 
 export interface GetResume_resume_professional_experience {
@@ -26,7 +26,7 @@ export interface GetResume_resume_professional_experience {
   summary: string;
   start_date: string;
   end_date: string;
-  details: string[];
+  details: string;
 }
 
 export interface GetResume_resume_leadership_experience {
@@ -37,7 +37,7 @@ export interface GetResume_resume_leadership_experience {
   summary: string;
   start_date: string;
   end_date: string;
-  details: string[];
+  details: string;
 }
 
 export interface GetResume_resume_others {
@@ -65,4 +65,8 @@ export interface GetResume_resume {
 
 export interface GetResume {
   resume: GetResume_resume | null;
+}
+
+export interface GetResumeVariables {
+  uuid: string;
 }

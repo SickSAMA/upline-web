@@ -1,5 +1,5 @@
 export const HOME = '/';
-export const RESUME_EDIT = '/resume/edit';
+export const resumeEdit = (uuid: string | undefined = undefined): string => `/resume/${uuid ? `${uuid}/` : ''}edit`;
 export const JOIN = '/join';
 export const LOGIN = '/login';
 export const RESET_PASSWORD = '/reset-password';

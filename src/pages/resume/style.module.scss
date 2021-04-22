@@ -1,10 +1,24 @@
 @import 'variables';
 @import 'mixins';
 
-$border-color: $grey-200;
+$border-color: $border-color;
+$gutter-width: $grid-gutter-width;
+$header-height: 5rem;
 
+// page layout
 .editor {
+  height: 100vh;
   display: flex;
+  flex-direction: column;
+
+  & > div:first-of-type {
+    flex: 0 0 auto;
+  }
+
+  & > div:last-of-type {
+    flex: 1 1 auto;
+    display: flex;
+  }
 
   &__preview {
     flex: 1 1 auto;
@@ -12,6 +26,9 @@ $border-color: $grey-200;
     overflow: auto;
     background-color: #e0e7ff;
     // background-color: $grey-100;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
   }
 
   &__edit {
@@ -19,6 +36,79 @@ $border-color: $grey-200;
     height: 100%;
     overflow: auto;
     border-left: 1px solid $border-color;
+
+    // leave more space for input
+    input,
+    textarea {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    textarea {
+      min-height: 9.25rem;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $border-color;
+
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: $font-weight-bold;
+    text-decoration: none;
+    color: $black;
+    border-right: 1px solid $border-color;
+    width: $header-height;
+    height: $header-height;
+    margin-right: $gutter-width;
+
+    @include above() {
+      color: $black;
+      text-decoration: none;
+    }
+  }
+
+  &__pdf {
+    @include button-variant();
+    margin-right: 0.875rem;
+    padding: 0.75rem 1.5rem;
+  }
+
+  &__save {
+    @include button-variant('light-outline');
+    margin-right: $gutter-width;
+  }
+
+  &__account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid $border-color;
+    width: $header-height;
+    height: $header-height;
+
+    & > svg {
+      width: 1.5rem;
+      fill: $grey-600;
+    }
+
+    @include above {
+      & > svg {
+        fill: $blue;
+      }
+    }
   }
 }
 
@@ -72,18 +162,86 @@ $border-color: $grey-200;
 .collapse {
   &__item {
     & > div:first-of-type {
-      padding: 1.125rem 1.5rem;
+      padding: $gutter-width * 0.75 $gutter-width;
       font-weight: $font-weight-medium;
     }
 
     & > div:last-of-type {
-      padding: 1.5rem;
+      padding: $gutter-width;
     }
   }
 }
 
-.container-fluid {
-  @include container-fluid();
+// render experience and skill item section in editor
+.section {
+  & + & {
+    margin-top: $gutter-width;
+    border-top: 1px dashed $border-color;
+    padding-top: $gutter-width;
+  }
+
+  &Header {
+    display: flex;
+    align-items: stretch;
+    margin-bottom: $gutter-width * 0.75;
+
+    &__bg {
+      flex: 1 1 auto;
+      background-image: url('../../../public/twill.png');
+      background-repeat: repeat;
+    }
+
+    &__button {
+      flex: 0 0 auto;
+      @include button();
+      background-color: $white;
+      flex: 0 0 auto;
+      padding: 0.125rem;
+      border: 1px solid $grey-500;
+      border-radius: 0.25rem;
+
+      & {
+        margin-left: 0.25rem;
+      }
+
+      & > svg {
+        fill: $grey-600;
+        width: 0.875rem;
+        display: block;
+      }
+
+      @include above {
+        border-color: $blue;
+
+        & > svg {
+          fill: $blue;
+        }
+      }
+    }
+  }
+
+  &Add {
+    display: flex;
+    justify-content: flex-end;
+
+    & > button {
+      @include button-variant('blue');
+      padding: 0.375rem 1rem;
+    }
+  }
+
+  & + &Add {
+    margin-top: $gutter-width;
+  }
+}
+
+// resume preview
+.resume {
+  width: 210mm;
+  height: 297mm;
+  background-color: $white;
+  padding: 2rem;
+  box-shadow: $box-shadow-lg;
 }
 
 .row {
@@ -102,9 +260,4 @@ $border-color: $grey-200;
   &-12 {
     @include make-col(12);
   }
-}
-
-.resume {
-  padding: 30px 50px;
-  background-color: $grey-100;
 }

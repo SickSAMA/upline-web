@@ -2,7 +2,6 @@ import { gql, useLazyQuery } from '@apollo/client';
 import React, { FC } from 'react';
 
 import Layout from '@/components/Layout';
-import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
 
 const GET_RECIPE = gql`
   query GetRecipe {
@@ -28,20 +27,6 @@ const Home: FC<null> = () => {
   return (
     <Layout>
       <div>
-        <Skeleton>
-          <SkeletonCol col={12}>
-            <SkeletonRow>
-              <SkeletonCol col={6} big />
-              <SkeletonCol col={4} empty big />
-              <SkeletonCol col={2} big />
-              <SkeletonCol col={4} />
-              <SkeletonCol col={8} empty />
-              <SkeletonCol col={6} />
-              <SkeletonCol col={6} empty />
-              <SkeletonCol col={12} />
-            </SkeletonRow>
-          </SkeletonCol>
-        </Skeleton>
         {
           loading && <div>Loading...</div>
         }

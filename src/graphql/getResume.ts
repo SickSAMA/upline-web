@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export default gql`
-  query GetResume {
-    resume(uuid: "40833336-0507-4cd2-a79b-9b4a1affc920") {
+  query GetResume($uuid: String!) {
+    resume(uuid: $uuid) {
       uuid
       owner
       name

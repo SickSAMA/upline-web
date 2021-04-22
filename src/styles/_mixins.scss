@@ -8,14 +8,13 @@ $btn-padding-x: $input-btn-padding-x;
 $btn-font-size: $font-size-base;
 $btn-focus-width: $input-btn-focus-width;
 $btn-focus-box-shadow: $input-btn-focus-box-shadow;
-$btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125);
 
 $flex-middle-vertical-margin: 2rem;
 
 $modal-box-shadow: $box-shadow-lg;
 $modal-overlay-opacity: 0.3;
 $modal-dialog-margin-y: 2rem;
-$modal-dialog-border-radius: 1.5rem;
+$modal-dialog-border-radius: 2.5rem;
 
 @mixin container {
   @include make-container($grid-gutter-width / 2);
@@ -57,7 +56,7 @@ $modal-dialog-border-radius: 1.5rem;
   background-color: transparent;
   border: 1px solid transparent;
   padding: $btn-padding-y $btn-padding-x;
-  border-radius: $border-radius;
+  border-radius: 0;
   @include font-size($btn-font-size);
   @include transition(
     color $transition-duration ease-in-out,
@@ -74,15 +73,6 @@ $modal-dialog-border-radius: 1.5rem;
   &:focus {
     outline: 0;
     box-shadow: $btn-focus-box-shadow;
-  }
-
-  &:active,
-  &.active {
-    box-shadow: $btn-active-box-shadow;
-
-    &:focus {
-      box-shadow: $btn-focus-box-shadow, $btn-active-box-shadow;
-    }
   }
 
   &:disabled,
@@ -110,6 +100,40 @@ $modal-dialog-border-radius: 1.5rem;
   $disabled-background: $background;
   $disabled-border: $border;
   $disabled-color: color-contrast($disabled-background);
+
+  @if $style == 'light-outline' {
+    $background: $white;
+    $border: $grey-600;
+    $color: $grey-700;
+
+    $hover-background: $white;
+    $hover-border: $grey-800;
+    $hover-color: $grey-900;
+
+    $active-background: $white;
+    $active-border: $grey-800;
+    $active-color: $grey-900;
+
+    $disabled-background: $background;
+    $disabled-border: $grey-500;
+    $disabled-color: $grey-600;
+  } @else if $style == 'light' {
+    $background: $grey-200;
+    $border: $grey-200;
+    $color: $grey-900;
+
+    $hover-background: $grey-300;
+    $hover-border: $grey-300;
+    $hover-color: $grey-900;
+
+    $active-background: $grey-300;
+    $active-border: $grey-300;
+    $active-color: $grey-900;
+
+    $disabled-background: $background;
+    $disabled-border: $border;
+    $disabled-color: color-contrast($disabled-background);
+  }
 
   $btn-box-shadow: none;
 

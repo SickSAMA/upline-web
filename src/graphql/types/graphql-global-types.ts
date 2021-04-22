@@ -14,7 +14,7 @@ export interface ExperienceInput {
   summary: string;
   start_date: string;
   end_date: string;
-  details: string[];
+  details: string;
 }
 
 export interface ResumeInput {
