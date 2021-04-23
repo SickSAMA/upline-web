@@ -22,8 +22,33 @@ export default function Editor(): JSX.Element | null {
     variables: {
       uuid,
     },
+    onCompleted(data) {
+      const _resumeFromServer = data.resume;
+      if (_resumeFromServer) {
+        // load resume from cache
+        const resumeFromCache = loadResumeFromCache(uuid);
+
+        let resume: ResumeFormData;
+        if (resumeFromCache && new Date(resumeFromCache.updated_at).getTime() > new Date(_resumeFromServer.updated_at).getTime()) {
+          // use resume from cache if it's lastest
+          resume = omit(resumeFromCache, ['updated_at']);
+          saveResumeToServer({ variables: { resumeInput: resume } });
+        } else {
+          resume = omit(_resumeFromServer, ['__typename', 'updated_at', 'created_at']);
+          saveResumeToCache(resume);
+        }
+        setResumeToRender(resume);
+      }
+    },
+    onError(error) {
+      console.error(error.message);
+    },
   });
-  const [saveResumeToServer]= useMutation<SaveResume, SaveResumeVariables>(SAVE_RESUME);
+  const [saveResumeToServer]= useMutation<SaveResume, SaveResumeVariables>(SAVE_RESUME, {
+    onError(error) {
+      console.error(error);
+    },
+  });
   const [resumeToRender, setResumeToRender] = useState<ResumeFormData>();
   const router = useRouter();
 
@@ -48,26 +73,6 @@ export default function Editor(): JSX.Element | null {
       loadResumeFromServer();
     }
   }, [loadResumeFromServer, uuid, isLogin, resumeLoadingError, resumeFromServer]);
-
-  // handle loaded resume from server
-  useEffect(() => {
-    const _resumeFromServer = resumeFromServer?.resume;
-    if (_resumeFromServer && _resumeFromServer.uuid !== resumeToRender?.uuid) {
-      // load resume from cache
-      const resumeFromCache = loadResumeFromCache(uuid);
-
-      let resume: ResumeFormData;
-      if (resumeFromCache && new Date(resumeFromCache.updated_at).getTime() > new Date(_resumeFromServer.updated_at).getTime()) {
-        // use resume from cache if it's lastest
-        resume = omit(resumeFromCache, ['updated_at']);
-        saveResumeToServer({ variables: { resumeInput: resume } });
-      } else {
-        resume = omit(_resumeFromServer, ['__typename', 'updated_at', 'created_at']);
-        saveResumeToCache(resume);
-      }
-      setResumeToRender(resume);
-    }
-  }, [uuid, isLogin, resumeFromServer, setResumeToRender, resumeToRender, saveResumeToServer]);
 
   const onErrorModalButtonClicked: MouseEventHandler = useCallback((e) => {
     e.preventDefault();

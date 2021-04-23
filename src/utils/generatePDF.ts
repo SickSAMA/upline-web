@@ -77,9 +77,9 @@ function generateResumeExperienceContent(type: string, experience: ExperienceInp
         }]);
       }
 
-      if (e.details.length > 0) {
+      if (e.details) {
         body.push([{
-          ul: e.details,
+          ul: e.details.split('\n'),
         }]);
       }
     });

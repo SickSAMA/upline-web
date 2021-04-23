@@ -4,6 +4,7 @@ import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import { Field } from '@/components/Form';
 import IconArrowDown from '@/components/SVG/arrowDownStick.svg';
+import IconArrowUp from '@/components/SVG/arrowUpStick.svg';
 import IconDelete from '@/components/SVG/bin.svg';
 import { ExperienceInput } from '@/graphql/types/graphql-global-types';
 
@@ -34,7 +35,7 @@ const defaultExperience: ExperienceInput = {
 };
 
 export default function ExperienceForm({ control, register, type, fieldNameMapping }: ExperienceFormProps): JSX.Element {
-  const { fields, append, remove } = useFieldArray(
+  const { fields, append, remove, swap } = useFieldArray(
       {
         control,
         name: type,
@@ -48,10 +49,21 @@ export default function ExperienceForm({ control, register, type, fieldNameMappi
           <div className={style.section} key={experience.id}>
             <div className={style.sectionHeader}>
               <div className={style['sectionHeader__bg']} />
-              <button className={style['sectionHeader__button']} type="button">
-                <IconArrowDown />
-              </button>
-              <button className={style['sectionHeader__button']} onClick={() => remove(index)} type="button">
+              {
+                index > 0 && (
+                  <button className={style['sectionHeader__button']} onClick={() => swap(index, index - 1)} type="button" title="move up">
+                    <IconArrowUp />
+                  </button>
+                )
+              }
+              {
+                index < fields.length - 1 && (
+                  <button className={style['sectionHeader__button']} onClick={() => swap(index, index + 1)} type="button" title="move down">
+                    <IconArrowDown />
+                  </button>
+                )
+              }
+              <button className={style['sectionHeader__button']} onClick={() => remove(index)} type="button" title="delete">
                 <IconDelete />
               </button>
             </div>

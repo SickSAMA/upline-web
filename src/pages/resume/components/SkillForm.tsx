@@ -4,6 +4,7 @@ import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import { Field } from '@/components/Form';
 import IconArrowDown from '@/components/SVG/arrowDownStick.svg';
+import IconArrowUp from '@/components/SVG/arrowUpStick.svg';
 import IconDelete from '@/components/SVG/bin.svg';
 import { SkillInput } from '@/graphql/types/graphql-global-types';
 
@@ -21,7 +22,7 @@ const defaultSkill: SkillInput = {
 };
 
 export default function SkillForm({ control, register }: SkillFormProps): JSX.Element {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, swap } = useFieldArray({
     control,
     name: 'others',
   });
@@ -33,10 +34,21 @@ export default function SkillForm({ control, register }: SkillFormProps): JSX.El
           <div className={style.section} key={skill.id}>
             <div className={style.sectionHeader}>
               <div className={style['sectionHeader__bg']} />
-              <button className={style['sectionHeader__button']} type="button">
-                <IconArrowDown />
-              </button>
-              <button className={style['sectionHeader__button']} onClick={() => remove(index)} type="button">
+              {
+                index > 0 && (
+                  <button className={style['sectionHeader__button']} onClick={() => swap(index, index - 1)} type="button" title="move up">
+                    <IconArrowUp />
+                  </button>
+                )
+              }
+              {
+                index < fields.length - 1 && (
+                  <button className={style['sectionHeader__button']} onClick={() => swap(index, index + 1)} type="button" title="move down">
+                    <IconArrowDown />
+                  </button>
+                )
+              }
+              <button className={style['sectionHeader__button']} onClick={() => remove(index)} type="button" title="delete">
                 <IconDelete />
               </button>
             </div>

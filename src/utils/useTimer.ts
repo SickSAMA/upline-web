@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import useInterval from './useInterval';
+
 type Status = 'RUNNING' | 'PAUSED' | 'STOPPED';
 
 interface optionTypes {
@@ -33,19 +35,23 @@ export default function useTimer({
 }: optionTypes): returnTypes {
   const [status, setStatus] = useState<Status>('STOPPED');
   const [time, setTime] = useState(startTime);
+  const [delay, setDelay] = useState<number | null>(null);
 
   const pause = useCallback(() => {
     setStatus('PAUSED');
-  }, [setStatus]);
+    setDelay(null);
+  }, []);
 
   const reset = useCallback(() => {
     setStatus('STOPPED');
+    setDelay(null);
     setTime(startTime);
-  }, [setStatus, setTime, startTime]);
+  }, [startTime]);
 
   const start = useCallback(() => {
     setStatus('RUNNING');
-  }, [setStatus]);
+    setDelay(interval);
+  }, [interval]);
 
   useEffect(() => {
     if (autostart) {
@@ -62,29 +68,18 @@ export default function useTimer({
   useEffect(() => {
     if (status !== 'STOPPED' && time === endTime) {
       setStatus('STOPPED');
+      setDelay(null);
 
       if (typeof onTimeOver === 'function') {
         onTimeOver();
       }
     }
-  }, [endTime, onTimeOver, time, status, setStatus]);
+  }, [endTime, onTimeOver, time, status]);
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout | null = null;
-
-    if (status === 'RUNNING') {
-      timeout = setTimeout(() => {
-        const newTime = timerType === 'DEC' ? time - step : time + step;
-        setTime(newTime);
-      }, interval);
-    }
-
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, [status, time, step, timerType, interval]);
+  useInterval(() => {
+    const newTime = timerType === 'DEC' ? time - step : time + step;
+    setTime(newTime);
+  }, delay);
 
   return { pause, reset, start, status, time };
 }
