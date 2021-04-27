@@ -42,6 +42,13 @@ export default gql`
         key
         value
       }
+      styles {
+        font_family
+        font_size
+        line_height
+        margin
+        header_alignment
+      }
       updated_at
       created_at
     }

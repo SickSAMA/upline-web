@@ -17,12 +17,13 @@ $header-height: 5rem;
 
   & > div:last-of-type {
     flex: 1 1 auto;
+    min-height: 0;
     display: flex;
+    align-items: stretch;
   }
 
   &__preview {
     flex: 1 1 auto;
-    height: 100%;
     overflow: auto;
     background-color: #e0e7ff;
     // background-color: $grey-100;
@@ -33,20 +34,8 @@ $header-height: 5rem;
 
   &__edit {
     flex: 0 0 600px;
-    height: 100%;
     overflow: auto;
     border-left: 1px solid $border-color;
-
-    // leave more space for input
-    input,
-    textarea {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    textarea {
-      min-height: 9.25rem;
-    }
   }
 }
 
@@ -159,6 +148,19 @@ $header-height: 5rem;
   }
 }
 
+.contents {
+  // leave more space for input
+  input,
+  textarea {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  textarea {
+    min-height: 9.25rem !important;
+  }
+}
+
 .collapse {
   &__item {
     & > div:first-of-type {
@@ -235,13 +237,63 @@ $header-height: 5rem;
   }
 }
 
+.styles {
+  padding: $gutter-width;
+}
+
 // resume preview
 .resume {
-  width: 210mm;
-  height: 297mm;
+  height: 842pt;
+  width: 595pt;
+  flex: 0 0 auto;
   background-color: $white;
-  padding: 2rem;
   box-shadow: $box-shadow-lg;
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  b {
+    font-weight: $font-weight-bold;
+  }
+
+  ul {
+    padding-left: 13pt;
+    margin-bottom: 0;
+  }
+
+  &__header {
+    text-align: center;
+  }
+
+  &Section {
+    &__header {
+      font-weight: $font-weight-bold;
+      text-transform: uppercase;
+      border-bottom: 2px solid $black;
+    }
+  }
+
+  &Experience {
+    &__entity {
+      font-weight: $font-weight-bold;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__summaryLine {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__summary {
+      font-style: italic;
+    }
+  }
 }
 
 .row {

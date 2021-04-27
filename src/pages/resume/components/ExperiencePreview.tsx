@@ -2,11 +2,13 @@
 import React from 'react';
 
 import { ExperienceInput } from '@/graphql/types/graphql-global-types';
+import { splitStringByNewline } from '@/utils/stringUtil';
 
 import style from '../style.module.scss';
 
-interface ExperienceProps {
+interface ExperiencePreviewProps {
   experience: ExperienceInput;
+  index: number;
 }
 
 function convertStringToList(str: string): JSX.Element | null {
@@ -14,7 +16,7 @@ function convertStringToList(str: string): JSX.Element | null {
     return null;
   }
 
-  const strList = str.split('\n');
+  const strList = splitStringByNewline(str);
   return (
     <ul>
       {
@@ -24,9 +26,10 @@ function convertStringToList(str: string): JSX.Element | null {
   );
 }
 
-export default function Experience({ experience }: ExperienceProps): JSX.Element {
+export default function ExperiencePreview({ experience, index }: ExperiencePreviewProps): JSX.Element {
   return (
-    <div className={style.experience}>
+    <div className={style.resumeExperience}>
+      { index > 0 && <br />}
       {
         (experience.entity || experience.city || experience.country) &&
           <p className={style['resumeExperience__entity']}>
@@ -41,8 +44,8 @@ export default function Experience({ experience }: ExperienceProps): JSX.Element
       }
       {
         (experience.summary || experience.start_date || experience.end_date) &&
-          <p className={style['resumeExperience__summary']}>
-            { experience.summary && <span>{ experience.summary }</span>}
+          <p className={style['resumeExperience__summaryLine']}>
+            { experience.summary && <span className={style['resumeExperience__summary']}>{ experience.summary }</span>}
             {
               (experience.start_date || experience.end_date) &&
                 <span>

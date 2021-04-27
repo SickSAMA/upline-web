@@ -3,14 +3,14 @@ import { useMutation } from '@apollo/client';
 import isEqual from 'lodash/isEqual';
 import Link from 'next/link';
 import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Collapse, CollapsePanel } from '@/components/Collapse';
-import { Field } from '@/components/Form';
+import { Field, Select } from '@/components/Form';
 import { LoginModal, NoticeModal } from '@/components/Modal';
 import IconAvatar from '@/components/SVG/avatar.svg';
 import SAVE_RESUME from '@/graphql/saveResume';
-import { ExperienceInput, ResumeInput, SkillInput } from '@/graphql/types/graphql-global-types';
+import { ExperienceInput, ResumeInput, ResumeStyleInput, SkillInput } from '@/graphql/types/graphql-global-types';
 import { SaveResume, SaveResumeVariables } from '@/graphql/types/SaveResume';
 import { generateResumePDF } from '@/utils/generatePDF';
 import { HOME } from '@/utils/routes';
@@ -19,9 +19,18 @@ import useInterval from '@/utils/useInterval';
 
 import style from '../style.module.scss';
 import { saveResume as saveResumeToCache } from '../utils/resumeStore';
+import { getDefaultStyleOption, getSelectedOptionFromValue, getStyleOptions } from '../utils/styleOptionUtil';
 import ExperienceForm from './ExperienceForm';
 import ResumePreview from './ResumePreview';
 import SkillForm from './SkillForm';
+
+/**
+ * Default styles:
+ * in pt:
+ *   size: 595 x 842
+ *   margin: 72
+ *   font: 11, 12
+ */
 
 // set default values for all fields to align with returned resume data from serverj
 export interface ResumeFormData extends ResumeInput {
@@ -34,6 +43,7 @@ export interface ResumeFormData extends ResumeInput {
   professional_experience: ExperienceInput[];
   leadership_experience: ExperienceInput[];
   others: SkillInput[];
+  styles: ResumeStyleInput;
 }
 
 const defaultResume: ResumeFormData = {
@@ -46,6 +56,13 @@ const defaultResume: ResumeFormData = {
   professional_experience: [],
   leadership_experience: [],
   others: [],
+  styles: {
+    font_family: getDefaultStyleOption('font_family').value,
+    font_size: +getDefaultStyleOption('font_size').value,
+    line_height: +getDefaultStyleOption('line_height').value,
+    margin: getDefaultStyleOption('margin').value,
+    header_alignment: getDefaultStyleOption('header_alignment').value,
+  },
 };
 
 type Tabs = 'content' | 'style';
@@ -173,8 +190,8 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
               <button disabled={activeTab === 'content'} onClick={() => setActiveTab('content')}>Content</button>
               <button disabled={activeTab === 'style'} onClick={() => setActiveTab('style')}>Style</button>
             </div>
-            <div>
-              <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <div className={style.contents} style={{ display: activeTab === 'content' ? 'block' : 'none' }}>
                 <Collapse accordion={false} defaultActiveKey="0">
                   <CollapsePanel
                     key="0"
@@ -261,8 +278,91 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
                     <SkillForm control={control} register={register} />
                   </CollapsePanel>
                 </Collapse>
-              </form>
-            </div>
+              </div>
+              <div className={style.styles} style={{ display: activeTab === 'style' ? 'block' : 'none' }}>
+                <div className={style.row}>
+                  <Field className={style['col-6']} label="Font">
+                    <Controller
+                      control={control}
+                      name="styles.font_family"
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <Select
+                          instanceId="font_family"
+                          options={getStyleOptions('font_family')}
+                          value={getSelectedOptionFromValue('font_family', value)}
+                          onChange={(option) => onChange(option?.value)}
+                        />
+                      )}
+                    />
+                  </Field>
+                  <Field className={style['col-6']} label="Font Size">
+                    <Controller
+                      control={control}
+                      name="styles.font_size"
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <Select
+                          instanceId="font_size"
+                          options={getStyleOptions('font_size')}
+                          value={getSelectedOptionFromValue('font_size', value.toString())}
+                          onChange={(option) => onChange(option ? +option.value : undefined)}
+                        />
+                      )}
+                    />
+                  </Field>
+                </div>
+                <div className={style.row}>
+                  <Field className={style['col-6']} label="Line Height">
+                    <Controller
+                      control={control}
+                      name="styles.line_height"
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <Select
+                          instanceId="line_height"
+                          options={getStyleOptions('line_height')}
+                          value={getSelectedOptionFromValue('line_height', value.toString())}
+                          onChange={(option) => onChange(option ? +option.value : undefined)}
+                        />
+                      )}
+                    />
+                  </Field>
+                  <Field className={style['col-6']} label="Margin">
+                    <Controller
+                      control={control}
+                      name="styles.margin"
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <Select
+                          instanceId="margin"
+                          options={getStyleOptions('margin')}
+                          value={getSelectedOptionFromValue('margin', value)}
+                          onChange={(option) => onChange(option?.value)}
+                        />
+                      )}
+                    />
+                  </Field>
+                </div>
+                <div className={style.row}>
+                  <Field className={style['col-6']} label="Header Alignment">
+                    <Controller
+                      control={control}
+                      name="styles.header_alignment"
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <Select
+                          instanceId="header_alignment"
+                          options={getStyleOptions('header_alignment')}
+                          value={getSelectedOptionFromValue('header_alignment', value)}
+                          onChange={(option) => onChange(option?.value)}
+                        />
+                      )}
+                    />
+                  </Field>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import style from '../style.module.scss';
-import Experience from './Experience';
+import { HeaderAlignment } from '../utils/styleOptionUtil';
+import Experience from './ExperiencePreview';
 import { ResumeFormData } from './ResumeEditor';
 
 interface ResumePreviewProps {
@@ -9,14 +10,24 @@ interface ResumePreviewProps {
 }
 
 export default function ResumePreview({ resume }: ResumePreviewProps): JSX.Element | null {
+  const marginArr = resume.styles.margin.split(' ').map((m) => m + 'pt');
+  marginArr.push(marginArr.shift() as string);
+
+  const resumeStyles = {
+    fontFamily: resume.styles.font_family,
+    fontSize: `${resume.styles.font_size}pt`,
+    lineHeight: resume.styles.line_height,
+    padding: marginArr.join(' '),
+  };
+
   return (
-    <div id="resume" className={style.resume}>
-      <div className={style['resume__header']}>
+    <div id="resume" className={style.resume} style={resumeStyles}>
+      <div className={style['resume__header']} style={{ textAlign: resume.styles.header_alignment as HeaderAlignment }}>
         {
           (resume.name || resume.english_name) &&
-            <h1>
+            <h2 style={{ fontSize: `${resume.styles.font_size + 1}pt` }}>
               { [resume.name, resume.english_name].filter((s) => s).join(', ')}
-            </h1>
+            </h2>
         }
         {
           (resume.phone || resume.email) &&
@@ -34,54 +45,66 @@ export default function ResumePreview({ resume }: ResumePreviewProps): JSX.Eleme
 
       {
         resume.education.length > 0 &&
-          <div className={style['resume__section']}>
-            <h2>Education</h2>
-            {
-              resume.education.map((experience, index) => (
-                <Experience key={index} experience={experience} />
-              ))
-            }
-          </div>
+          <>
+            <br />
+            <div className={style['resumeSection']}>
+              <p className={style['resumeSection__header']}>Education</p>
+              {
+                resume.education.map((experience, index) => (
+                  <Experience key={index} experience={experience} index={index} />
+                ))
+              }
+            </div>
+          </>
       }
 
       {
         resume.professional_experience.length > 0 &&
-          <div className={style['resume__section']}>
-            <h2>Professional Experience</h2>
-            {
-              resume.professional_experience.map((experience, index) => (
-                <Experience key={index} experience={experience} />
-              ))
-            }
-          </div>
+          <>
+            <br />
+            <div className={style['resumeSection']}>
+              <p className={style['resumeSection__header']}>Professional Experience</p>
+              {
+                resume.professional_experience.map((experience, index) => (
+                  <Experience key={index} experience={experience} index={index} />
+                ))
+              }
+            </div>
+          </>
       }
 
       {
         resume.leadership_experience.length > 0 &&
-          <div className={style['resume__section']}>
-            <h2>Leadership & Extracurricular Activities</h2>
-            {
-              resume.leadership_experience.map((experience, index) => (
-                <Experience key={index} experience={experience} />
-              ))
-            }
-          </div>
+          <>
+            <br />
+            <div className={style['resumeSection']}>
+              <p className={style['resumeSection__header']}>Leadership & Extracurricular Activities</p>
+              {
+                resume.leadership_experience.map((experience, index) => (
+                  <Experience key={index} experience={experience} index={index} />
+                ))
+              }
+            </div>
+          </>
       }
 
       {
         resume.others.length > 0 &&
-          <div className={style['resume__section']}>
-            <h2>Others</h2>
-            {
-              resume.others.map((skill, index) => (
-                <p key={index}>
-                  { skill.key && <b>{ skill.key }</b> }
-                  { (skill.key && skill.value) && <b>: </b> }
-                  { skill.value ?? '' }
-                </p>
-              ))
-            }
-          </div>
+          <>
+            <br />
+            <div className={style['resumeSection']}>
+              <p className={style['resumeSection__header']}>Others</p>
+              {
+                resume.others.map((skill, index) => (
+                  <p key={index}>
+                    { skill.key && <b>{ skill.key }</b> }
+                    { (skill.key && skill.value) && <b>: </b> }
+                    { skill.value ?? '' }
+                  </p>
+                ))
+              }
+            </div>
+          </>
       }
     </div>
   );

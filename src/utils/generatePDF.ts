@@ -1,30 +1,30 @@
 /* eslint-disable camelcase */
 import pdfMake from 'pdfmake/build/pdfmake';
-import { Content, CustomTableLayout, TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Alignment, Content, CustomTableLayout, Margins, TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
 
 import { ExperienceInput } from '@/graphql/types/graphql-global-types';
 import { ResumeFormData } from '@/pages/resume/components/ResumeEditor';
 import pdfFonts from '@/styles/fonts/vfs_fonts';
-
-interface Options {
-  normalFontSize: number;
-  largeFontSize: number;
-}
-
-const defaultOptions: Options = {
-  normalFontSize: 11,
-  largeFontSize: 12,
-};
+import { splitStringByNewline } from '@/utils/stringUtil';
 
 pdfMake.vfs = pdfFonts;
-// pdfMake.fonts = {
-//   Courier: {
-//     normal: 'Courier',
-//     bold: 'Courier-Bold',
-//     italics: 'Courier-Oblique',
-//     bolditalics: 'Courier-BoldOblique',
-//   },
-// };
+pdfMake.fonts = {
+  Arial: {
+    normal: 'ArialCE.ttf',
+    bold: 'ArialCE-Bold.ttf',
+    italics: 'ArialCE-Italic.ttf',
+  },
+  // Calibri: {
+  //   normal: 'Calibri.ttf',
+  //   bold: 'Calibri-Bold.ttf',
+  //   italics: 'Calibri-Italic.ttf',
+  // },
+  ['Times New Roman']: {
+    normal: 'TimesNewRoman.ttf',
+    bold: 'TimesNewRoman-Bold.ttf',
+    italics: 'TimesNewRoman-Italic.ttf',
+  },
+};
 
 function generateResumeExperienceContent(type: string, experience: ExperienceInput[]): Content[] {
   const content: Content[] = [];
@@ -79,7 +79,7 @@ function generateResumeExperienceContent(type: string, experience: ExperienceInp
 
       if (e.details) {
         body.push([{
-          ul: e.details.split('\n'),
+          ul: splitStringByNewline(e.details),
         }]);
       }
     });
@@ -97,17 +97,19 @@ function generateResumeExperienceContent(type: string, experience: ExperienceInp
   return content;
 }
 
-export function generateResumePDF(resume: ResumeFormData, options: Options = defaultOptions): void {
-  const { normalFontSize, largeFontSize } = options;
+export function generateResumePDF(resume: ResumeFormData): void {
+  const { font_family, font_size, line_height, margin } = resume.styles;
+  const header_alignment = resume.styles.header_alignment as Alignment;
+  const font_size_name = font_size + 1;
 
   const content: Content = [];
 
   if (resume.name || resume.english_name) {
     content.push({
       text: [resume.name, resume.english_name].filter((s) => s).join(', '),
-      fontSize: largeFontSize,
+      fontSize: font_size_name,
       bold: true,
-      alignment: 'center',
+      alignment: header_alignment,
     });
   }
 
@@ -132,7 +134,7 @@ export function generateResumePDF(resume: ResumeFormData, options: Options = def
     }
     content.push({
       text,
-      alignment: 'center',
+      alignment: header_alignment,
     });
   }
 
@@ -145,7 +147,7 @@ export function generateResumePDF(resume: ResumeFormData, options: Options = def
         },
         resume.address,
       ],
-      alignment: 'center',
+      alignment: header_alignment,
     });
   }
 
@@ -184,10 +186,14 @@ export function generateResumePDF(resume: ResumeFormData, options: Options = def
   }
 
   const docDefinition: TDocumentDefinitions = {
+    pageSize: 'A4',
+    pageMargins: margin.split(' ').map((m) => +m) as Margins,
     content,
     defaultStyle: {
+      font: font_family,
       columnGap: 24,
-      fontSize: normalFontSize,
+      fontSize: font_size,
+      lineHeight: line_height,
     },
   };
 

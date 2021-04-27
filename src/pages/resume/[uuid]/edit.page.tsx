@@ -12,6 +12,7 @@ import ResumeEditor, { ResumeFormData } from '@/pages/resume/components/ResumeEd
 import { loadResume as loadResumeFromCache, saveResume as saveResumeToCache } from '@/pages/resume/utils/resumeStore';
 import { checkErrorCode } from '@/utils/apolloErrorUtil';
 import getRouterQueryValue from '@/utils/getRouterQueryValue';
+import omitTypename from '@/utils/omitTypename';
 import { HOME, LOGIN } from '@/utils/routes';
 import useAuth from '@/utils/useAuth';
 
@@ -34,7 +35,7 @@ export default function Editor(): JSX.Element | null {
           resume = omit(resumeFromCache, ['updated_at']);
           saveResumeToServer({ variables: { resumeInput: resume } });
         } else {
-          resume = omit(_resumeFromServer, ['__typename', 'updated_at', 'created_at']);
+          resume = omit(omitTypename(_resumeFromServer), ['updated_at', 'created_at']);
           saveResumeToCache(resume);
         }
         setResumeToRender(resume);

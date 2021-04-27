@@ -397,3 +397,41 @@ $form-switch-checked-bg-position: right center;
     }
   }
 }
+
+.select {
+  color: $black;
+
+  &:global(__control) {
+    background-color: $input-bg !important;
+    border-color: $input-border-color !important;
+    transition: box-shadow $transition-duration !important;
+
+    &:global(--is-focused) {
+      box-shadow: $input-focus-box-shadow !important;
+    }
+  }
+
+  &:global(__value-container) {
+    padding: calc(#{$input-padding-y} - 4px) 1rem !important;
+  }
+
+  &:global(__indicator-separator) {
+    background-color: $grey-400 !important;
+  }
+
+  &:global(__dropdown-indicator) {
+    color: $grey-400 !important;
+  }
+
+  &:global(__option) {
+    padding: 0.5rem 1rem !important;
+
+    &:global(--is-focused) {
+      background-color: $blue-light !important;
+    }
+
+    &:global(--is-selected) {
+      background-color: $blue !important;
+    }
+  }
+}

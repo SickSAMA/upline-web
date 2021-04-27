@@ -29,6 +29,15 @@ export interface ResumeInput {
   professional_experience?: ExperienceInput[] | null;
   leadership_experience?: ExperienceInput[] | null;
   others?: SkillInput[] | null;
+  styles?: ResumeStyleInput | null;
+}
+
+export interface ResumeStyleInput {
+  font_family: string;
+  font_size: number;
+  line_height: number;
+  margin: string;
+  header_alignment: string;
 }
 
 export interface SkillInput {

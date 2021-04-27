@@ -46,6 +46,15 @@ export interface GetResume_resume_others {
   value: string;
 }
 
+export interface GetResume_resume_styles {
+  __typename: "ResumeStyle";
+  font_family: string;
+  font_size: number;
+  line_height: number;
+  margin: string;
+  header_alignment: string;
+}
+
 export interface GetResume_resume {
   __typename: "Resume";
   uuid: string;
@@ -59,6 +68,7 @@ export interface GetResume_resume {
   professional_experience: GetResume_resume_professional_experience[];
   leadership_experience: GetResume_resume_leadership_experience[];
   others: GetResume_resume_others[];
+  styles: GetResume_resume_styles;
   updated_at: any;
   created_at: any;
 }
