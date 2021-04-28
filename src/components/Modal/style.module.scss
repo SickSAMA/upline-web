@@ -171,3 +171,58 @@
     }
   }
 }
+
+.confirmModal {
+  @include modal();
+
+  &__content {
+    width: 400px;
+    padding: 3em;
+
+    & > p {
+      margin-bottom: 0;
+      text-align: center;
+    }
+  }
+
+  &__icon {
+    margin-bottom: 2.5rem;
+
+    & > svg {
+      display: block;
+      width: 5rem;
+      margin: 0 auto;
+    }
+  }
+
+  &__button {
+    margin-top: 2.5rem;
+
+    & > button {
+      width: 100%;
+      display: block;
+
+      & + button {
+        margin-top: 0.5rem;
+      }
+    }
+
+    &--cancel {
+      & > button:first-of-type {
+        @include button-variant('white');
+      }
+      & > button:last-of-type {
+        @include button-variant('blue');
+      }
+    }
+
+    &--continue {
+      & > button:first-of-type {
+        @include button-variant('blue');
+      }
+      & > button:last-of-type {
+        @include button-variant('white');
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import style from '../style.module.scss';
 import { HeaderAlignment } from '../utils/styleOptionUtil';
@@ -7,9 +7,13 @@ import { ResumeFormData } from './ResumeEditor';
 
 interface ResumePreviewProps {
   resume: ResumeFormData;
+  isOnePage: MutableRefObject<boolean>;
 }
 
-export default function ResumePreview({ resume }: ResumePreviewProps): JSX.Element | null {
+export default function ResumePreview({ resume, isOnePage }: ResumePreviewProps): JSX.Element | null {
+  const resumeEl = useRef<HTMLDivElement>(null);
+  const [isOverOnePage, setIsOverOnePage] = useState(false);
+
   const marginArr = resume.styles.margin.split(' ').map((m) => m + 'pt');
   marginArr.push(marginArr.shift() as string);
 
@@ -20,8 +24,22 @@ export default function ResumePreview({ resume }: ResumePreviewProps): JSX.Eleme
     padding: marginArr.join(' '),
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (resumeEl?.current) {
+      if (resumeEl.current.scrollHeight > resumeEl.current.clientHeight && !isOverOnePage) {
+        setIsOverOnePage(true);
+        isOnePage.current = false;
+      }
+      if (resumeEl.current.scrollHeight <= resumeEl.current.clientHeight && isOverOnePage) {
+        setIsOverOnePage(false);
+        isOnePage.current = true;
+      }
+    }
+  });
+
   return (
-    <div id="resume" className={style.resume} style={resumeStyles}>
+    <div ref={resumeEl} className={style.resume} style={resumeStyles}>
       <div className={style['resume__header']} style={{ textAlign: resume.styles.header_alignment as HeaderAlignment }}>
         {
           (resume.name || resume.english_name) &&
@@ -105,6 +123,12 @@ export default function ResumePreview({ resume }: ResumePreviewProps): JSX.Eleme
               }
             </div>
           </>
+      }
+      {
+        isOverOnePage &&
+          <div className={style['resume__overlay']} style={{ height: marginArr[2] }}>
+            <p>Please keep your resume within one page.</p>
+          </div>
       }
     </div>
   );

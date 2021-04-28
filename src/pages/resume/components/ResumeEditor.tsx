@@ -2,12 +2,12 @@
 import { useMutation } from '@apollo/client';
 import isEqual from 'lodash/isEqual';
 import Link from 'next/link';
-import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Collapse, CollapsePanel } from '@/components/Collapse';
 import { Field, Select } from '@/components/Form';
-import { LoginModal, NoticeModal } from '@/components/Modal';
+import { ConfirmModal, LoginModal, NoticeModal } from '@/components/Modal';
 import IconAvatar from '@/components/SVG/avatar.svg';
 import SAVE_RESUME from '@/graphql/saveResume';
 import { ExperienceInput, ResumeInput, ResumeStyleInput, SkillInput } from '@/graphql/types/graphql-global-types';
@@ -90,11 +90,14 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
   const [activeTab, setActiveTab] = useState<Tabs>('content');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   // two state to manage the change of form values
   const [resumeToRender, setResumeToRender] = useState<ResumeFormData>(resume || defaultResume);
   const [hasEdited, setHasEdited] = useState(false);
   // state to manage the sync to cloud featreu
   const [isSynced, setIsSynced] = useState(true);
+  // hold the state of isOverOnepage
+  const isOnePage = useRef(true);
 
   /**
    * due to the frequent reference change of resumeFormData without real change in the data itself, use a new
@@ -144,14 +147,34 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
     }
   };
 
+  const onGeneratePDF: MouseEventHandler = (e) => {
+    e.preventDefault();
+    if (isOnePage.current) {
+      generateResumePDF(resumeToRender);
+    } else {
+      setIsWarningModalOpen(true);
+    }
+  };
+
   const closeLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
-  }, [setIsLoginModalOpen]);
+  }, []);
 
   const closeNoticeModal: MouseEventHandler = useCallback((e) => {
     e.preventDefault();
     setIsNoticeModalOpen(false);
-  }, [setIsNoticeModalOpen]);
+  }, []);
+
+  const onWarningCancel: MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
+    setIsWarningModalOpen(false);
+  }, []);
+
+  const onWarningContinue: MouseEventHandler = useCallback((e) => {
+    e.preventDefault();
+    setIsWarningModalOpen(false);
+    generateResumePDF(resumeToRender);
+  }, [resumeToRender]);
 
   return (
     <>
@@ -166,7 +189,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
             <div className={style['header__name']}>New Resume</div>
           </div>
           <div>
-            <button type="button" onClick={() => generateResumePDF(resumeToRender)} className={style['header__pdf']}>Generate PDF</button>
+            <button type="button" onClick={onGeneratePDF} className={style['header__pdf']}>Generate PDF</button>
             <button type="button" onClick={syncToServer} className={style['header__save']} disabled={isSynced}>
               {
                 resumeSaving ?
@@ -183,7 +206,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
         </div>
         <div className={style['editor__body']}>
           <div className={style['editor__preview']}>
-            <ResumePreview resume={resumeToRender} />
+            <ResumePreview isOnePage={isOnePage} resume={resumeToRender} />
           </div>
           <div className={style['editor__edit']}>
             <div className={style.tabs}>
@@ -372,6 +395,13 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
         type="error"
         message={resumeSaveError?.message || ''}
         onClose={closeNoticeModal}
+      />
+      <ConfirmModal
+        isOpen={isWarningModalOpen}
+        message="Your resume exceeds one page, which is against the best practice. Are you sure you want to continue?"
+        emphasis="cancel"
+        onCancel={onWarningCancel}
+        onContinue={onWarningContinue}
       />
     </>
   );

@@ -133,6 +133,22 @@ $modal-dialog-border-radius: 2.5rem;
     $disabled-background: $background;
     $disabled-border: $border;
     $disabled-color: color-contrast($disabled-background);
+  } @else if $style == 'white' {
+    $background: $white;
+    $border: $white;
+    $color: $body-color;
+
+    $hover-background: $white;
+    $hover-border: $white;
+    $hover-color: $body-color;
+
+    $active-background: $white;
+    $active-border: $white;
+    $active-color: $body-color;
+
+    $disabled-background: $background;
+    $disabled-border: $border;
+    $disabled-color: color-contrast($disabled-background);
   }
 
   $btn-box-shadow: none;
