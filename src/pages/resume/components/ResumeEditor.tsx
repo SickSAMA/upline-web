@@ -12,7 +12,6 @@ import IconAvatar from '@/components/SVG/avatar.svg';
 import SAVE_RESUME from '@/graphql/saveResume';
 import { ExperienceInput, ResumeInput, ResumeStyleInput, SkillInput } from '@/graphql/types/graphql-global-types';
 import { SaveResume, SaveResumeVariables } from '@/graphql/types/SaveResume';
-import { generateResumePDF } from '@/utils/generatePDF';
 import { HOME } from '@/utils/routes';
 import useAuth from '@/utils/useAuth';
 import useInterval from '@/utils/useInterval';
@@ -21,6 +20,7 @@ import style from '../style.module.scss';
 import { saveResume as saveResumeToCache } from '../utils/resumeStore';
 import { getDefaultStyleOption, getSelectedOptionFromValue, getStyleOptions } from '../utils/styleOptionUtil';
 import ExperienceForm from './ExperienceForm';
+import PDFGeneratorButton from './PDFGeneratorButton';
 import ResumePreview from './ResumePreview';
 import SkillForm from './SkillForm';
 
@@ -90,7 +90,6 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
   const [activeTab, setActiveTab] = useState<Tabs>('content');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
-  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   // two state to manage the change of form values
   const [resumeToRender, setResumeToRender] = useState<ResumeFormData>(resume || defaultResume);
   const [hasEdited, setHasEdited] = useState(false);
@@ -147,15 +146,6 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
     }
   };
 
-  const onGeneratePDF: MouseEventHandler = (e) => {
-    e.preventDefault();
-    if (isOnePage.current) {
-      generateResumePDF(resumeToRender);
-    } else {
-      setIsWarningModalOpen(true);
-    }
-  };
-
   const closeLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
   }, []);
@@ -164,17 +154,6 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
     e.preventDefault();
     setIsNoticeModalOpen(false);
   }, []);
-
-  const onWarningCancel: MouseEventHandler = useCallback((e) => {
-    e.preventDefault();
-    setIsWarningModalOpen(false);
-  }, []);
-
-  const onWarningContinue: MouseEventHandler = useCallback((e) => {
-    e.preventDefault();
-    setIsWarningModalOpen(false);
-    generateResumePDF(resumeToRender);
-  }, [resumeToRender]);
 
   return (
     <>
@@ -189,7 +168,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
             <div className={style['header__name']}>New Resume</div>
           </div>
           <div>
-            <button type="button" onClick={onGeneratePDF} className={style['header__pdf']}>Generate PDF</button>
+            <PDFGeneratorButton className={style['header__pdf']} resume={resumeToRender} text="Generate PDF" isOnePage={isOnePage} />
             <button type="button" onClick={syncToServer} className={style['header__save']} disabled={isSynced}>
               {
                 resumeSaving ?
@@ -395,13 +374,6 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
         type="error"
         message={resumeSaveError?.message || ''}
         onClose={closeNoticeModal}
-      />
-      <ConfirmModal
-        isOpen={isWarningModalOpen}
-        message="Your resume exceeds one page, which is against the best practice. Are you sure you want to continue?"
-        emphasis="cancel"
-        onCancel={onWarningCancel}
-        onContinue={onWarningContinue}
       />
     </>
   );

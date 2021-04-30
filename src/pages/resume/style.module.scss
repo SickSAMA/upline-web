@@ -70,9 +70,11 @@ $header-height: 5rem;
   }
 
   &__pdf {
-    @include button-variant();
     margin-right: 0.875rem;
-    padding: 0.75rem 1.5rem;
+    & > button {
+      @include button-variant();
+      padding: 0.75rem 1.5rem;
+    }
   }
 
   &__save {
@@ -334,5 +336,13 @@ $header-height: 5rem;
 
   &-12 {
     @include make-col(12);
+  }
+}
+
+.isGeneratingPDF {
+  @include loading($color: $white, $size: sm);
+
+  & > button {
+    color: transparent !important;
   }
 }

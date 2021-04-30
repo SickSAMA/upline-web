@@ -10,9 +10,9 @@ import { splitStringByNewline } from '@/utils/stringUtil';
 pdfMake.vfs = pdfFonts;
 pdfMake.fonts = {
   Arial: {
-    normal: 'ArialCE.ttf',
-    bold: 'ArialCE-Bold.ttf',
-    italics: 'ArialCE-Italic.ttf',
+    normal: 'Arial.ttf',
+    bold: 'Arial-Bold.ttf',
+    italics: 'Arial-Italic.ttf',
   },
   // Calibri: {
   //   normal: 'Calibri.ttf',
