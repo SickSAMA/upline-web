@@ -186,7 +186,7 @@ export function generateResumePDF(resume: ResumeFormData): void {
   }
 
   const docDefinition: TDocumentDefinitions = {
-    pageSize: 'A4',
+    pageSize: { width: 595, height: 842 },
     pageMargins: margin.split(' ').map((m) => +m) as Margins,
     content,
     defaultStyle: {

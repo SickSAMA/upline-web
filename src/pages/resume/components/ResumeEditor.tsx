@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { Collapse, CollapsePanel } from '@/components/Collapse';
 import { Field, Select } from '@/components/Form';
-import { ConfirmModal, LoginModal, NoticeModal } from '@/components/Modal';
+import { LoginModal, NoticeModal } from '@/components/Modal';
 import IconAvatar from '@/components/SVG/avatar.svg';
 import SAVE_RESUME from '@/graphql/saveResume';
 import { ExperienceInput, ResumeInput, ResumeStyleInput, SkillInput } from '@/graphql/types/graphql-global-types';

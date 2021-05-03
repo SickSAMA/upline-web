@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { MouseEventHandler, MutableRefObject, useCallback, useEffect, useState } from 'react';
 
 import { ConfirmModal } from '@/components/Modal';
+import { generateResumePDF as _gen } from '@/utils/generatePDF';
 
 import style from '../style.module.scss';
 import { ResumeFormData } from './ResumeEditor';
@@ -45,6 +46,8 @@ export default function PDFGeneratorButton({ resume, className, text, isOnePage 
 
   const onGeneratePDF: MouseEventHandler = (e) => {
     e.preventDefault();
+    _gen(resume);
+    return;
     if (isOnePage.current) {
       generatePDF();
     } else {

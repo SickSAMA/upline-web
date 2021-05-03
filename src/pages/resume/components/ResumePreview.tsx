@@ -10,6 +10,12 @@ interface ResumePreviewProps {
   isOnePage: MutableRefObject<boolean>;
 }
 
+// There's some mismatch between PDFMake lineHeight and CSS lineHeight.
+const lineHeightFontFamilyMapping = {
+  'Arial': 1.1171875,
+  'Times New Roman': 1.1074218751,
+};
+
 export default function ResumePreview({ resume, isOnePage }: ResumePreviewProps): JSX.Element | null {
   const resumeEl = useRef<HTMLDivElement>(null);
   const [isOverOnePage, setIsOverOnePage] = useState(false);
@@ -20,7 +26,7 @@ export default function ResumePreview({ resume, isOnePage }: ResumePreviewProps)
   const resumeStyles = {
     fontFamily: resume.styles.font_family,
     fontSize: `${resume.styles.font_size}pt`,
-    lineHeight: resume.styles.line_height,
+    lineHeight: resume.styles.line_height * lineHeightFontFamilyMapping[resume.styles.font_family],
     padding: marginArr.join(' '),
   };
 
@@ -51,7 +57,7 @@ export default function ResumePreview({ resume, isOnePage }: ResumePreviewProps)
           (resume.phone || resume.email) &&
             <p>
               { resume.phone && <><b>Phone:</b> {resume.phone}</> }
-              { (resume.phone && resume.email) && ' ' }
+              { (resume.phone && resume.email) && ', ' }
               { resume.email && <><b>Email:</b> {resume.email}</> }
             </p>
         }
