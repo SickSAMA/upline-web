@@ -1,0 +1,130 @@
+@import 'variables';
+@import 'mixins';
+
+$body-padding-x: 4rem;
+$body-padding-y: 3rem;
+
+.container {
+  @include container();
+  display: flex;
+  align-items: stretch;
+
+  & > div:first-of-type {
+    flex: 0 0 auto;
+    border-right: 1px solid $border-color;
+  }
+
+  & > div:last-of-type {
+    flex: 1 1 auto;
+  }
+}
+
+.sidemenu {
+  padding: $body-padding-y $body-padding-x $body-padding-y 0;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    position: relative;
+    font-weight: $font-weight-medium;
+    color: $grey-700;
+    @include transition(color $transition-duration);
+
+    & + & {
+      margin-top: 0.875rem;
+    }
+
+    & > svg {
+      display: block;
+      width: 1.5rem;
+      margin-right: 2rem;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      right: -4rem;
+      width: 4px;
+      border-radius: 2px;
+      background-color: transparent;
+    }
+
+    @include above() {
+      text-decoration: none;
+      color: $black;
+    }
+
+    &--active {
+      background-color: $grey-100;
+      color: $black;
+
+      &::after {
+        background-color: $blue;
+      }
+    }
+  }
+
+  &__logout {
+    @include button();
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    font-weight: $font-weight-medium;
+    color: $blue;
+    margin-top: 5rem;
+
+    & > svg {
+      display: block;
+      width: 1.5rem;
+      margin-right: 2rem;
+      fill: $blue;
+    }
+
+    @include above() {
+      color: $blue-dark;
+    }
+  }
+}
+
+.body {
+  padding: $body-padding-y 0 $body-padding-y $body-padding-x;
+}
+
+.account {
+  h2 {
+    margin-bottom: $body-padding-y;
+  }
+
+  & > div + div {
+    margin-top: $body-padding-y;
+    padding-top: $body-padding-y;
+    border-top: 1px solid $border-color;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+
+    & + & {
+      margin-top: 2rem;
+    }
+
+    & > div:first-of-type {
+      flex: 0 0 12rem;
+      font-weight: $font-weight-bold;
+    }
+    & > div:last-of-type {
+      flex: 0 1 20rem;
+    }
+  }
+
+  &__submit {
+    margin-top: $body-padding-y;
+  }
+}

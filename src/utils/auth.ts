@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, ISignUpResult } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool,
+  CognitoUserSession, ISignUpResult } from 'amazon-cognito-identity-js';
 
 import { COGNITO_USER_POOL_APP_CLIENT_ID, COGNITO_USER_POOL_ID } from '@/configs/env';
+import { HOME } from '@/utils/routes';
 
 const userPool = new CognitoUserPool({
   UserPoolId: COGNITO_USER_POOL_ID,
@@ -175,10 +177,37 @@ export function getSession(): Promise<CognitoUserSession> {
   });
 }
 
+export function getUserAttributes(): Promise<CognitoUserAttribute[]> {
+  return new Promise((resolve, reject) => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      /**
+       * must get the latest session before getting user attributes, otherwise error will throw
+       * if current session is outdated.
+       **/
+      currentUser.getSession((error: Error | null) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        currentUser.getUserAttributes((error, result) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(result as CognitoUserAttribute[]);
+        });
+      });
+    } else {
+      reject(new Error('No current user found.'));
+    }
+  });
+}
+
 export function logout(): void {
   const currentUser = getCurrentUser();
   if (currentUser) {
     currentUser.signOut();
   }
-  location.reload();
+  location.href = HOME;
 }

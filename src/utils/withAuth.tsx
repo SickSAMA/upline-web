@@ -27,7 +27,7 @@ export default function withAuth(
         <WrappedComponent {...props} />
       );
     } else {
-      router.push(LOGIN);
+      router.push(`${LOGIN}?redirect=${router.asPath}`);
       return null;
     }
   }
