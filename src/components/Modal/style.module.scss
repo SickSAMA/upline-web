@@ -126,7 +126,12 @@
       transform: translate(0, -1rem);
     }
 
-    &.error {
+    &--success {
+      background-color: tint-color($blue, 85%);
+      border: 1px solid tint-color($blue, 65%);
+    }
+
+    &--error {
       background-color: tint-color($red, 80%);
       border: 1px solid tint-color($red, 60%);
     }
@@ -140,8 +145,13 @@
       width: 1.5rem;
     }
   }
-  .error &__icon > svg {
+
+  &__dialog--error &__icon > svg {
     fill: $red;
+  }
+
+  &__dialog--success &__icon > svg {
+    fill: $blue;
   }
 
   p {

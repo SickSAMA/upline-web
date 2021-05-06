@@ -1,10 +1,12 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import React, { useEffect, useState } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Field, Submit } from '@/components/Form';
 import Layout from '@/components/Layout';
-import { getUserAttributes } from '@/utils/auth';
+import { NoticeModal, NoticeType } from '@/components/Modal';
+import { changePassword, getUserAttributes, updateUserAttributes } from '@/utils/auth';
+import parseError from '@/utils/parseError';
 import { PASSWORD_PATTERN } from '@/utils/validationPatterns';
 import withAuth from '@/utils/withAuth';
 
@@ -16,14 +18,22 @@ interface DetailFormData {
 }
 
 interface PasswordFormData {
-  password: string;
-  password2: string;
+  oldPassword: string;
+  newPassword: string;
+  newPassword2: string;
 }
 
 function Account(): JSX.Element {
   const [userAttributes, setUserAttributes] = useState<CognitoUserAttribute[]>();
-  const { register: registerDetailForm, reset: resetDetailForm } = useForm<DetailFormData>();
-  const { register: registerPasswordForm, watch: watchPasswordForm } = useForm<PasswordFormData>();
+  const [notice, setNotice] = useState('');
+  const [noticeType, setNoticeType] = useState<NoticeType>('error');
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+
+  const { register: registerDetailForm, reset: resetDetailForm, handleSubmit: handleDetailFormSubmit,
+    formState: { errors: detailFormErrors, isSubmitting: isDetailFormSubmitting } } = useForm<DetailFormData>();
+  const { register: registerPasswordForm, watch: watchPasswordForm, handleSubmit: handlePasswordFormSubmit,
+    reset: resetPasswordForm, formState: { errors: passwordFormErrors, isSubmitting: isPasswordFormSubmitting } } = useForm<PasswordFormData>();
+
 
   // load user attributes
   useEffect(() => {
@@ -44,6 +54,42 @@ function Account(): JSX.Element {
     loadUserAttributes();
   }, [resetDetailForm]);
 
+  const saveDetails = handleDetailFormSubmit(async (data) => {
+    try {
+      await updateUserAttributes([{ Name: 'name', Value: data.name }]);
+      setNotice('Changes were successfully saved');
+      setNoticeType('success');
+      setIsNoticeModalOpen(true);
+    } catch (error) {
+      setNotice(parseError(error));
+      setNoticeType('error');
+      setIsNoticeModalOpen(true);
+    }
+  });
+
+  const updatePassword = handlePasswordFormSubmit(async (data) => {
+    const { oldPassword, newPassword } = data;
+    try {
+      await changePassword(oldPassword, newPassword);
+      setNotice('Password was successfully changed');
+      setNoticeType('success');
+      setIsNoticeModalOpen(true);
+      resetPasswordForm(undefined, {
+        keepDirty: false,
+        keepIsSubmitted: false,
+        keepTouched: false,
+      });
+    } catch (error) {
+      setNotice(parseError(error));
+      setNoticeType('error');
+      setIsNoticeModalOpen(true);
+    }
+  });
+
+  const closeErrorModal = useCallback(() => {
+    setIsNoticeModalOpen(false);
+  }, []);
+
   return (
     <Layout>
       <BodyLayout>
@@ -53,29 +99,40 @@ function Account(): JSX.Element {
               <div className={style.account}>
                 <div>
                   <h2>Account Details</h2>
-                  <form>
+                  <form onSubmit={saveDetails}>
                     <div className={style['account__row']}>
                       <div>Email</div>
                       <div>{userAttributes.find((u) => u.getName() === 'email')?.getValue()}</div>
                     </div>
                     <div className={style['account__row']}>
                       <div>Name</div>
-                      <Field className={style['col-6']}>
-                        <input type="text" {...registerDetailForm('name')} />
+                      <Field error={detailFormErrors.name?.message}>
+                        <input type="text" {...registerDetailForm('name', { required: 'Please enter your name.' })} />
                       </Field>
                     </div>
-                    <Submit className={style['account__submit']} value="Save changes" isSubmitting={false} />
+                    <Submit className={style['account__submit']} value="Save changes" isSubmitting={isDetailFormSubmitting} />
                   </form>
                 </div>
                 <div>
                   <h2>Change Password</h2>
-                  <form>
+                  <form onSubmit={updatePassword}>
                     <div className={style['account__row']}>
-                      <div>New password</div>
-                      <Field>
+                      <div>Old password</div>
+                      <Field error={passwordFormErrors.oldPassword?.message}>
                         <input
                           type='password'
-                          {...registerPasswordForm('password', {
+                          {...registerPasswordForm('oldPassword', {
+                            required: 'Please enter your old password.',
+                          })}
+                        />
+                      </Field>
+                    </div>
+                    <div className={style['account__row']}>
+                      <div>New password</div>
+                      <Field error={passwordFormErrors.newPassword?.message}>
+                        <input
+                          type='password'
+                          {...registerPasswordForm('newPassword', {
                             required: 'Your new password can not be empty.',
                             pattern: {
                               value: PASSWORD_PATTERN,
@@ -87,17 +144,17 @@ function Account(): JSX.Element {
                     </div>
                     <div className={style['account__row']}>
                       <div>Confirm password</div>
-                      <Field>
+                      <Field error={passwordFormErrors.newPassword2?.message}>
                         <input
                           type='password'
-                          {...registerPasswordForm('password2', {
+                          {...registerPasswordForm('newPassword2', {
                             required: 'Your confirm new password can not be empty.',
-                            validate: (value) => value === watchPasswordForm('password') || 'Passwords don\'t match.',
+                            validate: (value) => value === watchPasswordForm('newPassword') || 'Passwords don\'t match.',
                           })}
                         />
                       </Field>
                     </div>
-                    <Submit className={style['account__submit']} value="Update password" isSubmitting={false} />
+                    <Submit className={style['account__submit']} value="Update password" isSubmitting={isPasswordFormSubmitting} />
                   </form>
                 </div>
               </div>
@@ -107,6 +164,12 @@ function Account(): JSX.Element {
             )
         }
       </BodyLayout>
+      <NoticeModal
+        isOpen={isNoticeModalOpen}
+        type={noticeType}
+        message={notice}
+        onClose={closeErrorModal}
+      />
     </Layout>
   );
 }

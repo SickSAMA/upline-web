@@ -2,7 +2,7 @@
 import { useMutation } from '@apollo/client';
 import isEqual from 'lodash/isEqual';
 import Link from 'next/link';
-import React, { MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Collapse, CollapsePanel } from '@/components/Collapse';
@@ -150,8 +150,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
     setIsLoginModalOpen(false);
   }, []);
 
-  const closeNoticeModal: MouseEventHandler = useCallback((e) => {
-    e.preventDefault();
+  const closeNoticeModal = useCallback(() => {
     setIsNoticeModalOpen(false);
   }, []);
 

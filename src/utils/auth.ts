@@ -204,6 +204,67 @@ export function getUserAttributes(): Promise<CognitoUserAttribute[]> {
   });
 }
 
+interface Attribute {
+  Name: string;
+  Value: string;
+}
+export function updateUserAttributes(attributeList: Attribute[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      /**
+       * must get the latest session before updating user attributes, otherwise error will throw
+       * if current session is outdated.
+       **/
+      currentUser.getSession((error: Error | null) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        const cognitoAttributeList = attributeList.map((attribute) => new CognitoUserAttribute(attribute));
+
+        currentUser.updateAttributes(cognitoAttributeList, (error, result) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(result as string);
+        });
+      });
+    } else {
+      reject(new Error('No current user found.'));
+    }
+  });
+}
+
+export function changePassword(oldPassword: string, newPassword: string): Promise<'SUCCESS'> {
+  return new Promise((resolve, reject) => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      /**
+       * must get the latest session before updating user password, otherwise error will throw
+       * if current session is outdated.
+       **/
+      currentUser.getSession((error: Error | null) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        currentUser.changePassword(oldPassword, newPassword, (error, result) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(result as 'SUCCESS');
+        });
+      });
+    } else {
+      reject(new Error('No current user found.'));
+    }
+  });
+}
+
 export function logout(): void {
   const currentUser = getCurrentUser();
   if (currentUser) {

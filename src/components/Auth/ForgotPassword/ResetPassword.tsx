@@ -74,7 +74,7 @@ export default function ResetPassword({ username, onChangeUsername }: ResetPassw
       await login(username, password);
       location.reload();
     } catch (error) {
-      setErrorMsg(error.message);
+      setErrorMsg(parseError(error));
     }
   });
 

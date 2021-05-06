@@ -10,7 +10,7 @@ interface BodyLayoutProps {
 export default function BodyLayout({ children }: BodyLayoutProps): JSX.Element {
   return (
     <div className={style.container}>
-      <SideMenu activeItem="account" />
+      <SideMenu />
       <div className={style.body}>
         { children }
       </div>
