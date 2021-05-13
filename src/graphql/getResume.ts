@@ -4,9 +4,8 @@ export default gql`
   query GetResume($uuid: String!) {
     resume(uuid: $uuid) {
       uuid
-      owner
+      resume_name
       name
-      owner
       english_name
       phone
       email

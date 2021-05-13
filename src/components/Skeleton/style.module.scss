@@ -58,22 +58,23 @@ $skeleton-animation-duration: 0.8s;
   & > .empty {
     background-color: rgba($skeleton-bg, 0);
   }
-  & > .h1 {
+
+  &--h1 > div {
     height: $h1-font-size * $headings-line-height;
   }
-  & > .h2 {
+  &--h2 > div {
     height: $h2-font-size * $headings-line-height;
   }
-  & > .h3 {
+  &--h3 > div {
     height: $h3-font-size * $headings-line-height;
   }
-  & > .h4 {
+  &--h4 > div {
     height: $h4-font-size * $headings-line-height;
   }
-  & > .h5 {
+  &--h5 > div {
     height: $h5-font-size * $headings-line-height;
   }
-  & > .p {
+  &--p > div {
     height: $font-size-base * $line-height-base;
   }
 }

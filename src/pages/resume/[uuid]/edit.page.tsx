@@ -30,11 +30,13 @@ export default function Editor(): JSX.Element | null {
         const resumeFromCache = loadResumeFromCache(uuid);
 
         let resume: ResumeFormData;
+        // use resume from cache if it's lastest
         if (resumeFromCache && new Date(resumeFromCache.updated_at).getTime() > new Date(_resumeFromServer.updated_at).getTime()) {
-          // use resume from cache if it's lastest
+          // remove updated_at because it's not part of ResumeInput
           resume = omit(resumeFromCache, ['updated_at']);
           saveResumeToServer({ variables: { resumeInput: resume } });
         } else {
+          // remove __typename, updated_at, created_at because they're not part of ResumeInput
           resume = omit(omitTypename(_resumeFromServer), ['updated_at', 'created_at']);
           saveResumeToCache(resume);
         }

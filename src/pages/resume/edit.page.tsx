@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import SAVE_RESUME from '@/graphql/saveResume';
 import { SaveResume, SaveResumeVariables } from '@/graphql/types/SaveResume';
-import ResumeEditor, { ResumeFormData } from '@/pages/resume/components/ResumeEditor';
+import ResumeEditor, { defaultResume, ResumeFormData } from '@/pages/resume/components/ResumeEditor';
 import { deleteResume, loadResume as loadResumeFromCache } from '@/pages/resume/utils/resumeStore';
 import { resumeEdit } from '@/utils/routes';
 import useAuth from '@/utils/useAuth';
@@ -38,6 +38,7 @@ export default function Editor(): JSX.Element | null {
        */
       const resumeFromCache = loadResumeFromCache();
       if (resumeFromCache) {
+        // remove updated_at because it's not part of ResumeInput
         const resume = omit(resumeFromCache, ['updated_at']);
         setResumeToRender(resume);
       }
@@ -58,7 +59,7 @@ export default function Editor(): JSX.Element | null {
       deleteResume();
 
       // create a new resume using default cache
-      createResume({ variables: { resumeInput: resume || {} } });
+      createResume({ variables: { resumeInput: resume || defaultResume } });
     }
   }, [isLogin, createResume]);
 

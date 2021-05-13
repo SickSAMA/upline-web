@@ -56,9 +56,9 @@ export interface GetResume_resume_styles {
 }
 
 export interface GetResume_resume {
-  __typename: "Resume";
+  __typename: "ResumeOutput";
   uuid: string;
-  owner: string;
+  resume_name: string;
   name: string;
   english_name: string;
   phone: string;

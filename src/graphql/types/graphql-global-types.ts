@@ -19,7 +19,7 @@ export interface ExperienceInput {
 
 export interface ResumeInput {
   uuid?: string | null;
-  owner?: string | null;
+  resume_name?: string | null;
   name?: string | null;
   english_name?: string | null;
   phone?: string | null;

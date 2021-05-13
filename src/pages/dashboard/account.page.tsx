@@ -1,10 +1,11 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Field, Submit } from '@/components/Form';
 import Layout from '@/components/Layout';
 import { NoticeModal, NoticeType } from '@/components/Modal';
+import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
 import { changePassword, getUserAttributes, updateUserAttributes } from '@/utils/auth';
 import parseError from '@/utils/parseError';
 import { PASSWORD_PATTERN } from '@/utils/validationPatterns';
@@ -94,7 +95,7 @@ function Account(): JSX.Element {
     <Layout>
       <BodyLayout>
         {
-          userAttributes ?
+          userAttributes &&
             (
               <div className={style.account}>
                 <div>
@@ -158,9 +159,6 @@ function Account(): JSX.Element {
                   </form>
                 </div>
               </div>
-            ) :
-            (
-              <div />
             )
         }
       </BodyLayout>

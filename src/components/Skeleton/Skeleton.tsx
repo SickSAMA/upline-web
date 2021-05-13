@@ -5,11 +5,10 @@ import style from './style.module.scss';
 /**
  * <Skeleton>
  *  <SkeletonCol col={12}>
- *   <SkeletonRow>
- *    <SkeletonCol height="h1" col={8}/>
- *    <SkeletonCol height="h1" col={4} empty />
- *    <SkeletonCol col={4} />
- *    <SkeletonCol col={8} empty />
+ *   <SkeletonRow height="h1">
+ *    <SkeletonCol col={8}/>
+ *    <SkeletonCol col={4} empty />
+ *    <SkeletonCol col={12} empty />
  *   </SkeletonRow>
  *  </SkeletonCol>
  * </Skeleton>

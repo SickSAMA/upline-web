@@ -21,19 +21,13 @@ import { saveResume as saveResumeToCache } from '../utils/resumeStore';
 import { getDefaultStyleOption, getSelectedOptionFromValue, getStyleOptions } from '../utils/styleOptionUtil';
 import ExperienceForm from './ExperienceForm';
 import PDFGeneratorButton from './PDFGeneratorButton';
+import ResumeName from './ResumeName';
 import ResumePreview from './ResumePreview';
 import SkillForm from './SkillForm';
 
-/**
- * Default styles:
- * in pt:
- *   size: 595 x 842
- *   margin: 72
- *   font: 11, 12
- */
-
-// set default values for all fields to align with returned resume data from serverj
+// set default values for all fields to align with returned resume data from server
 export interface ResumeFormData extends ResumeInput {
+  resume_name: string;
   name: string;
   english_name: string;
   phone: string;
@@ -46,7 +40,9 @@ export interface ResumeFormData extends ResumeInput {
   styles: ResumeStyleInput;
 }
 
-const defaultResume: ResumeFormData = {
+// default resume to create on server
+export const defaultResume: ResumeFormData = {
+  resume_name: 'New resume',
   name: '',
   english_name: '',
   phone: '',
@@ -65,6 +61,12 @@ const defaultResume: ResumeFormData = {
   },
 };
 
+// default resume to render as placeholder
+const defaultResumeToRender: ResumeFormData = {
+  ...defaultResume,
+  resume_name: '',
+};
+
 type Tabs = 'content' | 'style';
 
 interface ResumeEditorProps {
@@ -74,7 +76,7 @@ interface ResumeEditorProps {
 export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element {
   const [isLogin] = useAuth();
   const { register, reset, control, watch, formState } = useForm<ResumeFormData>({
-    defaultValues: resume || defaultResume,
+    defaultValues: resume || defaultResumeToRender,
   });
   const resumeFormData = watch();
   const [saveResume, { error: resumeSaveError, loading: resumeSaving }] = useMutation<SaveResume, SaveResumeVariables>(
@@ -91,7 +93,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
   // two state to manage the change of form values
-  const [resumeToRender, setResumeToRender] = useState<ResumeFormData>(resume || defaultResume);
+  const [resumeToRender, setResumeToRender] = useState<ResumeFormData>(resume || defaultResumeToRender);
   const [hasEdited, setHasEdited] = useState(false);
   // state to manage the sync to cloud featreu
   const [isSynced, setIsSynced] = useState(true);
@@ -138,13 +140,14 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
     }
   }, 1000 * 60);
 
-  const syncToServer = () => {
+  const syncToServer = useCallback(() => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
+      return Promise.reject(new Error('Not logged in.'));
     } else {
-      saveResume({ variables: { resumeInput: resumeToRender } });
+      return saveResume({ variables: { resumeInput: resumeToRender } });
     }
-  };
+  }, [isLogin, resumeToRender, saveResume]);
 
   const closeLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
@@ -164,7 +167,9 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
                 U
               </a>
             </Link>
-            <div className={style['header__name']}>New Resume</div>
+            {
+              isLogin && <ResumeName control={control} onSave={syncToServer} isSaving={resumeSaving} />
+            }
           </div>
           <div>
             <PDFGeneratorButton className={style['header__pdf']} resume={resumeToRender} text="Generate PDF" isOnePage={isOnePage} />

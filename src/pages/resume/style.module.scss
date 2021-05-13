@@ -69,6 +69,43 @@ $header-height: 5rem;
     }
   }
 
+  &__nameDisplay {
+    display: flex;
+    align-items: center;
+
+    & > button {
+      @include button();
+      padding: 0.5rem;
+      margin-left: 0.5rem;
+
+      & > svg {
+        display: block;
+        width: 1rem;
+        fill: $grey-600;
+      }
+
+      @include above {
+        & > svg {
+          fill: $blue;
+        }
+      }
+    }
+  }
+
+  &__nameEdit {
+    width: 20rem;
+    display: flex;
+    align-items: center;
+
+    & > div:first-of-type > input {
+      border-radius: $border-radius 0 0 $border-radius;
+    }
+
+    & > div:last-of-type > input {
+      border-radius: 0 $border-radius $border-radius 0;
+    }
+  }
+
   &__pdf {
     margin-right: 0.875rem;
     & > button {

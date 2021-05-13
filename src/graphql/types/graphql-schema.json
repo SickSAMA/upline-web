@@ -161,7 +161,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Resume",
+              "name": "ResumeOutput",
               "ofType": null
             },
             "isDeprecated": false,
@@ -172,15 +172,19 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "NON_NULL",
+                "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Resume",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ResumeOutput",
+                    "ofType": null
+                  }
                 }
               }
             },
@@ -554,26 +558,10 @@
       },
       {
         "kind": "OBJECT",
-        "name": "Resume",
+        "name": "ResumeOutput",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "uuid",
             "description": null,
@@ -591,7 +579,7 @@
             "deprecationReason": null
           },
           {
-            "name": "owner",
+            "name": "resume_name",
             "description": null,
             "args": [],
             "type": {
@@ -1205,7 +1193,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Resume",
+                "name": "ResumeOutput",
                 "ofType": null
               }
             },
@@ -1338,7 +1326,7 @@
             "deprecationReason": null
           },
           {
-            "name": "owner",
+            "name": "resume_name",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -2674,7 +2662,11 @@
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -2698,7 +2690,11 @@
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -2747,7 +2743,9 @@
         "name": "specifiedBy",
         "description": "Exposes a URL that specifies the behaviour of this scalar.",
         "isRepeatable": false,
-        "locations": ["SCALAR"],
+        "locations": [
+          "SCALAR"
+        ],
         "args": [
           {
             "name": "url",
@@ -2771,7 +2769,11 @@
         "name": "client",
         "description": "Direct the client to resolve this field locally, either from the cache or local resolvers.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_DEFINITION", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_DEFINITION",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "always",
@@ -2791,7 +2793,9 @@
         "name": "export",
         "description": "Export this locally resolved field as a variable to be used in the remainder of this query. See\nhttps://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables",
         "isRepeatable": false,
-        "locations": ["FIELD"],
+        "locations": [
+          "FIELD"
+        ],
         "args": [
           {
             "name": "as",
@@ -2815,7 +2819,9 @@
         "name": "connection",
         "description": "Specify a custom store key for this result. See\nhttps://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive",
         "isRepeatable": false,
-        "locations": ["FIELD"],
+        "locations": [
+          "FIELD"
+        ],
         "args": [
           {
             "name": "key",
