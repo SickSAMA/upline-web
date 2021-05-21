@@ -287,7 +287,7 @@ $form-switch-checked-bg-position: right center;
   }
 
   &.disabled {
-    @include loading($color: $white, $size: sm);
+    @include loading($color: $white);
 
     & > input {
       color: transparent;

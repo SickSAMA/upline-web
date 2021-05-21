@@ -377,7 +377,7 @@ $header-height: 5rem;
 }
 
 .isGeneratingPDF {
-  @include loading($color: $white, $size: sm);
+  @include loading($color: $white);
 
   & > button {
     color: transparent !important;

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { Check, ErrorMessage, Field, Submit } from '@/components/Form';
 import { login } from '@/utils/auth';
-import parseError from '@/utils/parseError';
+import { parseAnyError } from '@/utils/parseError';
 import { CONFIRM_ACCOUNT, JOIN, RESET_PASSWORD } from '@/utils/routes';
 import { EMAIL_PATTERN } from '@/utils/validationPatterns';
 
@@ -53,7 +53,7 @@ export default function Login({ onLoginSuccess, onJoinClicked, onForgotPassword,
           </>
         ));
       } else {
-        setErrorMsg(parseError(error));
+        setErrorMsg(parseAnyError(error));
       }
     }
   });

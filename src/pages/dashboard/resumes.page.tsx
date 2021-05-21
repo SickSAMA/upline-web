@@ -1,31 +1,59 @@
 /* eslint-disable camelcase */
-import { useQuery } from '@apollo/client';
-import Link from 'next/link';
-import React from 'react';
+import { useLazyQuery } from '@apollo/client';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Layout from '@/components/Layout';
+import { NoticeModal } from '@/components/Modal';
 import GET_RESUMES from '@/graphql/getResumes';
 import { GetResumes } from '@/graphql/types/GetResumes';
-import { resumeEdit } from '@/utils/routes';
+import { parseApolloError } from '@/utils/parseError';
 import withAuth from '@/utils/withAuth';
 
 import BodyLayout from './components/BodyLayout';
+import Resume from './components/Resume';
+import style from './style.module.scss';
+
 
 function Resumes(): JSX.Element {
-  const { loading, error, data }= useQuery<GetResumes>(GET_RESUMES);
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+  const [loadResumes, { loading, error, data, refetch }]= useLazyQuery<GetResumes>(GET_RESUMES, {
+    onError() {
+      setIsNoticeModalOpen(true);
+    },
+  });
+
+  // load resumes on did mount
+  useEffect(() => {
+    loadResumes();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onNoticeModalClose = useCallback(() => {
+    setIsNoticeModalOpen(false);
+  }, []);
 
   return (
     <Layout>
       <BodyLayout>
         <h2>Resumes</h2>
-        { data?.resumes && data.resumes.map((resume) => (
-          <div key={resume.uuid}>
-            <Link href={resumeEdit(resume.uuid)}>
-              <a target="_blank" rel="noopener">{ resume.resume_name }</a>
-            </Link>
-            { resume.updated_at }
-          </div>
-        ))}
+        {
+          (loading) ?
+            (
+              <div className={style.resumeLoading} />
+            ) :
+            (
+              <div className={style.resumeContainer}>
+                { data?.resumes && data.resumes.map((resume) => (
+                  <Resume key={resume.uuid} resume={resume} reload={refetch} />
+                ))}
+              </div>
+            )
+        }
+        <NoticeModal
+          isOpen={isNoticeModalOpen}
+          type="error"
+          message={parseApolloError(error)}
+          onClose={onNoticeModalClose}
+        />
       </BodyLayout>
     </Layout>
   );

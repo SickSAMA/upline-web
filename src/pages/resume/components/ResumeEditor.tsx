@@ -61,12 +61,6 @@ export const defaultResume: ResumeFormData = {
   },
 };
 
-// default resume to render as placeholder
-const defaultResumeToRender: ResumeFormData = {
-  ...defaultResume,
-  resume_name: '',
-};
-
 type Tabs = 'content' | 'style';
 
 interface ResumeEditorProps {
@@ -76,7 +70,7 @@ interface ResumeEditorProps {
 export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element {
   const [isLogin] = useAuth();
   const { register, reset, control, watch, formState } = useForm<ResumeFormData>({
-    defaultValues: resume || defaultResumeToRender,
+    defaultValues: resume || defaultResume,
   });
   const resumeFormData = watch();
   const [saveResume, { error: resumeSaveError, loading: resumeSaving }] = useMutation<SaveResume, SaveResumeVariables>(
@@ -93,7 +87,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
   // two state to manage the change of form values
-  const [resumeToRender, setResumeToRender] = useState<ResumeFormData>(resume || defaultResumeToRender);
+  const [resumeToRender, setResumeToRender] = useState<ResumeFormData>(resume || defaultResume);
   const [hasEdited, setHasEdited] = useState(false);
   // state to manage the sync to cloud featreu
   const [isSynced, setIsSynced] = useState(true);

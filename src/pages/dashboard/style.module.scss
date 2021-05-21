@@ -3,6 +3,7 @@
 
 $body-padding-x: 4rem;
 $body-padding-y: 3rem;
+$gutter-size: 2rem;
 
 .container {
   @include container();
@@ -94,13 +95,13 @@ $body-padding-y: 3rem;
 
 .body {
   padding: $body-padding-y 0 $body-padding-y $body-padding-x;
-}
 
-.account {
   h2 {
     margin-bottom: $body-padding-y;
   }
+}
 
+.account {
   & > div + div {
     margin-top: $body-padding-y;
     padding-top: $body-padding-y;
@@ -126,5 +127,144 @@ $body-padding-y: 3rem;
 
   &__submit {
     margin-top: $body-padding-y;
+  }
+}
+
+.resume {
+  $border-radius: 2rem;
+  $rectangle-ratio: 80%;
+
+  &Container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: $gutter-size;
+    row-gap: $gutter-size;
+  }
+
+  &__wrapper {
+    justify-self: stretch;
+    padding-bottom: $rectangle-ratio;
+    position: relative;
+  }
+
+  &__loading {
+    @include loading();
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $border-radius;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 3;
+  }
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: tint-color($blue-light, 40%);
+  display: flex;
+  border-radius: $border-radius;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  border: 2px solid transparent;
+  @include transition(border $transition-duration);
+  z-index: 1;
+
+  & > p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    @include transition(color $transition-duration);
+  }
+
+  & > p:first-of-type {
+    @include font-size(1.5rem);
+    font-weight: $font-weight-bold;
+    margin-bottom: 0.5rem;
+    color: $body-color;
+  }
+
+  & > p:last-of-type {
+    @include font-size(0.875rem);
+    color: $grey-700;
+    margin-bottom: 0;
+  }
+
+  @include above {
+    text-decoration: none;
+    border-color: $blue-light;
+
+    & > p:first-of-type {
+      color: $blue;
+    }
+    & > p:last-of-type {
+      color: $grey-700;
+    }
+  }
+
+  &__actions {
+    position: absolute !important;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 2;
+
+    & > button {
+      padding: 0.5rem 1rem;
+
+      & > svg {
+        height: 1rem;
+        fill: $grey-600;
+      }
+
+      @include above() {
+        & > svg {
+          fill: $blue;
+        }
+      }
+    }
+  }
+
+  &__action {
+    display: flex;
+
+    & > svg {
+      width: 1rem;
+      margin-right: 1rem;
+    }
+
+    & > span {
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  &RenameModal {
+    width: 380px;
+    padding: 3rem 3rem 2rem;
+
+    h2 {
+      @include font-size(1.75rem);
+      margin-bottom: 1.5rem;
+    }
+
+    &__continue {
+      display: block;
+      margin-top: 1.5rem;
+    }
+
+    &__cancel {
+      @include button-variant('white');
+      display: block;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &Loading {
+    @include loading();
+    padding-bottom: $rectangle-ratio / 4;
   }
 }

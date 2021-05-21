@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import SAVE_RESUME from '@/graphql/saveResume';
 import { SaveResume, SaveResumeVariables } from '@/graphql/types/SaveResume';
-import ResumeEditor, { defaultResume, ResumeFormData } from '@/pages/resume/components/ResumeEditor';
+import ResumeEditor, { ResumeFormData } from '@/pages/resume/components/ResumeEditor';
 import { deleteResume, loadResume as loadResumeFromCache } from '@/pages/resume/utils/resumeStore';
 import { resumeEdit } from '@/utils/routes';
 import useAuth from '@/utils/useAuth';
@@ -31,19 +31,17 @@ export default function Editor(): JSX.Element | null {
 
   // effect to load resume from cache
   useEffect(() => {
-    if (!resumeToRender) {
-      /**
-       * Render resume loaded from default cache.
-       * For login user, this is just a placeholder and later page will redirect
-       */
-      const resumeFromCache = loadResumeFromCache();
-      if (resumeFromCache) {
-        // remove updated_at because it's not part of ResumeInput
-        const resume = omit(resumeFromCache, ['updated_at']);
-        setResumeToRender(resume);
-      }
+    /**
+     * Render resume loaded from default cache.
+     * For login user, this is just a placeholder and later page will redirect
+     */
+    const resumeFromCache = loadResumeFromCache();
+    if (resumeFromCache) {
+      // remove updated_at because it's not part of ResumeInput
+      const resume = omit(resumeFromCache, ['updated_at']);
+      setResumeToRender(resume);
     }
-  }, [setResumeToRender, resumeToRender]);
+  }, []);
 
   // effect to create resume
   useEffect(() => {
@@ -59,7 +57,7 @@ export default function Editor(): JSX.Element | null {
       deleteResume();
 
       // create a new resume using default cache
-      createResume({ variables: { resumeInput: resume || defaultResume } });
+      createResume({ variables: { resumeInput: resume || {} } });
     }
   }, [isLogin, createResume]);
 

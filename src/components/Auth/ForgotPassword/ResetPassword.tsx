@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { ErrorMessage, Field, Submit } from '@/components/Form';
 import { confirmPassword, forgotPassword, login } from '@/utils/auth';
-import parseError from '@/utils/parseError';
+import { parseAnyError } from '@/utils/parseError';
 import useTimer from '@/utils/useTimer';
 import { PASSWORD_PATTERN } from '@/utils/validationPatterns';
 
@@ -57,7 +57,7 @@ export default function ResetPassword({ username, onChangeUsername }: ResetPassw
       resetTimer();
       startTimer();
     } catch (err) {
-      setErrorMsg(parseError(err));
+      setErrorMsg(parseAnyError(err));
     }
   };
 
@@ -74,7 +74,7 @@ export default function ResetPassword({ username, onChangeUsername }: ResetPassw
       await login(username, password);
       location.reload();
     } catch (error) {
-      setErrorMsg(parseError(error));
+      setErrorMsg(parseAnyError(error));
     }
   });
 

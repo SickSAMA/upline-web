@@ -277,11 +277,11 @@ $modal-dialog-border-radius: 2.5rem;
 }
 
 @mixin loading($size: normal, $color: $blue) {
-  $container-size: 2.5rem;
-  $box-size: 0.75rem;
-  @if $size == sm {
-    $container-size: 1.5rem;
-    $box-size: 0.375rem;
+  $container-size: 1.5rem;
+  $box-size: 0.375rem;
+  @if $size == lg {
+    $container-size: 2.5rem;
+    $box-size: 0.75rem;
   }
 
   $transiton-distance: $container-size - $box-size;

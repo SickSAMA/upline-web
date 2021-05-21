@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { ErrorMessage, Field, Submit } from '@/components/Form';
 import { resentConfirmationCode } from '@/utils/auth';
-import parseError from '@/utils/parseError';
+import { parseAnyError } from '@/utils/parseError';
 import { EMAIL_PATTERN } from '@/utils/validationPatterns';
 
 import style from '../style.module.scss';
@@ -32,7 +32,7 @@ export default function ProvideUsername({ onCodeSent }: ProvideUsernameProps): J
       await resentConfirmationCode(username);
       onCodeSent(username);
     } catch (error) {
-      setErrorMsg(parseError(error));
+      setErrorMsg(parseAnyError(error));
     }
   });
 

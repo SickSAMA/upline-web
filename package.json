@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
     "prettify": "prettier --write .",
+    "prettify:check": "prettier --check .",
     "test": "jest",
     "test:fix": "jest -u",
     "test:watch": "jest --watch",
@@ -20,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test && npm run types:check && npm run prettify && lint-staged"
+      "pre-commit": "npm run test && npm run types:check && npm run prettify:check && lint-staged"
     }
   },
   "lint-staged": {
@@ -28,8 +29,10 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.8",
+    "@popperjs/core": "^2.9.2",
     "amazon-cognito-identity-js": "^4.5.10",
     "classnames": "^2.2.6",
+    "dayjs": "^1.10.4",
     "graphql": "^15.5.0",
     "lodash": "^4.17.21",
     "next": "^10.0.8",
@@ -38,9 +41,11 @@
     "rc-motion": "^2.4.1",
     "rc-util": "^5.9.8",
     "react": "^17.0.1",
+    "react-accessible-dropdown-menu-hook": "^2.2.2",
     "react-dom": "^17.0.1",
     "react-hook-form": "^7.2.3",
     "react-modal": "^3.12.1",
+    "react-popper": "^2.2.5",
     "react-select": "^4.3.0",
     "swr": "^0.3.11"
   },

@@ -1,0 +1,48 @@
+@import 'variables';
+@import 'mixins';
+
+$arrow-size: 8px; // use px because popper only supports px offset
+
+.tooltip {
+  background: $blue;
+  color: $white;
+  font-weight: $font-weight-medium;
+  padding: 0.25rem 0.5rem;
+  @include font-size(0.875rem);
+  border-radius: $border-radius;
+  display: none;
+
+  &[data-show] {
+    display: block;
+  }
+}
+
+.arrow {
+  visibility: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: $arrow-size;
+    height: $arrow-size;
+    background: $blue;
+    visibility: visible;
+    transform: rotate(45deg);
+  }
+}
+
+.tooltip[data-popper-placement^='top'] > .arrow {
+  bottom: -$arrow-size / 2;
+}
+
+.tooltip[data-popper-placement^='bottom'] > .arrow {
+  top: -$arrow-size / 2;
+}
+
+.tooltip[data-popper-placement^='left'] > .arrow {
+  right: -$arrow-size / 2;
+}
+
+.tooltip[data-popper-placement^='right'] > .arrow {
+  left: -$arrow-size / 2;
+}

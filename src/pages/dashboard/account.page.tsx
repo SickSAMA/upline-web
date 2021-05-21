@@ -5,9 +5,8 @@ import { useForm } from 'react-hook-form';
 import { Field, Submit } from '@/components/Form';
 import Layout from '@/components/Layout';
 import { NoticeModal, NoticeType } from '@/components/Modal';
-import { Skeleton, SkeletonCol, SkeletonRow } from '@/components/Skeleton';
 import { changePassword, getUserAttributes, updateUserAttributes } from '@/utils/auth';
-import parseError from '@/utils/parseError';
+import { parseAnyError } from '@/utils/parseError';
 import { PASSWORD_PATTERN } from '@/utils/validationPatterns';
 import withAuth from '@/utils/withAuth';
 
@@ -62,7 +61,7 @@ function Account(): JSX.Element {
       setNoticeType('success');
       setIsNoticeModalOpen(true);
     } catch (error) {
-      setNotice(parseError(error));
+      setNotice(parseAnyError(error));
       setNoticeType('error');
       setIsNoticeModalOpen(true);
     }
@@ -81,7 +80,7 @@ function Account(): JSX.Element {
         keepTouched: false,
       });
     } catch (error) {
-      setNotice(parseError(error));
+      setNotice(parseAnyError(error));
       setNoticeType('error');
       setIsNoticeModalOpen(true);
     }

@@ -236,3 +236,7 @@
     }
   }
 }
+
+.containerModal {
+  @include modal();
+}

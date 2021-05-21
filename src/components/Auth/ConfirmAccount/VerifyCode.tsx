@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { ErrorMessage, Field, Submit } from '@/components/Form';
 import { confirmRegistration, login, resentConfirmationCode } from '@/utils/auth';
-import parseError from '@/utils/parseError';
+import { parseAnyError } from '@/utils/parseError';
 import useTimer from '@/utils/useTimer';
 
 import style from '../style.module.scss';
@@ -60,7 +60,7 @@ export default function VerifyCode({ userData, onAccountConfirmed }: ConfirmAcco
         onAccountConfirmed();
       }
     } catch (err) {
-      setErrorMsg(parseError(err));
+      setErrorMsg(parseAnyError(err));
     }
   });
 
@@ -82,7 +82,7 @@ export default function VerifyCode({ userData, onAccountConfirmed }: ConfirmAcco
       resetTimer();
       startTimer();
     } catch (err) {
-      setErrorMsg(parseError(err));
+      setErrorMsg(parseAnyError(err));
     }
   };
 
