@@ -1,0 +1,27 @@
+@import 'variables';
+@import 'mixins';
+
+.container {
+  @include container();
+
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+
+  & > h1 {
+    text-align: center;
+    font-weight: $font-weight-bold;
+    margin-bottom: 5rem;
+    @include font-size(3.8rem);
+  }
+
+  & > p {
+    color: $grey-700;
+    text-align: center;
+    width: 600px;
+    margin: 0 auto;
+
+    & + p {
+      margin-top: 1.5rem;
+    }
+  }
+}

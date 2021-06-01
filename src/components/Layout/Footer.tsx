@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { ABOUT, CONTACT_US, PRIVACY_POLICY, TERMS_CONDITIONS } from '@/utils/routes';
+
 import style from './style.module.scss';
 
 export default function Footer(): JSX.Element {
@@ -10,14 +12,17 @@ export default function Footer(): JSX.Element {
     <div className={style.footer}>
       <div className={style['footer__container']}>
         <div className={style['footer__links']}>
-          <Link href="#">
+          <Link href={ABOUT}>
             <a>About</a>
           </Link>
-          <Link href="#">
+          <Link href={CONTACT_US}>
             <a>Contact</a>
           </Link>
-          <Link href="#">
-            <a>Conditions</a>
+          <Link href={PRIVACY_POLICY}>
+            <a>Privacy</a>
+          </Link>
+          <Link href={TERMS_CONDITIONS}>
+            <a>Terms</a>
           </Link>
         </div>
         <div className={style['footer__copyright']}>

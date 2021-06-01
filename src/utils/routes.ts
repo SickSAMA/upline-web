@@ -8,3 +8,5 @@ export const TERMS_CONDITIONS = '/terms-conditions';
 export const PRIVACY_POLICY = '/privacy-policy';
 export const DASHBOARD_ACCOUNT = '/dashboard/account';
 export const DASHBOARD_RESUMES = '/dashboard/resumes';
+export const ABOUT='/about';
+export const CONTACT_US='/contact-us';
