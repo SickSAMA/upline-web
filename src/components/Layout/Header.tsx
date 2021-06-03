@@ -62,9 +62,6 @@ export default function Header(): JSX.Element {
             <Link href={resumeEdit()}>
               <a>Resume Editor</a>
             </Link>
-            <Link href="#">
-              <a>Our Story</a>
-            </Link>
           </div>
           <div className={style['headerNav__right']}>
             <Link href={resumeEdit()}>

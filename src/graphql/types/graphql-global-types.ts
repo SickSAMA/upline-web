@@ -17,6 +17,12 @@ export interface ExperienceInput {
   details: string;
 }
 
+export interface FeedbackInput {
+  name: string;
+  email: string;
+  message: string;
+}
+
 export interface ResumeInput {
   uuid?: string | null;
   resume_name?: string | null;

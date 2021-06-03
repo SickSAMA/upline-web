@@ -37,6 +37,9 @@ $modal-dialog-border-radius: 2.5rem;
     margin-top: $grid-gutter-width;
   }
 
+  /**
+   * for col, use: include make-col(n);
+   */
   & > * {
     @include make-col-ready();
   }
