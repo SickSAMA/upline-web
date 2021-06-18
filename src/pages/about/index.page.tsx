@@ -12,7 +12,7 @@ export default function About(): JSX.Element {
         <div className={style.container}>
           <h1>Enlighten Your Career</h1>
           <p>
-          Established in 2020, TODO&apos;s vision is to help the vast number of students secure better opportunities.
+          Established in 2020, Career Go&apos;s vision is to help the vast number of students secure better opportunities.
           We create this platform to help them write better CV, whether for job hunting or for school application.
           </p>
           <p>

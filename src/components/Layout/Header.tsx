@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 
-import { LoginModal } from '@/components/Modal';
+import Dropdown from '@/components/Dropdown';
+import { AuthModal } from '@/components/Modal';
+import IconAvatar from '@/components/SVG/avatar.svg';
 import { getSession, logout } from '@/utils/auth';
-import { HOME, JOIN, resumeEdit } from '@/utils/routes';
+import { DASHBOARD_ACCOUNT, DASHBOARD_RESUMES, HOME, JOIN, resumeEdit } from '@/utils/routes';
 
 import style from './style.module.scss';
 
@@ -21,11 +23,6 @@ export default function Header(): JSX.Element {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
 
-  const _logout: MouseEventHandler = (e) => {
-    e.preventDefault();
-    logout();
-  };
-
   useEffect(() => {
     const checkSession = async (): Promise<void> => {
       try {
@@ -40,7 +37,28 @@ export default function Header(): JSX.Element {
 
   let userLink: JSX.Element | null = null;
   if (isLoggedIn) {
-    userLink = <a href="#" className={style['headerNav__join']} onClick={_logout}>Log out</a>;
+    userLink = (
+      <Dropdown
+        className={style.headerDropdown}
+        button={<IconAvatar />}
+        menu={[
+          {
+            text: 'Account',
+            href: DASHBOARD_ACCOUNT,
+          },
+          {
+            text: 'Resumes',
+            href: DASHBOARD_RESUMES,
+          },
+          {
+            text: 'Log out',
+            onClick: () => {
+              logout();
+            },
+          },
+        ]}
+      />
+    );
   } else if (isLoggedIn === false) {
     userLink = (
       <Link href={JOIN}>
@@ -54,24 +72,30 @@ export default function Header(): JSX.Element {
       <div className={style['header__container']}>
         <Link href={HOME}>
           <a className={style['header__logo']}>
-            Upline
+            <img src="/logo.png" alt="logo" />
           </a>
         </Link>
         <div className={style['headerNav']}>
           <div className={style['headerNav__left']}>
-            <Link href={resumeEdit()}>
+            {/* <Link href={resumeEdit()}>
               <a>Resume Editor</a>
-            </Link>
+            </Link> */}
           </div>
           <div className={style['headerNav__right']}>
+            {
+              isLoggedIn && userLink
+            }
             <Link href={resumeEdit()}>
               <a className={style['headerNav__button']}>Create resume</a>
             </Link>
-            { userLink }
+            {
+              !isLoggedIn && userLink
+            }
           </div>
         </div>
       </div>
-      <LoginModal
+      <AuthModal
+        page="join"
         isOpen={isModalOpen}
         onRequestClose={closeModal}
       />

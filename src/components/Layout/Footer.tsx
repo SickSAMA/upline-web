@@ -11,22 +11,29 @@ export default function Footer(): JSX.Element {
   return (
     <div className={style.footer}>
       <div className={style['footer__container']}>
-        <div className={style['footer__links']}>
-          <Link href={ABOUT}>
-            <a>About</a>
-          </Link>
-          <Link href={CONTACT_US}>
-            <a>Contact</a>
-          </Link>
-          <Link href={PRIVACY_POLICY}>
-            <a>Privacy</a>
-          </Link>
-          <Link href={TERMS_CONDITIONS}>
-            <a>Terms</a>
-          </Link>
+        <div className={style['footer__left']}>
+          <div className={style['footer__copyright']}>
+            &copy; { currentYear } career go
+          </div>
+          <div className={style['footer__links']}>
+            <Link href={ABOUT}>
+              <a>About</a>
+            </Link>
+            <Link href={CONTACT_US}>
+              <a>Contact</a>
+            </Link>
+            <Link href={PRIVACY_POLICY}>
+              <a>Privacy</a>
+            </Link>
+            <Link href={TERMS_CONDITIONS}>
+              <a>Terms</a>
+            </Link>
+          </div>
         </div>
-        <div className={style['footer__copyright']}>
-          &copy; { currentYear } Upline
+        <div className={style['footer__right']}>
+          <div className={style['footer__language']}>
+            English
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 @import 'variables';
 @import 'mixins';
 
-.loginModal {
+.authModal {
   @include modal();
 
   &__content {

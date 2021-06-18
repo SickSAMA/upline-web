@@ -9,7 +9,7 @@ import ForgotPassword from './ForgotPassword';
 import Join from './Join';
 import Login from './Login';
 
-export type Page = typeof JOIN | typeof LOGIN | typeof RESET_PASSWORD | typeof CONFIRM_ACCOUNT;
+export type Page = 'join' | 'login' | 'reset_password' | 'confirm_account';
 
 interface AuthProps {
   page: Page;
@@ -28,7 +28,7 @@ export default function Auth({ page, mode = 'multi-page', className, onLoginSucc
     if (mode === 'multi-page') {
       router.push(LOGIN);
     } else {
-      setCurrentPage(LOGIN);
+      setCurrentPage('login');
     }
   }, [setCurrentPage, router, mode]);
 
@@ -37,7 +37,7 @@ export default function Auth({ page, mode = 'multi-page', className, onLoginSucc
     if (mode === 'multi-page') {
       router.push(JOIN);
     } else {
-      setCurrentPage(JOIN);
+      setCurrentPage('join');
     }
   }, [setCurrentPage, router, mode]);
 
@@ -46,7 +46,7 @@ export default function Auth({ page, mode = 'multi-page', className, onLoginSucc
     if (mode === 'multi-page') {
       router.push(RESET_PASSWORD);
     } else {
-      setCurrentPage(RESET_PASSWORD);
+      setCurrentPage('reset_password');
     }
   }, [setCurrentPage, router, mode]);
 
@@ -54,7 +54,7 @@ export default function Auth({ page, mode = 'multi-page', className, onLoginSucc
     if (mode === 'multi-page') {
       router.push(CONFIRM_ACCOUNT);
     } else {
-      setCurrentPage(CONFIRM_ACCOUNT);
+      setCurrentPage('confirm_account');
     }
   }, [setCurrentPage, router, mode]);
 
@@ -63,26 +63,26 @@ export default function Auth({ page, mode = 'multi-page', className, onLoginSucc
       username,
       password,
     });
-    setCurrentPage(CONFIRM_ACCOUNT);
+    setCurrentPage('confirm_account');
   }, [setCurrentPage, setUserData]);
 
   const onAccountConfirmed = useCallback(async () => {
     if (mode === 'multi-page') {
       router.push(LOGIN);
     } else {
-      setCurrentPage(LOGIN);
+      setCurrentPage('login');
     }
   }, [setCurrentPage, router, mode]);
 
   let renderedPage: JSX.Element;
 
-  if (currentPage === JOIN) {
+  if (currentPage === 'join') {
     renderedPage = <Join onLoginClicked={onLoginClicked} onSignUpSuccess={onSignUpSuccess} />;
-  } else if (currentPage === LOGIN) {
+  } else if (currentPage === 'login') {
     renderedPage = (
       <Login onJoinClicked={onJoinClicked} onForgotPassword={onForgotPassword} onConfirmAccount={onConfirmAccount} onLoginSuccess={onLoginSuccess} />
     );
-  } else if (currentPage === RESET_PASSWORD) {
+  } else if (currentPage === 'reset_password') {
     renderedPage = <ForgotPassword onJoinClicked={onJoinClicked} onLoginClicked={onLoginClicked} />;
   } else {
     renderedPage = <ConfirmAccount userData={userData} onAccountConfirmed={onAccountConfirmed} />;

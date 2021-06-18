@@ -15,8 +15,8 @@ export default function Terms(): JSX.Element {
         <h2>Agreement to terms</h2>
         <p>
           These Terms and Conditions constitute a legally binding agreement made between
-          you, whether personally or on behalf of an entity (“you”) and TODO (“we,” “us” or
-          “our”), concerning your access to and use of the [TODO.com] website as well as any
+          you, whether personally or on behalf of an entity (“you”) and career go (“we,” “us” or
+          “our”), concerning your access to and use of the [career-go.com] website as well as any
           other media form, media channel, mobile website or mobile application related,
           linked, or otherwise connected thereto (collectively, the “Site”).
         </p>
@@ -699,7 +699,7 @@ export default function Terms(): JSX.Element {
         <p>
           If you believe your own copyrighted material has been removed from the Site as a
           result of a mistake or misidentification, you may submit a written counter
-          notification to us using the email (TODO company email).
+          notification to us using the email info@career-go.com.
         </p>
         <p>
           To be an effective Counter Notification under the DMCA, your Counter Notification
@@ -948,7 +948,7 @@ export default function Terms(): JSX.Element {
         <h2>Contact us</h2>
         <p>
           In order to resolve a complaint regarding the Site or to receive further information
-          regarding use of the Site, please contact us at [TODO Insert Company Email].
+          regarding use of the Site, please contact us at info@career-go.com.
         </p>
       </div>
     </Layout>

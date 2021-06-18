@@ -31,13 +31,9 @@ $footer-padding-y: 2rem;
     display: block;
     flex: 0 0 auto;
     margin-right: 2rem;
-    font-size: 1.5rem;
-    font-weight: $font-weight-bold;
-    text-decoration: none;
-    color: $black;
 
-    @include above() {
-      color: $black;
+    & > img {
+      height: 2.5rem;
     }
   }
 
@@ -72,8 +68,12 @@ $footer-padding-y: 2rem;
 
     &__button {
       display: block;
-      margin-right: 2rem;
       @include button-variant('blue');
+      margin-left: 2rem;
+
+      & + * {
+        margin-left: 2rem;
+      }
     }
 
     &__join {
@@ -96,6 +96,31 @@ $footer-padding-y: 2rem;
       }
     }
   }
+
+  &Dropdown {
+    & > button {
+      padding: $input-btn-padding-y;
+      border-radius: 5rem;
+      border: 1px solid $red;
+      background-color: $red;
+      @include transition(
+        border-color $transition-duration,
+        background-color $transition-duration
+      );
+
+      & > svg {
+        display: block;
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: $white;
+      }
+
+      @include above {
+        border-color: $red-dark;
+        background-color: $red-dark;
+      }
+    }
+  }
 }
 
 .footer {
@@ -110,6 +135,17 @@ $footer-padding-y: 2rem;
     justify-content: space-between;
     padding-top: $footer-padding-y;
     padding-bottom: $footer-padding-y;
+  }
+
+  &__left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__copyright {
+    color: $grey-700;
+    margin-right: 3rem;
   }
 
   &__links {

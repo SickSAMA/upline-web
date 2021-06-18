@@ -6,13 +6,15 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Collapse, CollapsePanel } from '@/components/Collapse';
+import Dropdown from '@/components/Dropdown';
 import { Field, Select } from '@/components/Form';
-import { LoginModal, NoticeModal } from '@/components/Modal';
+import { AuthModal, NoticeModal } from '@/components/Modal';
 import IconAvatar from '@/components/SVG/avatar.svg';
 import SAVE_RESUME from '@/graphql/saveResume';
 import { ExperienceInput, ResumeInput, ResumeStyleInput, SkillInput } from '@/graphql/types/graphql-global-types';
 import { SaveResume, SaveResumeVariables } from '@/graphql/types/SaveResume';
-import { HOME } from '@/utils/routes';
+import { logout } from '@/utils/auth';
+import { DASHBOARD_ACCOUNT, DASHBOARD_RESUMES, HOME, LOGIN } from '@/utils/routes';
 import useAuth from '@/utils/useAuth';
 import useInterval from '@/utils/useInterval';
 
@@ -134,14 +136,17 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
     }
   }, 1000 * 60);
 
-  const syncToServer = useCallback(() => {
+  const onSaveName = useCallback(() => {
+    return saveResume({ variables: { resumeInput: resumeToRender } });
+  }, [resumeToRender, saveResume]);
+
+  const onClickSync = () => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
-      return Promise.reject(new Error('Not logged in.'));
     } else {
-      return saveResume({ variables: { resumeInput: resumeToRender } });
+      saveResume({ variables: { resumeInput: resumeToRender } });
     }
-  }, [isLogin, resumeToRender, saveResume]);
+  };
 
   const closeLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
@@ -158,27 +163,59 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
           <div>
             <Link href={HOME}>
               <a className={style['header__logo']}>
-                U
+                <img src="/logo.png" alt="logo" />
               </a>
             </Link>
             {
-              isLogin && <ResumeName control={control} onSave={syncToServer} isSaving={resumeSaving} />
+              isLogin && <ResumeName control={control} onSave={onSaveName} isSaving={resumeSaving} />
             }
           </div>
           <div>
             <PDFGeneratorButton className={style['header__pdf']} resume={resumeToRender} text="Generate PDF" isOnePage={isOnePage} />
-            <button type="button" onClick={syncToServer} className={style['header__save']} disabled={isSynced}>
+            <button type="button" onClick={onClickSync} className={style['header__save']} disabled={isSynced}>
               {
                 resumeSaving ?
                   'Saving...' :
                   (isSynced ? 'Saved': 'Save to Cloud')
               }
             </button>
-            <Link href="#">
-              <a className={style['header__account']}>
-                <IconAvatar />
-              </a>
-            </Link>
+            {
+              isLogin ?
+                (
+                  <Dropdown
+                    className={style['header__dropdown']}
+                    button={<IconAvatar />}
+                    placement="left-bottom"
+                    menu={[
+                      {
+                        text: 'Account',
+                        href: DASHBOARD_ACCOUNT,
+                      },
+                      {
+                        text: 'Resumes',
+                        href: DASHBOARD_RESUMES,
+                      },
+                      {
+                        text: 'Log out',
+                        onClick: () => {
+                          logout();
+                        },
+                      },
+                    ]}
+                  />
+                ) :
+                (
+                  <Link href={LOGIN}>
+                    <a className={style['header__account']} onClick={
+                      (e) => {
+                        e.preventDefault();
+                        setIsLoginModalOpen(true);
+                      }}>
+                      <IconAvatar />
+                    </a>
+                  </Link>
+                )
+            }
           </div>
         </div>
         <div className={style['editor__body']}>
@@ -366,7 +403,7 @@ export default function ResumeEditor({ resume }: ResumeEditorProps): JSX.Element
           </div>
         </div>
       </div>
-      <LoginModal isOpen={isLoginModalOpen} onRequestClose={closeLoginModal} />
+      <AuthModal page="login" isOpen={isLoginModalOpen} onRequestClose={closeLoginModal} />
       <NoticeModal
         isOpen={isNoticeModalOpen}
         type="error"

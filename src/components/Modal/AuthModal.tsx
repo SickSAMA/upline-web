@@ -1,15 +1,15 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-import { Auth } from '@/components/Auth';
+import { Auth, Page } from '@/components/Auth';
 import IconClose from '@/components/SVG/close.svg';
 import { HTML_ROOT_ELEMENT_ID } from '@/configs/constants';
-import { LOGIN } from '@/utils/routes';
 import useSetBodyScrollbarPadding from '@/utils/useSetBodyScrollbarPadding';
 
 import style from './style.module.scss';
 
-interface LoginModalProps {
+interface AuthModalProps {
+  page: Page;
   isOpen: boolean;
   onRequestClose(event?: React.MouseEvent | React.KeyboardEvent): void;
   onLoginSuccess?(): void;
@@ -17,7 +17,7 @@ interface LoginModalProps {
 
 Modal.setAppElement(HTML_ROOT_ELEMENT_ID);
 
-export default function LoginModal({ isOpen, onRequestClose, onLoginSuccess }: LoginModalProps): JSX.Element {
+export default function AuthModal({ isOpen, page, onRequestClose, onLoginSuccess }: AuthModalProps): JSX.Element {
   useSetBodyScrollbarPadding(isOpen, 150);
 
   return (
@@ -25,24 +25,24 @@ export default function LoginModal({ isOpen, onRequestClose, onLoginSuccess }: L
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       closeTimeoutMS={150}
-      contentLabel="Login Modal"
+      contentLabel="Auth Modal"
       bodyOpenClassName="modal-open"
       className={{
-        base: style['loginModal__dialog'],
-        afterOpen: style['loginModal__dialog--after-open'],
-        beforeClose: style['loginModal__dialog--before-close'],
+        base: style['authModal__dialog'],
+        afterOpen: style['authModal__dialog--after-open'],
+        beforeClose: style['authModal__dialog--before-close'],
       }}
       overlayClassName={{
-        base: style.loginModal,
-        afterOpen: style['loginModal--after-open'],
-        beforeClose: style['loginModal--before-close'],
+        base: style.authModal,
+        afterOpen: style['authModal--after-open'],
+        beforeClose: style['authModal--before-close'],
       }}
     >
-      <div className={style['loginModal__content']}>
+      <div className={style['authModal__content']}>
         <div />
         <div>
-          <Auth page={LOGIN} mode="single-page" onLoginSuccess={onLoginSuccess} />
-          <button className={style['loginModal__close']} onClick={onRequestClose}>
+          <Auth page={page} mode="single-page" onLoginSuccess={onLoginSuccess} />
+          <button className={style['authModal__close']} onClick={onRequestClose}>
             <IconClose />
           </button>
         </div>

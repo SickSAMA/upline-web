@@ -14,14 +14,14 @@ export default function Terms(): JSX.Element {
         <p><i>Last updated: May 1, 2021</i></p>
         <br />
         <p>
-          TODO (the “Company”) is committed to maintaining robust privacy protections for its users. Our
+          career go (the “Company”) is committed to maintaining robust privacy protections for its users. Our
           Privacy Policy (“Privacy Policy”) is designed to help you understand how we collect, use and
           safeguard the information you provide to us and to assist you in making informed decisions
           when using our Service.
         </p>
         <p>
           For purposes of this Agreement, “Site” refers to the Company’s website, which can be accessed
-          at TODO.com.
+          at career-go.com.
         </p>
         <p>
           “Service” refers to the Company’s services accessed via the Site, in which users can create a
@@ -85,7 +85,7 @@ export default function Terms(): JSX.Element {
           under the age of 13 to sign up for the Service. In the event that we learn that we have gathered
           personal information from anyone under the age of 13 without the consent of a parent or
           guardian, we will delete that information as soon as possible. If you believe we have collected
-          such information, please contact us at [TODO Company contact email address].
+          such information, please contact us at info@career-go.com.
         </p>
         <h2>How we use and share information</h2>
         <h4>Personal Information</h4>
@@ -178,7 +178,7 @@ export default function Terms(): JSX.Element {
         <h2>Contact us</h2>
         <p>
           If you have any questions regarding this Privacy Policy or the practices of this Site, please
-          contact us by sending an email to [TODO Insert Company Email].
+          contact us by sending an email to info@career-go.com.
         </p>
       </div>
     </Layout>

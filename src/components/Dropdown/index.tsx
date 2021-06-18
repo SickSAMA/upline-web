@@ -15,9 +15,10 @@ interface DropdownProps {
   button: ReactNode;
   menu: MenuItem[];
   className?: string;
+  placement?: 'left-bottom' | 'center-bottom' | 'right-bottom';
 }
 
-export default function Dropdown({ button, menu, className }: DropdownProps): JSX.Element {
+export default function Dropdown({ button, menu, className, placement = 'center-bottom' }: DropdownProps): JSX.Element {
   const { buttonProps, itemProps, isOpen, setIsOpen } = useDropdownMenu(menu.length);
 
   return (
@@ -25,7 +26,12 @@ export default function Dropdown({ button, menu, className }: DropdownProps): JS
       <button className={style.button} type="button" {...buttonProps}>
         { button }
       </button>
-      <div className={classNames(style.dropdown, { [style.visible]: isOpen })} role="menu">
+      <div className={
+        classNames(
+            style.dropdown,
+            style[`dropdown--${placement}`],
+            { [style.visible]: isOpen },
+        )} role="menu">
         <div className={style['dropdown__content']}>
           {
             menu.map((item, index) => {

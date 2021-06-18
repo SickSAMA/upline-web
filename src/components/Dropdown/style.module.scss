@@ -14,13 +14,29 @@ $content-border-radius: $border-radius;
 
 .dropdown {
   position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, $arrow-size);
   background-color: $white;
   border-radius: $content-border-radius;
   box-shadow: $box-shadow;
   visibility: hidden;
+  z-index: $zindex-dropdown;
+
+  &--center-bottom {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, $arrow-size);
+  }
+
+  &--left-bottom {
+    top: 100%;
+    right: 5px;
+    transform: translate(0, $arrow-size);
+  }
+
+  &--right-bottom {
+    top: 100%;
+    left: 5px;
+    transform: translate(0, $arrow-size);
+  }
 
   &.visible {
     visibility: visible;
@@ -29,12 +45,27 @@ $content-border-radius: $border-radius;
   &::before {
     content: '';
     position: absolute;
-    left: 50%;
-    top: 0;
     width: $arrow-size;
     height: $arrow-size;
     background: $white;
     border: 1px solid $grey-100;
+  }
+
+  &--center-bottom::before {
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &--left-bottom::before {
+    top: 0;
+    right: 20%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &--right-bottom::before {
+    top: 0;
+    left: 20%;
     transform: translate(-50%, -50%) rotate(45deg);
   }
 
