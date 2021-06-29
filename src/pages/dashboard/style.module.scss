@@ -256,7 +256,7 @@ $gutter-size: 2rem;
     }
 
     &__cancel {
-      @include button-variant('white');
+      @include button-variant('transparent');
       display: block;
       width: 100%;
       margin-top: 0.5rem;

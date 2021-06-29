@@ -1,0 +1,45 @@
+@import 'variables';
+@import 'mixins';
+
+$padding: 8rem;
+
+.body {
+  padding: $padding 0;
+  overflow: hidden;
+  position: relative;
+  background-color: $blue;
+}
+
+.container {
+  @include container();
+
+  & > h1 {
+    @include font-size(3.5rem);
+    font-weight: $font-weight-bold;
+    width: 35rem;
+    margin-bottom: 2.5rem;
+  }
+
+  & > p {
+    width: 30rem;
+    color: $grey-200;
+    margin-bottom: 3rem;
+    @include font-size(1.125rem);
+  }
+
+  & > a {
+    @include button-variant('white');
+  }
+}
+
+.screenshot {
+  position: absolute;
+  left: 55%;
+  top: $padding;
+  width: 1000px;
+
+  & > div {
+    border-radius: 1rem;
+    box-shadow: 0 1rem 3rem rgba($black, 0.2);
+  }
+}

@@ -74,7 +74,7 @@ export default function ExperienceForm({ control, register, type, fieldNameMappi
               <Field className={style['col-3']} label="City">
                 <input type="text" {...register(`${type}.${index}.city` as const)} defaultValue={experience.city} />
               </Field>
-              <Field className={style['col-3']} label="Country">
+              <Field className={style['col-3']} label="Country / State">
                 <input type="text" {...register(`${type}.${index}.country` as const)} defaultValue={experience.country} />
               </Field>
             </div>

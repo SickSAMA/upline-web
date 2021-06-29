@@ -219,7 +219,7 @@
 
     &--cancel {
       & > button:first-of-type {
-        @include button-variant('white');
+        @include button-variant('transparent');
       }
       & > button:last-of-type {
         @include button-variant('blue');
@@ -231,7 +231,7 @@
         @include button-variant('blue');
       }
       & > button:last-of-type {
-        @include button-variant('white');
+        @include button-variant('transparent');
       }
     }
   }

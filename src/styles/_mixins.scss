@@ -141,17 +141,33 @@ $modal-dialog-border-radius: 2.5rem;
     $border: $white;
     $color: $body-color;
 
-    $hover-background: $white;
-    $hover-border: $white;
+    $hover-background: $grey-200;
+    $hover-border: $grey-200;
     $hover-color: $body-color;
 
-    $active-background: $white;
-    $active-border: $white;
+    $active-background: $grey-200;
+    $active-border: $grey-200;
     $active-color: $body-color;
 
     $disabled-background: $background;
     $disabled-border: $border;
     $disabled-color: color-contrast($disabled-background);
+  } @else if $style == 'transparent' {
+    $background: transparent;
+    $border: transparent;
+    $color: $body-color;
+
+    $hover-background: transparent;
+    $hover-border: transparent;
+    $hover-color: $body-color;
+
+    $active-background: transparent;
+    $active-border: transparent;
+    $active-color: $body-color;
+
+    $disabled-background: $background;
+    $disabled-border: $border;
+    $disabled-color: tint-color($color, 20%);
   }
 
   $btn-box-shadow: none;
@@ -171,7 +187,11 @@ $modal-dialog-border-radius: 2.5rem;
   }
 
   &:focus {
-    box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), 0.5);
+    @if $style == 'transparent' {
+      box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $white, 15%), 0.5);
+    } @else {
+      box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), 0.5);
+    }
   }
 
   &:active,
@@ -180,7 +200,11 @@ $modal-dialog-border-radius: 2.5rem;
     background-color: $active-background;
     border-color: $active-border;
     &:focus {
-      box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), 0.5);
+      @if $style == 'transparent' {
+        box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $white, 15%), 0.5);
+      } @else {
+        box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), 0.5);
+      }
     }
   }
 

@@ -1,64 +1,38 @@
-import { gql, useLazyQuery } from '@apollo/client';
-import React, { FC } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
 import Layout from '@/components/Layout';
-import useTimer from '@/utils/useTimer';
+import { resumeEdit } from '@/utils/routes';
 
-const GET_RECIPE = gql`
-  query GetRecipe {
-    recipe(recipeId: 2) {
-      id
-      title
-      description
-      ratings {
-        id
-        value
-        date
-      }
-      author {
-        username
-      }
-    }
-  }
-`;
+import style from './style.module.scss';
 
-const Home: FC<null> = () => {
-  const [getRecipe, { loading, error, data }] = useLazyQuery(GET_RECIPE);
-  const { start: startTimer, reset: resetTimer, pause: pauseTimer, time, status } = useTimer({
-    autostart: false,
-    startTime: 60,
-    endTime: 0,
-    step: 1,
-    timerType: 'DEC',
-  });
-
+export default function Home(): JSX.Element {
   return (
     <Layout>
-      <div>
-        <div>
-          <button onClick={startTimer}>Start Timer</button>
-          <button onClick={pauseTimer}>Pause Timer</button>
-          <button onClick={resetTimer}>Reset Timer</button>
-          <span>{time}</span>
-          <span>{status}</span>
+      <div className={style.body}>
+        <div className={style.container}>
+          <h1>Create a professional resume with ease for free</h1>
+          <p>
+            Are you still looking for resume templates or examples? Not any more!
+            Try our free resume editor today to create a professional resume in no time.
+          </p>
+          <Link href={resumeEdit()}>
+            <a>Start now</a>
+          </Link>
         </div>
-        {
-          loading && <div>Loading...</div>
-        }
-        {
-          error && <div>Error! ${error.message}</div>
-        }
-        {
-          data &&
-            <div>
-              <label>Recipe Title: </label>
-              <span>{ data.recipe.title }</span>
-            </div>
-        }
-        <button onClick={() => getRecipe()}>Fetch Recipe</button>
+        <div className={style.screenshot}>
+          <Image
+            alt="resume editor"
+            src="/home-screenshot.jpg"
+            layout="responsive"
+            width="1440"
+            height="845"
+            sizes="1000px"
+            quality="100"
+          />
+        </div>
       </div>
     </Layout>
   );
-};
-
-export default Home;
+}
